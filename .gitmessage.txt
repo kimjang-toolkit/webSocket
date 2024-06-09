@@ -1,0 +1,10 @@
+✨ Feat : 새로운 기능
+🐛 Fix : 오류 수정
+🔧 Modify : 위치 변경
+🔥 Remove : 삭제
+🤖 Refactor : 코드 리팩토링
+✅ Test : 테스트 코드 추가
+💡 Comment : 필요한 주석 추가 및 변경
+🚚 Chore : 환경설정 변경
+🎨 Style : 의미 없는 코드 형식 수정
+📝 Docs : 문서 수정
