@@ -1,5 +1,14 @@
 ## WebSocket with SpringBoot
 
+### How to use
+
+빌드 파일 실행
+`java -jar target/solsol-0.0.1-SNAPSHOT.jar`
+
+Simple chatting room 연결 [localhost:8080](http://localhost:8080) 
+
+## Concept
+
 ### What is WebSocket
 
 WebSocket은 클라이언트와 서버가 지속적으로 연결을 유지하면서 통신할 수 있는 저수준 프로토콜입니다. <br/>
@@ -22,10 +31,35 @@ WebSocket은 단순히 양방향 통신인데 왜 메세지 브로커를 사용�
 그 이유는 다수의 클라이언트와 서버가 동시에 통신하려면 시스템의 수평적 확장이 필수적이고, 클라이언트가 증가하더라도 브로커가 메세지를 중계함으로써 시스템의 부하를 줄일 수 있습니다. <br/>
 또한 메세지 브로커를 사용해 비동기 통신을 가능하게 하고 클라이언트는 메세지를 보내고 다른 작업을 수행할 수 있습니다.  
 
-### API 명세 및 프로토콜 메세지 규칙
+### STOMP 프로토콜 메세지 규칙
 
+- 연결
+```
+CONNECT
+accept-version:1.0,1.1,2.0
+host:localhost:8080
 
+^@
+```
 
+- 구독
+```
+SUBSCRIBE
+id:sub-0
+destination:/topic/greetings
+
+^@
+```
+
+- 채팅 보내기
+```
+SEND
+destination:/app/hello
+
+{"chat":"user chatting"}
+
+^@
+```
 
 ### Contributor
 
