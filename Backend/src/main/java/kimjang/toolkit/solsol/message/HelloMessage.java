@@ -2,20 +2,20 @@ package kimjang.toolkit.solsol.message;
 
 public class HelloMessage {
 
-	private String name;
+	private String chat;
 
 	public HelloMessage() {
 	}
 
 	public HelloMessage(String name) {
-		this.name = name;
+		this.chat = name;
 	}
 
 	public String getName() {
-		return name;
+		return chat;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.chat = name;
 	}
 }
