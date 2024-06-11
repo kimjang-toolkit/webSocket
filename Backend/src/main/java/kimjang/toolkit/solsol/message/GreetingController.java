@@ -17,7 +17,7 @@ public class GreetingController {
 //		Thread.sleep(1000); // simulated delay
 		System.out.println("message : "+message.getChat());
 //		return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-		return new Greeting("Greeting : "+message.getChat());
+		return new Greeting(message.getChat());
 	}
 
 }
