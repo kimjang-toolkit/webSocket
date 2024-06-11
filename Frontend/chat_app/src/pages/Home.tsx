@@ -1,4 +1,4 @@
-import { Client, Message } from '@stomp/stompjs';
+import { Client } from '@stomp/stompjs';
 
 function Home() {
   const message = {
@@ -7,7 +7,7 @@ function Home() {
   };
   const publishMessageBody = JSON.stringify(message);
   const client = new Client({
-    brokerURL: 'ws://ec2-3-36-116-219.ap-northeast-2.compute.amazonaws.com/gs-guide-websocket',
+    brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs-guide-websocket`,
     debug: (str) => {
       console.log(str);
     },
