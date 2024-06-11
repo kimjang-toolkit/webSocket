@@ -15,9 +15,9 @@ public class GreetingController {
 	@SendTo("/topic/greetings") // Greeting 응답 객체는 "/topic/greetings"의 모든 구독자에게 전달된다.
 	public Greeting greeting(HelloMessage message) throws Exception { // HelloMessage 객체가 인자로 들어가게된다.
 //		Thread.sleep(1000); // simulated delay
-		System.out.println("message : "+message.getName());
+		System.out.println("message : "+message.getChat());
 //		return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-		return new Greeting(HtmlUtils.htmlEscape(message.getName()));
+		return new Greeting("Greeting : "+message.getChat());
 	}
 
 }
