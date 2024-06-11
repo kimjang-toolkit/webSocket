@@ -7,15 +7,15 @@ public class HelloMessage {
 	public HelloMessage() {
 	}
 
-	public HelloMessage(String name) {
-		this.chat = name;
+	public HelloMessage(String chat) {
+		this.chat = chat;
 	}
 
-	public String getName() {
+	public String getChat() {
 		return chat;
 	}
 
-	public void setName(String name) {
-		this.chat = name;
+	public void setName(String chat) {
+		this.chat = chat;
 	}
 }
