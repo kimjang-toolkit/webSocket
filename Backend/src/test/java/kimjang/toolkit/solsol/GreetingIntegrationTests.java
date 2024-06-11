@@ -62,7 +62,7 @@ public class GreetingIntegrationTests {
 					public void handleFrame(StompHeaders headers, Object payload) {
 						Greeting greeting = (Greeting) payload;
 						try {
-							System.out.println("GREETING : "+greeting.getContent());
+							System.out.println(greeting.getContent());
 							assertEquals("Spring", greeting.getContent());
 						} catch (Throwable t) {
 							failure.set(t);
