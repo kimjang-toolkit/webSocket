@@ -37,12 +37,13 @@ WebSocket은 단순히 양방향 통신인데 왜 메세지 브로커를 사용�
 ```
 CONNECT
 accept-version:1.0,1.1,2.0
-host:localhost:8080
+host:localhost:8080/gs-guide-websocket
 
 ^@
 ```
 
-- 구독
+- **Subscribe**
+- 소켓 연결 테스트 구독
 ```
 SUBSCRIBE
 id:sub-0
@@ -50,13 +51,61 @@ destination:/topic/greetings
 
 ^@
 ```
+- 응답 포멧
+```json
+{
+  "chat": "content"
+}
+```
 
-- 채팅 보내기
+
+- 메세지 구독
+```
+SUBSCRIBE
+id:sub-0
+destination:/topic/chat
+
+^@
+```
+
+- 응답 포멧
+
+이때 createDate 형식은 `yyyy-mm-ddThh:mm` 
+```json
+{
+  "roomId": 1,
+  "content": "호식이 두마리 치킨 크크크 치킨은 회애!",
+  "createDate": "2023-12-12 20:00",
+  "customer": {
+    "name": "효승이"
+  }
+}
+```
+
+- **Publish**
+- 소켓 연결 테스트 Send
 ```
 SEND
 destination:/app/hello
 
 {"chat":"user chatting"}
+
+^@
+```
+
+- 메세지 Send
+```
+SEND
+destination:/app/message
+
+{
+  "roomId": 1,
+  "content": "호식이 두마리 치킨 크크크 치킨은 회애!",
+  "createDate": "2023-12-12 20:00",
+  "customer": {
+    "name": "효승이"
+  }
+}
 
 ^@
 ```
