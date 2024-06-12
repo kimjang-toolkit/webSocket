@@ -40,8 +40,11 @@ const Bubble = styled.div<{ isUsers: boolean }>`
   display: flex;
   flex-direction: column;
 `;
-const Content = styled.p``;
+const Content = styled.p`
+  word-break: break-all;
+`;
 const Caption = styled.p<{ isUsers: boolean }>`
   text-align: ${({ isUsers }) => (isUsers ? 'left' : 'right')};
   color: ${({ isUsers }) => (isUsers ? '#9C9C9C' : '#E1E1E1')};
+  font-size: var(--font-size-xs);
 `;

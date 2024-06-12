@@ -4,9 +4,7 @@ import styled from 'styled-components';
 const RootLayout: React.FC = () => {
   return (
     <Container>
-      <Header>
-        <Nav>{/* 네비게이션 링크 */}</Nav>
-      </Header>
+      <Header />
       <Main>
         <Outlet />
       </Main>
@@ -18,36 +16,38 @@ const RootLayout: React.FC = () => {
 export default RootLayout;
 
 const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background: #ffffff;
-  min-height: 100vh;
-  width: 350px;
-  margin: 0 auto;
 `;
 
 const Header = styled.header`
-  background: #333;
-  color: #fff;
-  padding: 1rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
+  z-index: 1000;
+  background: aqua;
+  // height: 50px;
+  color: #fff;
   align-items: center;
 `;
 
-const Nav = styled.nav`
-  display: flex;
-  gap: 1rem;
-`;
-
 const Main = styled.main`
-  flex: 1;
-  padding: 1rem;
+  padding: 0 12px;
+  overflow-y: auto;
 `;
 
 const Footer = styled.footer`
-  background: #333;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  background: aqua;
   color: #fff;
-  padding: 1rem;
   text-align: center;
+  height: 50px;
 `;

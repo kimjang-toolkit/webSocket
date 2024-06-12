@@ -1,6 +1,7 @@
 import { Client } from '@stomp/stompjs';
 import ChatBubble from '../components/ChatBubble';
 import styled from 'styled-components';
+import ChatInputBar from '../components/ChatInputBar';
 function Home() {
   const message = {
     type: 'greeting',
@@ -33,15 +34,28 @@ function Home() {
   client.activate();
 
   return (
-    <ChatContainer>
-      <ChatBubble isUsers={true} data={{ content: 'Hello world', published: '1640' }} />
-      <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
-    </ChatContainer>
+    <ChatRoom>
+      <ChatContainer>
+        <ChatBubble
+          isUsers={true}
+          data={{ content: 'Hello world This is fucking crazy night you', published: '1640' }}
+        />
+        <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
+        <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
+        <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
+      </ChatContainer>
+      <ChatInputBar />
+    </ChatRoom>
   );
 }
 
 export default Home;
 
+const ChatRoom = styled.main`
+  display: flex;
+  flex-direction: column;
+  background: aqua;
+`;
 const ChatContainer = styled.section`
   background: gray;
   display: flex;
