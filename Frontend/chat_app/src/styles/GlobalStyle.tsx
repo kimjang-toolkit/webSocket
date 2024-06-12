@@ -4,8 +4,14 @@ const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
   }
-
-  body {
+#root{
+  width:100%;
+  height: 100%;
+  margin:0;
+  padding:0;
+}
+  body,html {
+    background: #545454;
     font-family: "Helvetica", "Arial", sans-serif;
     line-height: 1.5;
     text-rendering: optimizeLegibility;

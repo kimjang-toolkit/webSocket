@@ -20,7 +20,10 @@ export default RootLayout;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  background: #ffffff;
   min-height: 100vh;
+  width: 350px;
+  margin: 0 auto;
 `;
 
 const Header = styled.header`
@@ -30,29 +33,16 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
 `;
 
 const Nav = styled.nav`
   display: flex;
   gap: 1rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
 `;
 
 const Main = styled.main`
   flex: 1;
   padding: 1rem;
-
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-  }
 `;
 
 const Footer = styled.footer`
@@ -60,8 +50,4 @@ const Footer = styled.footer`
   color: #fff;
   padding: 1rem;
   text-align: center;
-
-  @media (max-width: 768px) {
-    padding: 0.5rem;
-  }
 `;
