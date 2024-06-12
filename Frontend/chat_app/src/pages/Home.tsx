@@ -1,6 +1,6 @@
 import { Client } from '@stomp/stompjs';
-import MessageBubble from '../components/MessageBubble';
-
+import ChatBubble from '../components/ChatBubble';
+import styled from 'styled-components';
 function Home() {
   const message = {
     type: 'greeting',
@@ -33,10 +33,17 @@ function Home() {
   client.activate();
 
   return (
-    <div>
-      <MessageBubble sender="me" content="hello world" />
-    </div>
+    <ChatContainer>
+      <ChatBubble isUsers={true} data={{ content: 'Hello world', published: '1640' }} />
+      <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
+    </ChatContainer>
   );
 }
 
 export default Home;
+
+const ChatContainer = styled.section`
+  background: gray;
+  display: flex;
+  flex-direction: column;
+`;
