@@ -1,4 +1,5 @@
 import { Client } from '@stomp/stompjs';
+import MessageBubble from '../components/MessageBubble';
 
 function Home() {
   const message = {
@@ -31,7 +32,11 @@ function Home() {
   };
   client.activate();
 
-  return <div></div>;
+  return (
+    <div>
+      <MessageBubble sender="me" content="hello world" />
+    </div>
+  );
 }
 
 export default Home;
