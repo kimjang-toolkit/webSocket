@@ -46,7 +46,6 @@ public class MessageIntegrationTests {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new JavaTimeModule());
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
 		converter.setObjectMapper(objectMapper);
 
