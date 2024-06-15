@@ -18,6 +18,7 @@ export default RootLayout;
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  padding: 50px 0;
   display: flex;
   flex-direction: column;
   background: #ffffff;
@@ -31,7 +32,7 @@ const Header = styled.header`
   justify-content: space-between;
   z-index: 1000;
   background: aqua;
-  // height: 50px;
+  height: 50px;
   color: #fff;
   align-items: center;
 `;
