@@ -1,18 +1,21 @@
 import styled from 'styled-components';
 import AddFileButton from '@assets/icons/addFileButton.svg';
 import SendButton from '@assets/icons/sendButton.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import useDebounce from '@/hooks/useDebounce';
 
 function ChatInputBar() {
   const [message, setMessage] = useState('');
+  // const debouncedMessage = useDebounce(message, 300);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
-    console.log(message);
   };
+
+  useEffect(() => {}, []);
   return (
     <ChatInputContainer>
       <AddFileButton />
-      <InputBar value={message} onChange={handleChange} />
+      <InputBar value={message} onChange={handleChange} placeholder="메시지를 입력하세요" />
       <SendButton />
     </ChatInputContainer>
   );
