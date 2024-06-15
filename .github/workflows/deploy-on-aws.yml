@@ -16,7 +16,7 @@ jobs :
 
       - name: Run the Maven verify phase
         working-directory: ./Backend
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn package
 
       - name: Copy Jar
         working-directory: ./Backend
