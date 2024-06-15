@@ -7,6 +7,9 @@
 `sudo nohup java -Dserver.port=80 -jar webSocket/Backend/target/solsol-0.1.1.jar &`
 Simple chatting room 연결 [localhost:8080](http://localhost:8080) 
 
+
+API DOC : `http://{server host}/api-docs`
+
 ## Concept
 
 ### What is WebSocket
@@ -43,27 +46,11 @@ host:localhost:8080/gs-guide-websocket
 ```
 
 - **Subscribe**
-- 소켓 연결 테스트 구독
+
+- 실시간 채팅 구독
 ```
 SUBSCRIBE
-id:sub-0
-destination:/topic/greetings
-
-^@
-```
-- 응답 포멧
-```json
-{
-  "chat": "content"
-}
-```
-
-
-- 메세지 구독
-```
-SUBSCRIBE
-id:sub-0
-destination:/topic/chat
+destination:/sub/chat/{roomId}
 
 ^@
 ```
@@ -83,20 +70,11 @@ destination:/topic/chat
 ```
 
 - **Publish**
-- 소켓 연결 테스트 Send
+
+- 실시간 채팅 메세지 보내기
 ```
 SEND
-destination:/app/hello
-
-{"chat":"user chatting"}
-
-^@
-```
-
-- 메세지 Send
-```
-SEND
-destination:/app/message
+destination:/pub/chat/{roomId}
 
 {
   "roomId": 1,

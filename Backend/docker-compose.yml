@@ -1,0 +1,13 @@
+version: "3"
+services:
+
+  mysqldb :
+    container_name: mysqldb
+    image: mysql:8.1.0
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: solsol
+      MYSQL_PASSWORD: 4008
+      MYSQL_DATABASE: chat
+      MYSQL_ROOT_PASSWORD: root
