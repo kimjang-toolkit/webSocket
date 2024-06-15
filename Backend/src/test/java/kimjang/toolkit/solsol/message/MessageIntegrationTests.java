@@ -61,14 +61,14 @@ public class MessageIntegrationTests {
 		SendChatMessageDto testMessage = SendChatMessageDto.builder().roomId(1L)
 				.content("호식이 두마리 치킨 크크크 치킨은 회애!")
 				.createDate(LocalDateTime.of(2023,12,12,20,0))
-				.customer(new CustomerDto("효승이"))
+				.customer(new CustomerDto(1L, "효승이"))
 				.build();
 
 		StompSessionHandler handler = new TestSessionHandler(failure) {
 
 			@Override
 			public void afterConnected(final StompSession session, StompHeaders connectedHeaders) {
-				session.subscribe("/topic/chat", new StompFrameHandler() {
+				session.subscribe("/sub/chat/1", new StompFrameHandler() {
 					@Override
 					public Type getPayloadType(StompHeaders headers) {
 						return SendChatMessageDto.class; // 응답 객체의 클래스
@@ -90,7 +90,7 @@ public class MessageIntegrationTests {
 				});
 				try {
 					System.out.println("SEND : Spring");
-					session.send("/app/message", testMessage);
+					session.send("/pub/chat/1", testMessage);
 				} catch (Throwable t) {
 					failure.set(t);
 					latch.countDown();

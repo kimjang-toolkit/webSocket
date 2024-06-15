@@ -6,7 +6,9 @@ import kimjang.toolkit.solsol.message.room.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,10 +23,10 @@ public class WSChatController {
 
    private final ChatRoomService chatRoomService;
 
-   @MessageMapping("/message") // /app/message 로 SendMessageDto를 전송
-   @SendTo("/topic/chat") // /topic/chat 을 구독하면 SendMessageDto를 받음
-   public SendChatMessageDto sendChatMessage(SendChatMessageDto message){
-      log.info(message.toString());
+   @MessageMapping("/chat/{roomId}") // /pub/chat 로 SendMessageDto를 전송
+   @SendTo("/sub/chat/{roomId}") // /sub/chat 을 구독하면 SendMessageDto를 받음
+   public SendChatMessageDto sendChatMessage(@DestinationVariable String roomId, @Payload SendChatMessageDto message){
+      log.info("방 번호 : "+roomId+"  "+message.toString());
        return message;
    }
 
