@@ -1,4 +1,7 @@
 package kimjang.toolkit.solsol.message.room.repository;
 
-public interface ChatRoomRepository {
+import kimjang.toolkit.solsol.message.room.ChatRoom;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 }
