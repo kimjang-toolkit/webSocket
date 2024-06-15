@@ -59,5 +59,5 @@ const Main = styled.div`
   flex: 1;
 `;
 const Footer = styled.div`
-  padding: 6px 12px;
+  padding: 10px 12px;
 `;

@@ -56,5 +56,15 @@ textarea {
 input, textarea, select {
   all: unset;
   font-family: inherit; 
+}
+button{
+  background: inherit ;
+  border:none;
+  box-shadow:none;
+  border-radius:0; 
+  padding:0; 
+  cursor:pointer
+}
 `;
+
 export default GlobalStyle;

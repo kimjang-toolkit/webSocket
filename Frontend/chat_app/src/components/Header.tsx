@@ -1,11 +1,19 @@
 import styled from 'styled-components';
-
+import BackArrow from '@assets/icons/backArrow.svg';
 interface HeaderProps {
   title: string;
+  isBackArrow: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ title }) => {
-  return <HeaderContainer>{title}</HeaderContainer>;
+const Header: React.FC<HeaderProps> = ({ isBackArrow, title }) => {
+  return (
+    <HeaderContainer>
+      <button>
+        <BackArrow />
+      </button>
+      {title}
+    </HeaderContainer>
+  );
 };
 
 export default Header;
@@ -13,9 +21,7 @@ export default Header;
 const HeaderContainer = styled.header`
   width: 100%;
   display: flex;
-  justify-content: space-between;
   background: aqua;
   height: 50px;
-  color: #fff;
   align-items: center;
 `;
