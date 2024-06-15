@@ -2,6 +2,8 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
 #root{
+  width:100vw;
+  height:100vh;
   --font-size-xs: 0.75rem;  /* 12px */
   --font-size-sm: 0.875rem; /* 14px */
   --font-size-md: 1rem;     /* 16px */
@@ -36,7 +38,6 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 body,html {
-  
   background: #545454;
   font-family: "Helvetica", "Arial", sans-serif;
   line-height: 1.4;

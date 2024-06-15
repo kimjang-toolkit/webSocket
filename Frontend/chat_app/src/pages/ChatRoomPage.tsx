@@ -1,8 +1,10 @@
-import { Client } from '@stomp/stompjs';
-import ChatBubble from '../components/ChatBubble';
+import ChatInputBar from '@/components/ChatInputBar';
+import Chats from '@/components/Chats';
+import Header from '@/components/Header';
 import styled from 'styled-components';
-import ChatInputBar from '../components/ChatInputBar';
-function Home() {
+import { Client } from '@stomp/stompjs';
+
+const ChatRoomPage = () => {
   const message = {
     type: 'greeting',
     chat: 'Hello, world!',
@@ -32,32 +34,19 @@ function Home() {
     });
   };
   client.activate();
-
   return (
-    <ChatRoom>
-      <ChatContainer>
-        <ChatBubble
-          isUsers={true}
-          data={{ content: 'Hello world This is fucking crazy night you', published: '1640' }}
-        />
-        <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
-        <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
-        <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
-      </ChatContainer>
+    <ChatRoomContainer>
+      <Header title="채팅방" />
+      <Chats />
       <ChatInputBar />
-    </ChatRoom>
+    </ChatRoomContainer>
   );
-}
+};
 
-export default Home;
-
-const ChatRoom = styled.main`
+export default ChatRoomPage;
+const ChatRoomContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background: aqua;
-`;
-const ChatContainer = styled.section`
-  background: gray;
-  display: flex;
-  flex-direction: column;
+  background: pink;
+  height: 100%;
 `;

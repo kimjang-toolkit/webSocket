@@ -1,18 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Home from '@pages/Home';
-import RootLayout from '@components/RootLayout';
 import GlobalStyle from '@styles/GlobalStyle';
+import ChatRoomPage from '@/pages/ChatRoomPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <RootLayout />,
-    children: [
-      {
-        path: '',
-        element: <Home />,
-      },
-    ],
+    element: <ChatRoomPage />,
   },
 ]);
 function App() {
