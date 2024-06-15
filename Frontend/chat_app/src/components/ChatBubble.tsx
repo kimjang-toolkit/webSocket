@@ -32,7 +32,6 @@ const Bubble = styled.div<{ isUsers: boolean }>`
   color: ${({ isUsers }) => (isUsers ? '#000' : '#fff')};
   padding: 10px;
   border-radius: ${({ isUsers }) => (isUsers ? '16px 16px 16px 0px' : '16px 16px 0px 16px')};
-  margin: 10px 0;
   width: 60%;
   max-height: 50%;
   align-self: ${({ isUsers }) => (isUsers ? 'flex-start' : 'flex-end')};

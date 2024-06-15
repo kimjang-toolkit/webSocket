@@ -7,12 +7,6 @@ function ChatRoom() {
       <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
       <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
       <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
-      <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
-      <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
-      <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />{' '}
-      <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
-      <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
-      <ChatBubble isUsers={false} data={{ content: 'Hello world', published: '1640' }} />
     </ChatsContainer>
   );
 }
@@ -23,4 +17,5 @@ const ChatsContainer = styled.main`
   display: flex;
   flex-direction: column;
   background: white;
+  gap: 8px;
 `;
