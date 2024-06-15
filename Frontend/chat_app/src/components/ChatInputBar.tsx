@@ -15,10 +15,14 @@ function ChatInputBar() {
 export default ChatInputBar;
 
 const ChatInputContainer = styled.div`
-  // position: fixed;
-  // bottom: 0;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   height: 30px;
-  background: gray;
 `;
-const InputBar = styled.input``;
+const InputBar = styled.input`
+  border-radius: 3.727px;
+  background: #f7f7fc;
+  width: 259.935px;
+  padding: 5.59px 7.453px;
+`;

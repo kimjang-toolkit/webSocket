@@ -22,7 +22,5 @@ export default ChatRoom;
 const ChatsContainer = styled.main`
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   background: white;
-  flex: 1;
 `;

@@ -38,7 +38,6 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 body,html {
-  background: #545454;
   font-family: "Helvetica", "Arial", sans-serif;
   line-height: 1.4;
   text-rendering: optimizeLegibility;

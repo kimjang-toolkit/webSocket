@@ -37,8 +37,12 @@ const ChatRoomPage = () => {
   return (
     <ChatRoomContainer>
       <Header title="채팅방" />
-      <Chats />
-      <ChatInputBar />
+      <Main>
+        <Chats />
+      </Main>
+      <Footer>
+        <ChatInputBar />
+      </Footer>
     </ChatRoomContainer>
   );
 };
@@ -47,6 +51,13 @@ export default ChatRoomPage;
 const ChatRoomContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background: pink;
   height: 100%;
+`;
+const Main = styled.div`
+  padding: 0 12px;
+  overflow-y: auto;
+  flex: 1;
+`;
+const Footer = styled.div`
+  padding: 6px 12px;
 `;
