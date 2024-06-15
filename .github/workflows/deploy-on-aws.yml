@@ -27,6 +27,7 @@ jobs :
         run: zip -r ChatSpringApp.zip ./app.jar ./scripts/* ./appspec.yml
 
       - name: Chat AWS S3 Bucket
+        uses: aws-actions/configure-aws-credentials@v1
         run : aws s3 ls
 
       - name: Set AWS credentials
