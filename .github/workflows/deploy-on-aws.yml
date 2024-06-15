@@ -4,7 +4,7 @@ on :
     branches:
       - back-main
 jobs :
-  build:
+  buildAndDeploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,12 +15,15 @@ jobs :
           cache: maven
 
       - name: Run the Maven verify phase
+        working-directory: ./Backend
         run: mvn --batch-mode --update-snapshots verify
 
       - name: Copy Jar
+        working-directory: ./Backend
         run: cp ./target/solsol**.jar ./app.jar
 
       - name: Zip Files
+        working-directory: ./Backend
         run: zip -r ChatSpringApp.zip ./app.jar ./scripts/* ./appspec.yml
 
       - name: Set AWS credentials
