@@ -35,4 +35,4 @@ jobs :
 
       - name: Upload Jar Compose to S3
         run: |
-          aws s3 cp ChatSpringApp.zip s3://codepipeline-ap-northeast-2-306459101487/ChatSpringApp.zip
+          aws s3 cp ChatSpringApp.zip s3://codepipeline-ap-northeast-2-306459101487
