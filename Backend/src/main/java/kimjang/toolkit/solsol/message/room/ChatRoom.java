@@ -1,15 +1,26 @@
 package kimjang.toolkit.solsol.message.room;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.*;
+import kimjang.toolkit.solsol.customer.Customer;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-@RequiredArgsConstructor
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChatRoom {
-    private final Long id; // 방 번호
-    private final String roomName; // 방 이름
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @Column(name = "room_id") // 컬럼의 이름을 바꿀 수 있다.
+    private Long id; // 방 번호
+    @Column(name = "create_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate; // 언제 만들어졌는지
+
 }
