@@ -1,12 +1,18 @@
 import styled from 'styled-components';
 import AddFileButton from '@assets/icons/addFileButton.svg';
 import SendButton from '@assets/icons/sendButton.svg';
+import { useState } from 'react';
 
 function ChatInputBar() {
+  const [message, setMessage] = useState('');
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(event.target.value);
+    console.log(message);
+  };
   return (
     <ChatInputContainer>
       <AddFileButton />
-      <InputBar />
+      <InputBar value={message} onChange={handleChange} />
       <SendButton />
     </ChatInputContainer>
   );
