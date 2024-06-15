@@ -6,8 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -88,22 +91,22 @@ public class SecurityConfig {
      * 유저 정보를 메모리 상이 아닌 JDBC로 DB에 저장하기 때문에 InMemoryUserDetailsManager는 주석 처리
      * @return
      */
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailService(){
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//                .username("solsol")
-//                .password("solpwd")
-//                .authorities("admin")
-//                .build();
-//
-//        UserDetails user = User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("1234")
-//                .authorities("read")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(admin, user); // 메모리 상에 유저의 자격증명 정보를 저장
-//    }
+    @Bean
+    public InMemoryUserDetailsManager userDetailService(){
+        UserDetails admin = User.withDefaultPasswordEncoder()
+                .username("solsol")
+                .password("solpwd")
+                .authorities("admin")
+                .build();
+
+        UserDetails user = User.withDefaultPasswordEncoder()
+                .username("user")
+                .password("1234")
+                .authorities("read")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, user); // 메모리 상에 유저의 자격증명 정보를 저장
+    }
 
     /**
      * spring security 프레임워크 전체에서 사용할 PasswordEncoder를 정의한다.
