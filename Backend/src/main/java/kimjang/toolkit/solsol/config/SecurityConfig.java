@@ -1,7 +1,9 @@
 package kimjang.toolkit.solsol.config;
 
+import kimjang.toolkit.solsol.filter.CsrfCookieFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,53 +39,41 @@ public class SecurityConfig {
         CsrfTokenRequestAttributeHandler requestAttributeHandler = new CsrfTokenRequestAttributeHandler();
         requestAttributeHandler.setCsrfRequestAttributeName("_csrf");
 
-        http.authorizeHttpRequests((requests) -> requests.anyRequest().authenticated()); // 모든 uri에 인증이 필요하도록 설정
+        // 모든 uri에 인증이 필요하지 않도록 설정
         // 한번 자격증명을 보내면 JSSESSIONID 값을 이용해서 보안 API 호출할 때 자격증명을 제공하지 않아도 괜찮은 상태
-//        http.securityContext((context) -> context.requireExplicitSave(false))
         // 세션 정보를 서버에 저장하지 않고 세션 ID를 제공하지 않도록함
-//        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .cors(cors -> {
-//                    cors.configurationSource(request -> {
-//                        CorsConfiguration config = new CorsConfiguration();
-//                        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
-//                        config.setAllowedMethods(Collections.singletonList("*"));
-//                        // 비밀번호 같은 자격증명을 헤더에 담아서 보낼 수 있도록 설정
-//                        config.setAllowCredentials(true);
-//                        config.setAllowedHeaders(Collections.singletonList("*"));
-//                        // Authorization 헤더를 노출하는 것을 허용, 여기에 JWT 토큰 값을 보낼 것
-//                        config.setExposedHeaders(Arrays.asList("Authorization"));
-//                        config.setMaxAge(3600L);
-//                        return config;
-//                    });
-//                })
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> {
+                    cors.configurationSource(request -> {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        config.setAllowedMethods(Collections.singletonList("*"));
+                        // 비밀번호 같은 자격증명을 헤더에 담아서 보낼 수 있도록 설정
+                        config.setAllowCredentials(true);
+                        config.setAllowedHeaders(Collections.singletonList("*"));
+                        // Authorization 헤더를 노출하는 것을 허용, 여기에 JWT 토큰 값을 보낼 것
+                        config.setExposedHeaders(Arrays.asList("Authorization"));
+                        config.setMaxAge(3600L);
+                        return config;
+                    });
+                })
 //                // CookieCsrfTokenRepository 는 csrf 토큰을 쿠키로 유지하고 헤더 "XSRF-TOKEN"이란 이름으로 csrf 토큰을 저장한다.
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
-//                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestAttributeHandler).ignoringRequestMatchers("/contact", "/register")
-//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-//                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-//                // OAuth와 Keycloak을 이용해서 인증을 전부 진행하기 때문에 더 이상 JWT를 생성할 필요 없다.
-////                .addFilterBefore(new RequestVaiildationFilter(), BasicAuthenticationFilter.class)
-////                .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
-////                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
-////                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
-////                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
-//                .authorizeHttpRequests((requests) -> requests
-//                        // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
-//                        // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
-//                        .requestMatchers("/myAccount").hasRole("USER")
-//                        .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
-//                        .requestMatchers("/myLoans").hasRole("USER")
-//                        .requestMatchers("/myCards").hasRole("USER") // 필요한 권한이 유저에게 없다면 403 에러가 발생한다.ㄴ
-//                        .requestMatchers("/user").authenticated() // 인증만 해도 uri에 접근 가능
-//                        // 인증이 필요 없는 uri를 설정
-//                        .requestMatchers("/notices", "/contact", "/register").permitAll())
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestAttributeHandler).ignoringRequestMatchers("/contact", "/register")
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .authorizeHttpRequests((requests) -> requests
+                        // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
+                        // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
+
+                        .requestMatchers("/*" ).permitAll())
 //                // Resource server로 동작하기 위해 jwt 컨버터를 세팅
 //                .oauth2ResourceServer(server ->
 //                        server.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(converter)));
         // 이제 Spring 앱이 resource server 역할을 하기 때문에 로그인 기능을 제외한다.
-//                .formLogin(Customizer.withDefaults())
-//                .httpBasic(Customizer.withDefaults());
+                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
