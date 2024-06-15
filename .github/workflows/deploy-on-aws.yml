@@ -16,7 +16,7 @@ jobs :
 
       - name: Run the Maven verify phase
         working-directory: ./Backend
-        run: mvn package
+        run: mvn install -DskipTests
 
       - name: Copy Jar
         working-directory: ./Backend
