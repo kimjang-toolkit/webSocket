@@ -36,4 +36,4 @@ jobs :
       - name: Upload Jar Compose to S3
         run: |
           aws s3 ls |
-          aws s3 cp ChatSpringApp.zip s3://jar-deploy-sol-kimjang
+          aws s3 cp ./Backend/ChatSpringApp.zip s3://jar-deploy-sol-kimjang
