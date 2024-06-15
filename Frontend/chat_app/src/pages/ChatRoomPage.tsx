@@ -36,7 +36,7 @@ const ChatRoomPage = () => {
   client.activate();
   return (
     <ChatRoomContainer>
-      <Header title="채팅방" />
+      <Header title="채팅방" isBackArrow />
       <Main>
         <Chats />
       </Main>
@@ -54,6 +54,7 @@ const ChatRoomContainer = styled.div`
   height: 100%;
 `;
 const Main = styled.div`
+  margin-top: 12px;
   padding: 0 12px;
   overflow-y: auto;
   flex: 1;
