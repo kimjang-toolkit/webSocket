@@ -7,6 +7,9 @@
 `sudo nohup java -Dserver.port=80 -jar webSocket/Backend/target/solsol-0.1.1.jar &`
 Simple chatting room 연결 [localhost:8080](http://localhost:8080) 
 
+
+API DOC : `http://{server host}/api-docs`
+
 ## Concept
 
 ### What is WebSocket
