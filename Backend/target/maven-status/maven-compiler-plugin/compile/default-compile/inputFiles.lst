@@ -1,6 +1,9 @@
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/SolsolApplication.java
+/Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/config/SecurityConfig.java
+/Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/config/SpringFoxConfig.java
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/config/WebSocketConfig.java
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/customer/Customer.java
+/Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/customer/CustomerRepository.java
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/customer/dto/CustomerDto.java
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/message/ChatMessage.java
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/message/Greeting.java
@@ -11,5 +14,6 @@
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/message/repository/ChatRepository.java
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/message/repository/SimpleChatRepository.java
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/message/room/ChatRoom.java
+/Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/message/room/ChatRoomCustomerRelationship.java
+/Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/message/room/repository/ChatRoomCustormerRelationshipRepository.java
 /Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/message/room/repository/ChatRoomRepository.java
-/Users/solsol/spring-study/webSocket/Backend/src/main/java/kimjang/toolkit/solsol/message/room/repository/SimpleChatRoomRepository.java
