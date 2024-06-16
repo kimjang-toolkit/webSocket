@@ -2,11 +2,9 @@ package kimjang.toolkit.solsol.message;
 
 import jakarta.persistence.*;
 import kimjang.toolkit.solsol.customer.Customer;
+import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.message.room.ChatRoom;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +13,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatMessage {
@@ -30,4 +29,13 @@ public class ChatMessage {
     private LocalDateTime createDate; // 언제 보냈는지
     @ManyToOne
     private Customer customer; // 누가 보냈는지
+
+    public static ChatMessage toEntity(SendChatMessageDto dto, ChatRoom chatRoom, Customer customer){
+        return ChatMessage.builder()
+                .chatRoom(chatRoom)
+                .customer(customer)
+                .content(dto.getContent())
+                .createDate(dto.getCreateDate())
+                .build();
+    }
 }

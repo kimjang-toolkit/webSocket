@@ -11,16 +11,15 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class SendChatMessageDto {
     private Long roomId; // 어디서 보냈는지
     private String content; // 뭘 보냈는지
     @JsonFormat(shape = JsonFormat.Shape.STRING, // JSON <-> String 파싱
             pattern = "yyyy-MM-dd HH:mm:ss",
             timezone = "Asia/Seoul")
-    private LocalDateTime createDate; // 언제 보냈는지
+    private LocalDateTime createDate = LocalDateTime.now(); // 언제 보냈는지
     private CustomerDto customer; // 누가 보냈는지
-    public SendChatMessageDto(){
-    }
     @Override
     public String toString(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
