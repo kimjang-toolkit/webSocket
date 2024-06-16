@@ -3,6 +3,7 @@ package kimjang.toolkit.solsol.message.controllor;
 import kimjang.toolkit.solsol.message.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.message.room.service.ChatRoomService;
+import kimjang.toolkit.solsol.message.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +23,15 @@ import java.util.concurrent.CompletableFuture;
 public class WSChatController {
 
    private final ChatRoomService chatRoomService;
+   private final ChatService chatService;
 
    @MessageMapping("/chat/{roomId}") // /pub/chat 로 SendMessageDto를 전송
    @SendTo("/sub/chat/{roomId}") // /sub/chat 을 구독하면 SendMessageDto를 받음
    public SendChatMessageDto sendChatMessage(@DestinationVariable String roomId, @Payload SendChatMessageDto message){
       log.info("방 번호 : "+roomId+"  "+message.toString());
+      // 채팅 방에 채팅 저장하기
+      chatService.saveChat(message);
+      // 저장한 채팅 분배하기
        return message;
    }
 
