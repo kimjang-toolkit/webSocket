@@ -1,13 +1,17 @@
-version: "3"
-services:
+x-mysql-template: &mysql-template
+  image: mysql:latest
+  env_file:
+    - .env.local
+  healthcheck:
+    test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+    interval: 20s
+    timeout: 10s
+    retries: 3
 
-  mysqldb :
-    container_name: mysqldb
-    image: mysql:8.1.0
+services:
+  mysql:
+    <<: *mysql-template
+    hostname: dev
+    container_name: chat-db
     ports:
-      - 3306:3306
-    environment:
-      MYSQL_USER: solsol
-      MYSQL_PASSWORD: 4008
-      MYSQL_DATABASE: chat
-      MYSQL_ROOT_PASSWORD: root
+      - "3306:3306"
