@@ -10,6 +10,8 @@ Simple chatting room 연결 [localhost:8080](http://localhost:8080)
 
 API DOC : `http://{server host}/api-docs`
 
+테스트 없이 빌드 : `mvn install -DskipTests`
+
 ## Concept
 
 ### What is WebSocket
