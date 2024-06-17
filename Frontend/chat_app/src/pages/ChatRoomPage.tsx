@@ -17,7 +17,6 @@ const ChatRoomPage = () => {
       name: '효승이',
     },
   };
-  console.log('without redux ');
   const publishMessageBody = JSON.stringify(message);
   const client = new Client({
     brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs-guide-websocket`,
@@ -28,6 +27,7 @@ const ChatRoomPage = () => {
     // heartbeatIncoming: 10000,
     // heartbeatOutgoing: 10000,
   });
+
   console.log('client created', Client);
   client.onConnect = () => {
     console.log('websocket이 열렸습니다.');
