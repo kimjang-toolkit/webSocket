@@ -3,11 +3,13 @@ package kimjang.toolkit.solsol.message.room;
 import jakarta.persistence.*;
 import kimjang.toolkit.solsol.customer.Customer;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRoomCustomerRelationship {
@@ -18,11 +20,11 @@ public class ChatRoomCustomerRelationship {
 
     private String roomName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="chat_room_id")
     private ChatRoom chatRoom;
 }
