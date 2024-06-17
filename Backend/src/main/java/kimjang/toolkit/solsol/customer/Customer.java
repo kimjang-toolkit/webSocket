@@ -2,11 +2,15 @@ package kimjang.toolkit.solsol.customer;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
@@ -29,8 +33,8 @@ public class Customer {
 //
 //    private String role;
 //
-//    @Column(name = "create_dt")
-//    private String createDt;
+    @Column(name = "create_dt")
+    private LocalDateTime createDt;
 
 //    @JsonIgnore // 디-시리얼라이제이션 될 때 json으로 값을 넣지 말도록 함
 //    @OneToMany(mappedBy = "customer")
