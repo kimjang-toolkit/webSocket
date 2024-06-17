@@ -18,4 +18,5 @@ const ChatListPage = () => {
 
 export default ChatListPage;
 
-const ChatListContainer = styled.div``;
+const ChatListContainer = styled.div`
+`;
