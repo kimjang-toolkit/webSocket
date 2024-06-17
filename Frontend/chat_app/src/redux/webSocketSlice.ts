@@ -21,7 +21,7 @@ export const initializeWebSocket = createAsyncThunk('webSocket/initializeWebSock
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
   });
-
+  console.log('client in initialize', client);
   client.onConnect = () => {
     dispatch(setConnected(true));
     console.log('WebSocket connected');
