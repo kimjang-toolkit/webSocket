@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @SpringBootTest(classes = SolsolApplication.class)
@@ -101,12 +102,16 @@ public class CreateChatTest {
 
     @AfterEach
     public void cleanUp() {
+        Long maxChatId = chatMessageRepository.findByChatRoom_Id(chatRoom.getId())
+                .stream().mapToLong(ChatMessage::getId).max().orElseThrow();
+        Long maxCustomerId = customer2.getId();
+        Long maxChatRoomId = chatRoom.getId();
         log.info("마무리");
         // 생성한 Chat 제거
         chatMessageRepository.deleteAll();
 
         // AUTO_INCREMENT 값 1개 감소 (Chat Message)
-        entityManager.createNativeQuery("ALTER TABLE customer AUTO_INCREMENT=0").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE chat_message AUTO_INCREMENT="+(maxChatId-1)).executeUpdate();
         // Customer 1 제거
         customerRepository.delete(customer1);
 
@@ -114,12 +119,12 @@ public class CreateChatTest {
         customerRepository.delete(customer2);
 
         // AUTO_INCREMENT 값 2개 감소 (Customer)
-        entityManager.createNativeQuery("ALTER TABLE customer AUTO_INCREMENT=0").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE customer AUTO_INCREMENT="+(maxCustomerId-2)).executeUpdate();
 
         // Chat Room 제거
         chatRoomRepository.delete(chatRoom);
 
         // AUTO_INCREMENT 값 1개 감소 (Chat Room)
-        entityManager.createNativeQuery("ALTER TABLE customer AUTO_INCREMENT=0").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE chat_room AUTO_INCREMENT="+(maxChatRoomId-1)).executeUpdate();
     }
 }
