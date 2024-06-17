@@ -3,9 +3,14 @@
 ### How to use
 
 빌드 파일 실행
-`java -jar Backend/target/solsol-0.0.1-SNAPSHOT.jar`
-
+`java -jar Backend/target/solsol-0.1.1.jar`
+`sudo nohup java -Dserver.port=80 -jar webSocket/Backend/target/solsol-0.1.1.jar &`
 Simple chatting room 연결 [localhost:8080](http://localhost:8080) 
+
+
+API DOC : `http://{server host}/api-docs`
+
+테스트 없이 빌드 : `mvn install -DskipTests`
 
 ## Concept
 
@@ -37,26 +42,50 @@ WebSocket은 단순히 양방향 통신인데 왜 메세지 브로커를 사용�
 ```
 CONNECT
 accept-version:1.0,1.1,2.0
-host:localhost:8080
+host:localhost:8080/gs-guide-websocket
 
 ^@
 ```
 
-- 구독
+- **Subscribe**
+
+- 실시간 채팅 구독
 ```
 SUBSCRIBE
-id:sub-0
-destination:/topic/greetings
+destination:/sub/chat/{roomId}
 
 ^@
 ```
 
-- 채팅 보내기
+- 응답 포멧
+
+이때 createDate 형식은 `yyyy-mm-ddThh:mm` 
+```json
+{
+  "roomId": 1,
+  "content": "호식이 두마리 치킨 크크크 치킨은 회애!",
+  "createDate": "2023-12-12 20:00",
+  "customer": {
+    "name": "효승이"
+  }
+}
+```
+
+- **Publish**
+
+- 실시간 채팅 메세지 보내기
 ```
 SEND
-destination:/app/hello
+destination:/pub/chat/{roomId}
 
-{"chat":"user chatting"}
+{
+  "roomId": 1,
+  "content": "호식이 두마리 치킨 크크크 치킨은 회애!",
+  "createDate": "2023-12-12 20:00",
+  "customer": {
+    "name": "효승이"
+  }
+}
 
 ^@
 ```

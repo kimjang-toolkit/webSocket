@@ -1,0 +1,17 @@
+x-mysql-template: &mysql-template
+  image: mysql:latest
+  env_file:
+    - .env.local
+  healthcheck:
+    test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+    interval: 20s
+    timeout: 10s
+    retries: 3
+
+services:
+  mysql:
+    <<: *mysql-template
+    hostname: dev
+    container_name: chat-db
+    ports:
+      - "3306:3306"
