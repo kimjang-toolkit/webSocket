@@ -51,13 +51,13 @@ public class SecurityConfig {
                 .cors(cors -> {
                     cors.configurationSource(request -> {
                         CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Collections.singletonList("*"));
+                        config.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:5173","http://localhost:8080"));
                         config.setAllowedMethods(Collections.singletonList("*"));
                         // 비밀번호 같은 자격증명을 헤더에 담아서 보낼 수 있도록 설정
-                        config.setAllowCredentials(true);
+//                        config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
                         // Authorization 헤더를 노출하는 것을 허용, 여기에 JWT 토큰 값을 보낼 것
-                        config.setExposedHeaders(Arrays.asList("Authorization"));
+//                        config.setExposedHeaders(Arrays.asList("Authorization"));
                         config.setMaxAge(3600L);
                         return config;
                     });
