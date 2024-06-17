@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import kimjang.toolkit.solsol.customer.Customer;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRoom {

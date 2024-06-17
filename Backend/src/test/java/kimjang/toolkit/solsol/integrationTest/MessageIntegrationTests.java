@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.message;
+package kimjang.toolkit.solsol.integrationTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
