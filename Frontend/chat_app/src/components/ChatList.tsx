@@ -1,17 +1,25 @@
 import styled from 'styled-components';
 
-const ChatList = () => {
+interface ChatListProps {
+  imgUrl: string;
+  userName: string;
+  // timeStamp: string
+  recentMessage: string;
+  badgeCount: number;
+}
+
+const ChatList: React.FC<ChatListProps> = ({ imgUrl, userName, recentMessage, badgeCount }) => {
   return (
     <MainContainer>
-      <ProfileImg src="src/assets/images/맹구.jpg" />
+      <ProfileImg src={imgUrl} />
       <InfoContainer>
         <InfoWrapper>
-          <UserName>Athalia Putri</UserName>
+          <UserName>{userName}</UserName>
           <TimeStamp>now</TimeStamp>
         </InfoWrapper>
         <InfoWrapper>
-          <RecentMessage>Good morning, did you sleep well?</RecentMessage>
-          <CountBadge>3</CountBadge>
+          <RecentMessage>{recentMessage}</RecentMessage>
+          <BadgeCount>{badgeCount}</BadgeCount>
         </InfoWrapper>
       </InfoContainer>
     </MainContainer>
@@ -24,6 +32,7 @@ const MainContainer = styled.div`
   display: flex;
   width: 100%;
   height: 56px;
+  gap: 12px;
 `;
 const ProfileImg = styled.img`
   border-radius: 16px;
@@ -32,6 +41,7 @@ const ProfileImg = styled.img`
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 const InfoWrapper = styled.div`
   display: flex;
@@ -55,10 +65,11 @@ const TimeStamp = styled.p`
   line-height: 16px;
   color: #a4a4a4;
 `;
-const CountBadge = styled.div`
+const BadgeCount = styled.div`
   display: flex;
   align-items: center;
-
+  justify-content: center;
+  width: 20px;
   color: #001a83;
   font-size: 10px;
   font-weight: 600;
