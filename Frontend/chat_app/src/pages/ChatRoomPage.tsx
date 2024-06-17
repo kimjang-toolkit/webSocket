@@ -1,6 +1,10 @@
 import ChatInputBar from '@/components/ChatInputBar';
 import Chats from '@/components/Chats';
 import Header from '@/components/Header';
+import { AppDispatch, RootState } from '@/redux/store';
+import { Footer, Main } from '@/styles/Common';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const ChatRoomPage = () => {
@@ -33,6 +37,20 @@ const ChatRoomPage = () => {
   //   });
   // };
   // client.activate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
+  console.log('client', client);
+  // useEffect(() => {
+  //   if (client && isConnected) {
+  //     const subscription = client.subscribe(`/sub/chat/1`, (messag) => {
+  //       console.log('Recieved message', message.body);
+  //     });
+
+  //     return () => {
+  //       subscription.unsubscribe();
+  //     };
+  //   }
+  // }, [dispatch, client, isConnected]);
   return (
     <ChatRoomContainer>
       <Header title="채팅방" isBackArrow />
@@ -51,13 +69,4 @@ const ChatRoomContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-`;
-const Main = styled.div`
-  margin-top: 12px;
-  padding: 0 12px;
-  overflow-y: auto;
-  flex: 1;
-`;
-const Footer = styled.div`
-  padding: 10px 12px;
 `;
