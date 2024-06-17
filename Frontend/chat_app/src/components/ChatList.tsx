@@ -33,6 +33,7 @@ const MainContainer = styled.div`
   width: 100%;
   height: 56px;
   gap: 12px;
+  margin: 2px 0;
 `;
 const ProfileImg = styled.img`
   border-radius: 16px;
@@ -46,6 +47,7 @@ const InfoContainer = styled.div`
 const InfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 const UserName = styled.p`
   font-size: 14px;
@@ -69,7 +71,7 @@ const BadgeCount = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
+  width: 16px;
   color: #001a83;
   font-size: 10px;
   font-weight: 600;
