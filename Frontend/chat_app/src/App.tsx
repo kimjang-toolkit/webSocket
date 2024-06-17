@@ -18,7 +18,7 @@ function App() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(initializeWebSocket());
+    // dispatch(initializeWebSocket());
   }, [dispatch]);
 
   return (
