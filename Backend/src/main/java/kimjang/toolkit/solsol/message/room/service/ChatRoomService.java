@@ -27,7 +27,12 @@ public class ChatRoomService {
     public void inviteParticipates(CreateChatRoomDto createChatRoomDto){
         createChatRoomDto.getParticipants()
                 .parallelStream().forEach(customerDto -> {
-                    CreateRoomReqDto createRoomReqDto = CreateRoomReqDto.builder().build();
+                    CreateRoomReqDto createRoomReqDto = CreateRoomReqDto.builder()
+                            .roomId(createChatRoomDto.getRoomId())
+                            .roomName(createRoomName(createChatRoomDto, customerDto))
+                            .firstChat(createChatRoomDto.getFirstChat())
+                            .customer(customerDto)
+                            .build();
             messagingTemplate.convertAndSend("/notification/room/" + customerDto.getId(), // 각 고객에게 채팅방 생성을 알림
                     createRoomReqDto);
         });

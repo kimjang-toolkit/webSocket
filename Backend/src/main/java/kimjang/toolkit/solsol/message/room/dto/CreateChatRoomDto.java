@@ -13,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class CreateChatRoomDto {
     private List<CustomerDto> participants;
+    private Long roomId;
     private String roomName;
     private String firstChat;
     private CustomerDto maker;

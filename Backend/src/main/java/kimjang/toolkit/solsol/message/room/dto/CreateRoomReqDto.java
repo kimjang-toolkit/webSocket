@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class CreateRoomReqDto {
 
     private Long roomId;
+    private String roomName;
     private CustomerDto customer;
     private String firstChat;
-    private String roomName;
 }
