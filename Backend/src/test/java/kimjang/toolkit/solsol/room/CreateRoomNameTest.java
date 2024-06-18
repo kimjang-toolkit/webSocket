@@ -31,9 +31,9 @@ public class CreateRoomNameTest {
     public void createRoomName_10글자_초과(){
         CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
                 Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효"), new CustomerDto(3L, "강아지"), new CustomerDto(4L, "까미나무 삼계탕")),
-                1L, "", "효승이 자니??", new CustomerDto(2L, "조승효"));
+                "", "효승이 자니??", new CustomerDto(2L, "조승효"));
         CustomerDto customer = new CustomerDto(2L, "조승효");
-        String result = chatRoomService.createRoomName(createChatRoomDto, customer);
+        String result = chatRoomService.createRoomName(createChatRoomDto, customer.getId());
         String answer = "오찬솔 강아지 까미...";
         assertEquals(answer, result);
     }
@@ -43,9 +43,9 @@ public class CreateRoomNameTest {
     public void createRoomName_10글자_미만(){
         CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
                 Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효"), new CustomerDto(3L, "강아지")),
-                1L, "", "효승이 자니??", new CustomerDto(2L, "조승효"));
+                 "", "효승이 자니??", new CustomerDto(2L, "조승효"));
         CustomerDto customer = new CustomerDto(2L, "조승효");
-        String result = chatRoomService.createRoomName(createChatRoomDto, customer);
+        String result = chatRoomService.createRoomName(createChatRoomDto, customer.getId());
         String answer = "오찬솔 강아지";
         assertEquals(answer, result);
     }
@@ -55,9 +55,9 @@ public class CreateRoomNameTest {
     public void createRoomName_기본_제목_존재(){
         CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
                 Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효"), new CustomerDto(3L, "강아지")),
-                1L, "아무거나 방", "효승이 자니??", new CustomerDto(2L, "조승효"));
+                "아무거나 방", "효승이 자니??", new CustomerDto(2L, "조승효"));
         CustomerDto customer = new CustomerDto(2L, "조승효");
-        String result = chatRoomService.createRoomName(createChatRoomDto, customer);
+        String result = chatRoomService.createRoomName(createChatRoomDto, customer.getId());
         String answer = "아무거나 방";
         assertEquals(answer, result);
     }
@@ -67,9 +67,9 @@ public class CreateRoomNameTest {
     public void createRoomName_2명_일때는_상대이름  (){
         CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
                 Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효")),
-                1L, "아무거나 방", "효승이 자니??", new CustomerDto(2L, "조승효"));
+                "아무거나 방", "효승이 자니??", new CustomerDto(2L, "조승효"));
         CustomerDto customer = new CustomerDto(2L, "조승효");
-        String result = chatRoomService.createRoomName(createChatRoomDto, customer);
+        String result = chatRoomService.createRoomName(createChatRoomDto, customer.getId());
         String answer = "오찬솔";
         assertEquals(answer, result);
     }
