@@ -44,9 +44,10 @@ public class WSChatController {
    @PostMapping("/chat-room")
    @SendTo("/notification/room/{user-id}") // /notification/room/chat 을 구독하면 SendMessageDto를 받음
    public DeferredResult<ResponseEntity<String>> createChatRoom(@RequestBody CreateChatRoomDto dto){
+      Long roomId = chatRoomService.createChatRoom(dto);
       DeferredResult<ResponseEntity<String>> deferredResult = new DeferredResult<>();
       CompletableFuture.runAsync(() -> {
-         chatRoomService.createChatRoom(dto);
+         chatRoomService.inviteParticipates(dto,roomId);
       }).handle((result, throwable) -> {
          if (throwable != null) {
             deferredResult.setErrorResult("Failed to create chat room and send notifications: " + throwable.getMessage());
