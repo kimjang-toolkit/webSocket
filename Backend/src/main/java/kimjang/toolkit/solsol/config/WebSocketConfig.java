@@ -1,10 +1,14 @@
 package kimjang.toolkit.solsol.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
+import org.springframework.web.socket.server.HandshakeInterceptor;
 
 @Configuration
 @EnableWebSocketMessageBroker // 메세지 브로커가 WebSocket 메세지를 처리한다.
@@ -25,5 +29,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		// websocket 등록을 위한 endpoint 설정 현재는 "/gs-guide-websocket".
 		registry.addEndpoint("/gs-guide-websocket")
 				.setAllowedOriginPatterns("*"); // CORS 허용 범위;
+	}
+	@Override
+	public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+		registration.addDecoratorFactory(loggingWebSocketHandlerDecoratorFactory()); // Add the decorator factory here
+	}
+
+	@Bean
+	public HandshakeInterceptor loggingHandshakeInterceptor() {
+		return new LoggingHandshakeInterceptor();
+	}
+
+	@Bean
+	public WebSocketHandlerDecoratorFactory loggingWebSocketHandlerDecoratorFactory() {
+		return new LoggingWebSocketHandlerDecoratorFactory();
 	}
 }
