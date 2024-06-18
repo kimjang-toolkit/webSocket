@@ -3,7 +3,6 @@ import Chats from '@/components/Chats';
 import Header from '@/components/Header';
 import { AppDispatch, RootState } from '@/redux/store';
 import { Footer, Main } from '@/styles/Common';
-import { Client } from '@stomp/stompjs';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -45,11 +44,13 @@ const ChatRoomPage = () => {
   // client.activate();
   const dispatch = useDispatch<AppDispatch>();
   const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
-  console.log('client', client);
+  console.log('client in chatRoom', client);
   useEffect(() => {
     if (client && isConnected) {
-      const subscription = client.subscribe(`/sub/chat/1`, (messag) => {
-        console.log('Recieved message', message.body);
+      console.log('yes client yes isConnected');
+      
+      const subscription = client.subscribe(`/sub/chat/1`, (message) => {
+        console.log('Recieved message', message);
       });
 
       return () => {
@@ -57,6 +58,7 @@ const ChatRoomPage = () => {
       };
     }
   }, [dispatch, client, isConnected]);
+
   return (
     <ChatRoomContainer>
       <Header title="채팅방" isBackArrow />

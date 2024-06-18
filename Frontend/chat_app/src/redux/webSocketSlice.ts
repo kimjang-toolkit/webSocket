@@ -10,18 +10,17 @@ const initialState: webSocketState = {
   isConnected: false,
 };
 
-// Thunk to initialize WebSocket connection
 export const initializeWebSocket = createAsyncThunk('webSocket/initializeWebSocket', async (_, { dispatch }) => {
   const client = new Client({
     brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs-guide-websocket`,
     debug: (str) => {
       console.log('bug', str);
     },
-    reconnectDelay: 50000,
-    heartbeatIncoming: 4000,
-    heartbeatOutgoing: 4000,
+    reconnectDelay: 1000,
+    heartbeatIncoming: 1000,
+    heartbeatOutgoing: 1000,
   });
-  console.log('client in initialize', client);
+
   client.onConnect = () => {
     dispatch(setConnected(true));
     console.log('WebSocket connected');
@@ -31,13 +30,8 @@ export const initializeWebSocket = createAsyncThunk('webSocket/initializeWebSock
     });
   };
 
-  client.onDisconnect = () => {
-    dispatch(setConnected(false));
-    console.log('WebSocket disconnected');
-  };
-
   client.activate();
-  dispatch(setClient(client));
+  // dispatch(setClient(client));
 
   return client;
 });
@@ -60,6 +54,7 @@ export const webSocketSlice = createSlice({
         console.log('initializing');
       })
       .addCase(initializeWebSocket.fulfilled, (state, action) => {
+        console.log('fullfiled action', action);
         state.client = action.payload;
         console.log('Wbsocket connection established');
       })

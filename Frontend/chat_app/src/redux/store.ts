@@ -6,7 +6,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['webSocket/setClient'],
+        ignoredActions: ['webSocket/setClient', 'webSocket/setConnected', 'webSocket/initializeWebSocket/fulfilled'],
         ignoredPaths: ['webSocket.client'],
       },
     }),
