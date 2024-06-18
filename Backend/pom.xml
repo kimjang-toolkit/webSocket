@@ -24,6 +24,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!--	JUnit	-->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>5.10.0</version>
+			<scope>test</scope>
+		</dependency>
 		<!--	LocalDateTime 시리얼라이즈 & 디시리얼라이즈 의존성	-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
