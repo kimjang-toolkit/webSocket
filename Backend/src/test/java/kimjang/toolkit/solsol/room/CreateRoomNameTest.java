@@ -2,21 +2,14 @@ package kimjang.toolkit.solsol.room;
 
 
 import kimjang.toolkit.solsol.customer.dto.CustomerDto;
-import kimjang.toolkit.solsol.message.room.dto.CreateChatRoomDto;
-import kimjang.toolkit.solsol.message.room.dto.CreateRoomReqDto;
-import kimjang.toolkit.solsol.message.room.service.ChatRoomService;
-import lombok.RequiredArgsConstructor;
+import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
+import kimjang.toolkit.solsol.room.service.ChatRoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

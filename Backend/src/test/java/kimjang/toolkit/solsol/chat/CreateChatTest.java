@@ -10,26 +10,19 @@ import kimjang.toolkit.solsol.customer.dto.CustomerDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
-import kimjang.toolkit.solsol.message.room.ChatRoom;
-import kimjang.toolkit.solsol.message.room.ChatRoomCustomerRelationship;
-import kimjang.toolkit.solsol.message.room.repository.ChatRoomRepository;
+import kimjang.toolkit.solsol.room.entity.ChatRoom;
+import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
+import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import kimjang.toolkit.solsol.message.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @SpringBootTest(classes = SolsolApplication.class)

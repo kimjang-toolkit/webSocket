@@ -1,13 +1,13 @@
-package kimjang.toolkit.solsol.message.room.service;
+package kimjang.toolkit.solsol.room.service;
 
-import kimjang.toolkit.solsol.message.room.dto.CreateChatRoomDto;
-import kimjang.toolkit.solsol.message.room.dto.CreateRoomReqDto;
+import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
+import kimjang.toolkit.solsol.room.dto.CreateRoomReqDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import static kimjang.toolkit.solsol.message.room.service.CreateRoomName.withParticipationsName;
+import static kimjang.toolkit.solsol.room.service.CreateRoomName.withParticipationsName;
 
 @Slf4j
 @Service

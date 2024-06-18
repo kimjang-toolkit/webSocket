@@ -3,7 +3,7 @@ package kimjang.toolkit.solsol.message;
 import jakarta.persistence.*;
 import kimjang.toolkit.solsol.customer.Customer;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
-import kimjang.toolkit.solsol.message.room.ChatRoom;
+import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import lombok.*;
 
 import java.time.LocalDateTime;

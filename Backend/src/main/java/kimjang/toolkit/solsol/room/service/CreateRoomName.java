@@ -1,7 +1,7 @@
-package kimjang.toolkit.solsol.message.room.service;
+package kimjang.toolkit.solsol.room.service;
 
 import kimjang.toolkit.solsol.customer.dto.CustomerDto;
-import kimjang.toolkit.solsol.message.room.dto.CreateChatRoomDto;
+import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
 
 import java.util.List;
 

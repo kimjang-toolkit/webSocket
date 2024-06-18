@@ -1,28 +1,25 @@
-package kimjang.toolkit.solsol.message.room.service;
+package kimjang.toolkit.solsol.room.service;
 
 import kimjang.toolkit.solsol.customer.Customer;
 import kimjang.toolkit.solsol.customer.CustomerRepository;
 import kimjang.toolkit.solsol.customer.dto.CustomerDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
-import kimjang.toolkit.solsol.message.room.ChatRoom;
-import kimjang.toolkit.solsol.message.room.ChatRoomCustomerRelationship;
-import kimjang.toolkit.solsol.message.room.dto.CreateChatRoomDto;
-import kimjang.toolkit.solsol.message.room.dto.CreateRoomReqDto;
-import kimjang.toolkit.solsol.message.room.repository.ChatRoomCustormerRelationshipRepository;
-import kimjang.toolkit.solsol.message.room.repository.ChatRoomRepository;
+import kimjang.toolkit.solsol.room.entity.ChatRoom;
+import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
+import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
+import kimjang.toolkit.solsol.room.repository.ChatRoomCustormerRelationshipRepository;
+import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static kimjang.toolkit.solsol.message.room.service.CreateRoomName.withParticipationsName;
+import static kimjang.toolkit.solsol.room.service.CreateRoomName.withParticipationsName;
 
 @Slf4j
 @Service

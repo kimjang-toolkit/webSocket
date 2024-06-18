@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.message.room.dto;
+package kimjang.toolkit.solsol.room.dto;
 
 import kimjang.toolkit.solsol.customer.dto.CustomerDto;
 import lombok.AllArgsConstructor;

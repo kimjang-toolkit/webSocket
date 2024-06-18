@@ -1,6 +1,6 @@
-package kimjang.toolkit.solsol.message.room.repository;
+package kimjang.toolkit.solsol.room.repository;
 
-import kimjang.toolkit.solsol.message.room.ChatRoomCustomerRelationship;
+import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

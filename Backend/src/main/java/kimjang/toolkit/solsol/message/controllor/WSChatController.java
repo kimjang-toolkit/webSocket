@@ -1,9 +1,9 @@
 package kimjang.toolkit.solsol.message.controllor;
 
-import kimjang.toolkit.solsol.message.room.dto.CreateChatRoomDto;
+import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
-import kimjang.toolkit.solsol.message.room.service.ChatRoomService;
-import kimjang.toolkit.solsol.message.room.service.ChatRoomStompService;
+import kimjang.toolkit.solsol.room.service.ChatRoomService;
+import kimjang.toolkit.solsol.room.service.ChatRoomStompService;
 import kimjang.toolkit.solsol.message.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
