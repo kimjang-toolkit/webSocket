@@ -65,7 +65,7 @@ public class InviteIntegrationTests {
 
 		CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
 				Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효"), new CustomerDto(3L, "강아지"), new CustomerDto(4L, "까미나무 삼계탕")),
-				1L, "", "효승이 자니??", new CustomerDto(2L, "조승효"));
+				"", "효승이 자니??", new CustomerDto(2L, "조승효"));
 
 		StompSessionHandler handler = new TestSessionHandler(failure) {
 
@@ -74,8 +74,8 @@ public class InviteIntegrationTests {
 				for(int i=1;i<=3; i++){
 					int finalI = i;
 					CreateRoomReqDto createRoomReqDto = CreateRoomReqDto.builder()
-							.roomId(createChatRoomDto.getRoomId())
-							.roomName(chatRoomService.createRoomName(createChatRoomDto, createChatRoomDto.getParticipants().get(i-1)))
+							.roomId(1L)
+							.roomName(chatRoomService.createRoomName(createChatRoomDto, createChatRoomDto.getParticipants().get(i-1).getId()))
 							.firstChat(createChatRoomDto.getFirstChat())
 							.customer(createChatRoomDto.getMaker()).build();
 					session.subscribe("/notification/room/"+i, new StompFrameHandler() {
@@ -102,7 +102,7 @@ public class InviteIntegrationTests {
 				try {
 					System.out.println("SEND : restapi");
 //					session.send("/pub/chat/1", testMessage);
-					chatRoomService.inviteParticipates(createChatRoomDto);
+					chatRoomService.inviteParticipates(createChatRoomDto, 1L);
 				} catch (Throwable t) {
 					failure.set(t);
 					latch.countDown();
