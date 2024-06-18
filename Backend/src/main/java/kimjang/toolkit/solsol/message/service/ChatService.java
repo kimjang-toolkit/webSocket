@@ -27,4 +27,7 @@ public class ChatService {
         ChatMessage chatMessage = ChatMessage.toEntity(message, room, customer);
         chatRepository.save(chatMessage);
     }
+
+
+
 }
