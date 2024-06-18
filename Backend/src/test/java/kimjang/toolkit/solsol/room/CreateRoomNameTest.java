@@ -4,6 +4,7 @@ package kimjang.toolkit.solsol.room;
 import kimjang.toolkit.solsol.customer.dto.CustomerDto;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.room.service.ChatRoomService;
+import kimjang.toolkit.solsol.room.service.CreateRoomName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,8 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 public class CreateRoomNameTest {
 
-    @Autowired
-    ChatRoomService chatRoomService;
 
     @Test
     @DisplayName("10글자_초과")
@@ -26,7 +24,7 @@ public class CreateRoomNameTest {
                 Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효"), new CustomerDto(3L, "강아지"), new CustomerDto(4L, "까미나무 삼계탕")),
                 "", "효승이 자니??", new CustomerDto(2L, "조승효"));
         CustomerDto customer = new CustomerDto(2L, "조승효");
-        String result = chatRoomService.createRoomName(createChatRoomDto, customer.getId());
+        String result = CreateRoomName.withParticipationsName(createChatRoomDto, customer.getId());
         String answer = "오찬솔 강아지 까미...";
         assertEquals(answer, result);
     }
@@ -38,7 +36,7 @@ public class CreateRoomNameTest {
                 Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효"), new CustomerDto(3L, "강아지")),
                  "", "효승이 자니??", new CustomerDto(2L, "조승효"));
         CustomerDto customer = new CustomerDto(2L, "조승효");
-        String result = chatRoomService.createRoomName(createChatRoomDto, customer.getId());
+        String result = CreateRoomName.withParticipationsName(createChatRoomDto, customer.getId());
         String answer = "오찬솔 강아지";
         assertEquals(answer, result);
     }
@@ -50,7 +48,7 @@ public class CreateRoomNameTest {
                 Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효"), new CustomerDto(3L, "강아지")),
                 "아무거나 방", "효승이 자니??", new CustomerDto(2L, "조승효"));
         CustomerDto customer = new CustomerDto(2L, "조승효");
-        String result = chatRoomService.createRoomName(createChatRoomDto, customer.getId());
+        String result = CreateRoomName.withParticipationsName(createChatRoomDto, customer.getId());
         String answer = "아무거나 방";
         assertEquals(answer, result);
     }
@@ -62,7 +60,7 @@ public class CreateRoomNameTest {
                 Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효")),
                 "아무거나 방", "효승이 자니??", new CustomerDto(2L, "조승효"));
         CustomerDto customer = new CustomerDto(2L, "조승효");
-        String result = chatRoomService.createRoomName(createChatRoomDto, customer.getId());
+        String result = CreateRoomName.withParticipationsName(createChatRoomDto, customer.getId());
         String answer = "오찬솔";
         assertEquals(answer, result);
     }

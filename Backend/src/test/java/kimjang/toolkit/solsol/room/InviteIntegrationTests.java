@@ -76,7 +76,8 @@ public class InviteIntegrationTests {
 							.roomId(1L)
 							.roomName(CreateRoomName.withParticipationsName(createChatRoomDto, createChatRoomDto.getParticipants().get(i-1).getId()))
 							.firstChat(createChatRoomDto.getFirstChat())
-							.customer(createChatRoomDto.getMaker()).build();
+							.customer(createChatRoomDto.getMaker())
+							.maker(createChatRoomDto.getMaker()).build();
 					session.subscribe("/notification/room/"+i, new StompFrameHandler() {
 						@Override
 						public Type getPayloadType(StompHeaders headers) {
@@ -88,7 +89,7 @@ public class InviteIntegrationTests {
 							CreateRoomReqDto messageDto = (CreateRoomReqDto) payload;
 							try {
 								System.out.println(finalI +"로 보낸 요청 응답 : "+messageDto.getRoomName()+"으로 초대");
-								assertEquals(createRoomReqDto.getRoomName(), messageDto.getRoomName());
+								assertEquals(createRoomReqDto.toString(), messageDto.toString());
 							} catch (Throwable t) {
 								failure.set(t);
 							} finally {

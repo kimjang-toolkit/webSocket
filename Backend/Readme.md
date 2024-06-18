@@ -10,7 +10,7 @@ Swagger-ui 연결 : `http://{server host}/swagger-ui/index.html`
 
 API DOC : `http://{server host}/api-docs`
 
-테스트 없이 빌드 : `mvn install -DskipTests`
+테스트 없이 빌드 : `mvn install -DskipTests -P prod`
 
 ## Concept
 
@@ -85,12 +85,12 @@ destination:/notification/room/{user-id}
 ```json
 {
   "roomId": 1,
+  "roomName" : "찬솔이와 두근두근 데이또",
+  "firstChat" : "효승이 자니...?",
   "customer": {
     "id" : 2,
     "name": "효승이"
   },
-  "roomName" : "찬솔이와 두근두근 데이또",
-  "firstChat" : "효승이 자니...?",
   "maker" : {
     "id" : 1,
     "name" : "오찬솔"
