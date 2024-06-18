@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.message.room;
+package kimjang.toolkit.solsol.room.entity;
 
 import jakarta.persistence.*;
 import kimjang.toolkit.solsol.customer.Customer;

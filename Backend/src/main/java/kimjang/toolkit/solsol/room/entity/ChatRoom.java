@@ -1,8 +1,7 @@
-package kimjang.toolkit.solsol.message.room;
+package kimjang.toolkit.solsol.room.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import kimjang.toolkit.solsol.customer.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter

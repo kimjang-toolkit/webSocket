@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.message.room.dto;
+package kimjang.toolkit.solsol.room.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import kimjang.toolkit.solsol.customer.dto.CustomerDto;

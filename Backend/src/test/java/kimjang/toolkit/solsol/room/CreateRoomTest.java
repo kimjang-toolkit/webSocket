@@ -1,12 +1,12 @@
 package kimjang.toolkit.solsol.room;
 
 import kimjang.toolkit.solsol.customer.dto.CustomerDto;
-import kimjang.toolkit.solsol.message.room.ChatRoom;
-import kimjang.toolkit.solsol.message.room.ChatRoomCustomerRelationship;
-import kimjang.toolkit.solsol.message.room.dto.CreateChatRoomDto;
-import kimjang.toolkit.solsol.message.room.repository.ChatRoomCustormerRelationshipRepository;
-import kimjang.toolkit.solsol.message.room.repository.ChatRoomRepository;
-import kimjang.toolkit.solsol.message.room.service.ChatRoomService;
+import kimjang.toolkit.solsol.room.entity.ChatRoom;
+import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
+import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
+import kimjang.toolkit.solsol.room.repository.ChatRoomCustormerRelationshipRepository;
+import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
+import kimjang.toolkit.solsol.room.service.ChatRoomService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 public class CreateRoomTest {
