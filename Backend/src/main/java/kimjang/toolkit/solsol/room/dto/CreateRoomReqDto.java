@@ -17,4 +17,13 @@ public class CreateRoomReqDto {
     private String roomName;
     private CustomerDto customer;
     private String firstChat;
+    private CustomerDto maker;
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("방 번호 : ").append(roomId)
+                .append("첫 챗팅 : ").append(firstChat)
+                .append("생성자 : ").append(maker.getName());
+        return sb.toString();
+    }
 }
