@@ -8,6 +8,8 @@ import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.message.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.message.room.dto.CreateRoomReqDto;
 import kimjang.toolkit.solsol.message.room.service.ChatRoomService;
+import kimjang.toolkit.solsol.message.room.service.ChatRoomStompService;
+import kimjang.toolkit.solsol.message.room.service.CreateRoomName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ public class InviteIntegrationTests {
 
 	private WebSocketStompClient stompClient;
 	@Autowired
-	ChatRoomService chatRoomService;
+	ChatRoomStompService chatRoomStompService;
 
 	private final WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
 
@@ -75,7 +77,7 @@ public class InviteIntegrationTests {
 					int finalI = i;
 					CreateRoomReqDto createRoomReqDto = CreateRoomReqDto.builder()
 							.roomId(1L)
-							.roomName(chatRoomService.createRoomName(createChatRoomDto, createChatRoomDto.getParticipants().get(i-1).getId()))
+							.roomName(CreateRoomName.withParticipationsName(createChatRoomDto, createChatRoomDto.getParticipants().get(i-1).getId()))
 							.firstChat(createChatRoomDto.getFirstChat())
 							.customer(createChatRoomDto.getMaker()).build();
 					session.subscribe("/notification/room/"+i, new StompFrameHandler() {
@@ -102,7 +104,7 @@ public class InviteIntegrationTests {
 				try {
 					System.out.println("SEND : restapi");
 //					session.send("/pub/chat/1", testMessage);
-					chatRoomService.inviteParticipates(createChatRoomDto, 1L);
+					chatRoomStompService.inviteParticipates(createChatRoomDto, 1L);
 				} catch (Throwable t) {
 					failure.set(t);
 					latch.countDown();

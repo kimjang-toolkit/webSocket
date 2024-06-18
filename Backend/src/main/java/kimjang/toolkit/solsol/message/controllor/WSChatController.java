@@ -3,6 +3,7 @@ package kimjang.toolkit.solsol.message.controllor;
 import kimjang.toolkit.solsol.message.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.message.room.service.ChatRoomService;
+import kimjang.toolkit.solsol.message.room.service.ChatRoomStompService;
 import kimjang.toolkit.solsol.message.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 public class WSChatController {
 
    private final ChatRoomService chatRoomService;
+   private final ChatRoomStompService chatRoomStompService;
    private final ChatService chatService;
 
    @MessageMapping("/chat/{roomId}") // /pub/chat 로 SendMessageDto를 전송
@@ -47,7 +49,7 @@ public class WSChatController {
       Long roomId = chatRoomService.createChatRoomAndFirstChat(dto);
       DeferredResult<ResponseEntity<String>> deferredResult = new DeferredResult<>();
       CompletableFuture.runAsync(() -> {
-         chatRoomService.inviteParticipates(dto,roomId);
+         chatRoomStompService.inviteParticipates(dto,roomId);
       }).handle((result, throwable) -> {
          if (throwable != null) {
             deferredResult.setErrorResult("Failed to create chat room and send notifications: " + throwable.getMessage());
