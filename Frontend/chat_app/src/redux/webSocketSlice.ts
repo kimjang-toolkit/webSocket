@@ -16,22 +16,21 @@ export const initializeWebSocket = createAsyncThunk('webSocket/initializeWebSock
     debug: (str) => {
       console.log('bug', str);
     },
-    reconnectDelay: 1000,
+    reconnectDelay: 0,
     heartbeatIncoming: 1000,
     heartbeatOutgoing: 1000,
   });
 
   client.onConnect = () => {
-    dispatch(setConnected(true));
     console.log('WebSocket connected');
     // Subscribe to any topics here
     client.subscribe('/notification/room/1', (message) => {
       console.log('Chat room created:', message.body);
     });
+    dispatch(setConnected(true));
   };
 
   client.activate();
-  // dispatch(setClient(client));
 
   return client;
 });

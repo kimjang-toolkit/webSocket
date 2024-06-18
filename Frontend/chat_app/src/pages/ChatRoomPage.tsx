@@ -47,17 +47,26 @@ const ChatRoomPage = () => {
   console.log('client in chatRoom', client);
   useEffect(() => {
     if (client && isConnected) {
-      console.log('yes client yes isConnected');
-      
-      const subscription = client.subscribe(`/sub/chat/1`, (message) => {
-        console.log('Recieved message', message);
-      });
+      console.log('Client is connected, subscribing to topic...');
 
-      return () => {
-        subscription.unsubscribe();
-      };
+      try {
+        client.onConnect = () => {
+          const subscription = client.subscribe(`/sub/chat/1`, (message) => {
+            console.log('Received message', message.body);
+          });
+          return () => {
+            if (subscription) {
+              subscription.unsubscribe();
+            }
+          };
+        };
+      } catch (error) {
+        console.error('Error subscribing to topic:', error);
+      }
+    } else {
+      console.warn('Client is not connected or client is null.');
     }
-  }, [dispatch, client, isConnected]);
+  }, [client, isConnected]);
 
   return (
     <ChatRoomContainer>
