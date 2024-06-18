@@ -71,8 +71,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
-
-                        .requestMatchers("/*" ).permitAll())
+                        .requestMatchers("/**").permitAll()
+                        .requestMatchers( "/api-docs" ).permitAll())
 //                // Resource server로 동작하기 위해 jwt 컨버터를 세팅
 //                .oauth2ResourceServer(server ->
 //                        server.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(converter)));
@@ -96,18 +96,12 @@ public class SecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailService(){
         UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("solsol")
-                .password("solpwd")
+                .username("user")
+                .password("1234")
                 .authorities("admin")
                 .build();
 
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("1234")
-                .authorities("read")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, user); // 메모리 상에 유저의 자격증명 정보를 저장
+        return new InMemoryUserDetailsManager(admin); // 메모리 상에 유저의 자격증명 정보를 저장
     }
 
     /**
