@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateRoomReqDto {
 
-    private CustomerDto participant;
     private Long roomId;
+    private CustomerDto customer;
+    private String firstChat;
+    private String roomName;
 }
