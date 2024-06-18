@@ -6,11 +6,11 @@
 `java -jar Backend/target/solsol-0.1.1.jar`
 `sudo nohup java -Dserver.port=80 -jar webSocket/Backend/target/solsol-0.1.1.jar &`
 Simple chatting room 연결 [localhost:8080](http://localhost:8080) 
-
+Swagger-ui 연결 : `http://{server host}/swagger-ui/index.html`
 
 API DOC : `http://{server host}/api-docs`
 
-테스트 없이 빌드 : `mvn install -DskipTests`
+테스트 없이 빌드 : `mvn install -DskipTests -P prod`
 
 ## Concept
 
@@ -63,10 +63,37 @@ destination:/sub/chat/{roomId}
 ```json
 {
   "roomId": 1,
-  "content": "호식이 두마리 치킨 크크크 치킨은 회애!",
+  "content": "호식이 두마리 치킨 크크크 치킨은 최애!",
   "createDate": "2023-12-12 20:00",
   "customer": {
+    "id" : 2,
     "name": "효승이"
+  }
+}
+```
+
+- 채팅방 생성 알림
+```
+SUBSCRIBE
+destination:/notification/room/{user-id}
+
+^@
+```
+
+- 응답 포멧
+
+```json
+{
+  "roomId": 1,
+  "roomName" : "찬솔이와 두근두근 데이또",
+  "firstChat" : "효승이 자니...?",
+  "customer": {
+    "id" : 2,
+    "name": "효승이"
+  },
+  "maker" : {
+    "id" : 1,
+    "name" : "오찬솔"
   }
 }
 ```
@@ -81,14 +108,54 @@ destination:/pub/chat/{roomId}
 {
   "roomId": 1,
   "content": "호식이 두마리 치킨 크크크 치킨은 회애!",
-  "createDate": "2023-12-12 20:00",
   "customer": {
+    "id" : 2,
     "name": "효승이"
   }
 }
 
 ^@
 ```
+
+### HTTP(S) API 규칙
+
+- **채팅방 생성**
+
+POST `/chat-room`
+
+- 참여 인원이 2명 이하일 때
+    - 기본 : 대화 상대 이름이 방 이름
+    - 개인 설정 : 개인 화면에 적용
+- 참여 인원이 3명 이상일 때
+    - 기본 : 대화 참여자 이름 나열, 단 10글자 이후론 `...` 으로 표현
+    - 개인 설정 : 개인 화면에 적용
+
+아래 예시에서 효승이 화면에서 채팅방 이름은`오찬솔`이라고 뜰 것이다.
+오찬솔 화면에서는 `효승이와 두근두근 데이또`라고 뜰 것이다.
+
+```json
+{
+  "participants": [
+    {
+      "id": 1,
+      "name": "오찬솔"
+    },
+    {
+      "id" : 2,
+      "name": "효승이"
+    }
+  ],
+  "roomName" : "효승이와 두근두근 데이또",
+  "firstChat" : "효승이 자니...?",
+  "maker" : {
+    "id" : 1,
+    "name" : "오찬솔"
+  }
+}
+
+```
+
+
 
 ### Contributor
 

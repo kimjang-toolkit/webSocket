@@ -3,10 +3,11 @@ package kimjang.toolkit.solsol.message;
 import jakarta.persistence.*;
 import kimjang.toolkit.solsol.customer.Customer;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
-import kimjang.toolkit.solsol.message.room.ChatRoom;
+import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * 엔티티는 불변해야하니까 final로 설정
@@ -36,6 +37,15 @@ public class ChatMessage {
                 .customer(customer)
                 .content(dto.getContent())
                 .createDate(dto.getCreateDate())
+                .build();
+    }
+
+    public static ChatMessage toEntity(String content, ChatRoom chatRoom, Customer customer){
+        return ChatMessage.builder()
+                .chatRoom(chatRoom)
+                .customer(customer)
+                .content(content)
+                .createDate(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .build();
     }
 }

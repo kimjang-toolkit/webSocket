@@ -5,12 +5,10 @@ import kimjang.toolkit.solsol.customer.CustomerRepository;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
-import kimjang.toolkit.solsol.message.room.ChatRoom;
-import kimjang.toolkit.solsol.message.room.repository.ChatRoomRepository;
+import kimjang.toolkit.solsol.room.entity.ChatRoom;
+import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,4 +25,7 @@ public class ChatService {
         ChatMessage chatMessage = ChatMessage.toEntity(message, room, customer);
         chatRepository.save(chatMessage);
     }
+
+
+
 }
