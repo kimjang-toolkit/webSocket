@@ -3,15 +3,15 @@ import Chats from '@/components/ChatRoom';
 import Header from '@/components/Header';
 import { RootState } from '@/redux/store';
 import { Footer, Main } from '@/styles/Common';
-import { MessageFormat } from '@/types/types';
+import { chatFormat } from '@/types/types';
 import { ParsedDateTime } from '@/utils/parseDateTime';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-const ChatRoomPage = () => {
+function ChatRoomPage() {
   const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
-  const [liveChats, setLiveChats] = useState<MessageFormat[]>([]);
+  const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
   useEffect(() => {
     if (client && isConnected) {
       console.log('Client is connected, subscribing to topic...');
@@ -50,14 +50,14 @@ const ChatRoomPage = () => {
     <ChatRoomContainer>
       <Header title="채팅방" isBackArrow />
       <Main>
-        <Chats />
+        <Chats chatDatas={liveChats} />
       </Main>
       <Footer>
         <ChatInputBar />
       </Footer>
     </ChatRoomContainer>
   );
-};
+}
 
 export default ChatRoomPage;
 const ChatRoomContainer = styled.div`

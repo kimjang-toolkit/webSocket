@@ -39,6 +39,7 @@ function ChatInputBar() {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       handleSendMessage();
+      setMessage('');
     }
   };
   useEffect(() => {}, []);
