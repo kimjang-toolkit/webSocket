@@ -15,7 +15,7 @@ function ChatRoom({ chatDatas }: chatRoomProps) {
         return (
           <ChatBubble
             key={index}
-            isOthers={!chat.userId === 1}
+            isOthers={chat.userId !== 1}
             data={{ content: chat.content, published: `${hour}${minute}` }}
           />
         );
