@@ -27,6 +27,7 @@ export const initializeWebSocket = createAsyncThunk('webSocket/initializeWebSock
     client.subscribe('/notification/room/1', (message) => {
       console.log('Chat room created:', message.body);
     });
+
     dispatch(setConnected(true));
   };
 
