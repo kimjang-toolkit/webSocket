@@ -1,11 +1,5 @@
-interface ParsedDateTime {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  min: number;
-  sec: number;
-}
+import { ParsedDateTime } from '@/types/types';
+
 export function ParsedDateTime(dateTime: string): ParsedDateTime {
   const date = new Date(dateTime);
   return {
