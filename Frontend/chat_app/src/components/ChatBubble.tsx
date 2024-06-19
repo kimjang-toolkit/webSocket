@@ -33,7 +33,7 @@ const Bubble = styled.div<bubbleProps>`
   color: ${(props) => (props.$isOthers ? '#000' : '#fff')};
   padding: 10px;
   border-radius: ${(props) => (props.$isOthers ? '16px 16px 16px 0px' : '16px 16px 0px 16px')};
-  margin: 10px 0;
+  margin: 2px 0;
   width: 60%;
   max-height: 50%;
   align-self: ${(props) => (props.$isOthers ? 'flex-start' : 'flex-end')};
