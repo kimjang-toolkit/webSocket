@@ -19,19 +19,20 @@ function ChatRoomPage() {
       try {
         client.onConnect = () => {
           const subscription = client.subscribe(`/sub/chat/1`, (message) => {
-            let newChat = JSON.parse(message.body);
+            const newChat = JSON.parse(message.body);
+            console.log('newChat', newChat);
             setLiveChats((prev) => {
-              newChat = {
+              // newChat.createDate = { ...ParsedDateTime(newChat.createDate) };
+              const chat = {
                 content: newChat.content,
                 userId: newChat.customer.id,
                 createdDate: {
                   ...ParsedDateTime(newChat.createDate),
                 },
               };
-              return [...prev, newChat];
+              return [...prev, chat];
             });
           });
-          console.log(client);
           return () => {
             if (subscription) {
               subscription.unsubscribe();
