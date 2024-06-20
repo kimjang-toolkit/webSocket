@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import webSocketReducer from './webSocketSlice';
+import webSocketReducer from '@/redux/webSocketSlice';
+import usersReducer from '@/redux/userSlice';
 
 const store = configureStore({
-  reducer: { webSocket: webSocketReducer },
+  reducer: { webSocket: webSocketReducer, user: usersReducer },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

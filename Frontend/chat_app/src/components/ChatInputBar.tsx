@@ -11,6 +11,8 @@ function ChatInputBar() {
   const [message, setMessage] = useState('');
   const { client } = useSelector((state: RootState) => state.webSocket);
   // const debouncedMessage = useDebounce(message, 300);
+  const user = useSelector((state: RootState) => state.user);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
   };
@@ -21,8 +23,8 @@ function ChatInputBar() {
         roomId: 1,
         content: message,
         customer: {
-          id: 1,
-          name: '효승이',
+          id: user.id ?? 0,
+          name: user.name ?? 'undefined',
         },
       };
       const publishMessageBody = JSON.stringify(messageFormat);
