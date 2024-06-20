@@ -1,17 +1,15 @@
 package kimjang.toolkit.solsol.message.dto;
 
+import kimjang.toolkit.solsol.customer.dto.CustomerDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ChatLogDto {
+public class ReqPastChatsDto {
     private Long roomId;
-    private String roomName;
-    private List<SendChatMessageDto> messages;
-    private Long page; // 채팅은 최신순 정렬
+    private int page; // 현재 페이지 번호
+    private int size; // 페이지에 채팅 개수
 }
