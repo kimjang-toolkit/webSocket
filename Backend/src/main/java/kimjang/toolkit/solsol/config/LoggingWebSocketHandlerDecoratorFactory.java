@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
@@ -9,9 +10,7 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
 import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 
 public class LoggingWebSocketHandlerDecoratorFactory implements WebSocketHandlerDecoratorFactory {
-
     private static final Logger logger = LoggerFactory.getLogger(LoggingWebSocketHandlerDecoratorFactory.class);
-
     @Override
     public WebSocketHandler decorate(WebSocketHandler handler) {
         return new WebSocketHandlerDecorator(handler) {
