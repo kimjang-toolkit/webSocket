@@ -9,6 +9,9 @@ stompClient.onConnect = (frame) => {
         showGreeting(JSON.parse(greeting.body).content);
     });
 };
+function showGreeting(message) {
+    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+}
 
 stompClient.onWebSocketError = (error) => {
     console.error('Error with websocket', error);
@@ -55,9 +58,7 @@ function sendName() {
     });
 }
 
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
-}
+
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());

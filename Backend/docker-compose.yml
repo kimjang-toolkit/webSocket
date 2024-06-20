@@ -12,6 +12,8 @@ services:
   mysql:
     <<: *mysql-template
     hostname: dev
+    volumes:
+      - ./db:/var/lib/mysql
     container_name: chat-db
     ports:
       - "3306:3306"
