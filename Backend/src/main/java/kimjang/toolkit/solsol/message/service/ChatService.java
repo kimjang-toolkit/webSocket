@@ -18,7 +18,7 @@ public class ChatService {
     private final CustomerRepository customerRepository;
 
     public void saveChat(SendChatMessageDto message) {
-        Customer customer = customerRepository.findById(message.getCustomer().getId())
+        Customer customer = customerRepository.findById(message.getSender().getId())
                 .orElseThrow();
         ChatRoom room = chatRoomRepository.findById(message.getRoomId())
                 .orElseThrow();

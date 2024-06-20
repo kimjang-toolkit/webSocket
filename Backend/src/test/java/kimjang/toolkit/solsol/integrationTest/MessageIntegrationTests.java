@@ -3,7 +3,6 @@ package kimjang.toolkit.solsol.integrationTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kimjang.toolkit.solsol.customer.Customer;
 import kimjang.toolkit.solsol.customer.dto.CustomerDto;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +18,6 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,7 +59,7 @@ public class MessageIntegrationTests {
 		SendChatMessageDto testMessage = SendChatMessageDto.builder().roomId(1L)
 				.content("호식이 두마리 치킨 크크크 치킨은 회애!")
 				.createDate(LocalDateTime.of(2023,12,12,20,0))
-				.customer(new CustomerDto(1L, "효승이"))
+				.sender(new CustomerDto(1L, "효승이"))
 				.build();
 
 		StompSessionHandler handler = new TestSessionHandler(failure) {
