@@ -1,5 +1,5 @@
 const stompClient = new StompJs.Client({
-    brokerURL: 'ws://ec2-43-203-206-14.ap-northeast-2.compute.amazonaws.com/gs-guide-websocket'
+    brokerURL: 'ws://localhost:8080/gs-guide-websocket'
 });
 
 stompClient.onConnect = (frame) => {
@@ -9,6 +9,9 @@ stompClient.onConnect = (frame) => {
         showGreeting(JSON.parse(greeting.body).content);
     });
 };
+function showGreeting(message) {
+    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+}
 
 stompClient.onWebSocketError = (error) => {
     console.error('Error with websocket', error);
@@ -55,9 +58,7 @@ function sendName() {
     });
 }
 
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
-}
+
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
