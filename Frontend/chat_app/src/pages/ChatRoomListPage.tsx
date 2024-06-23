@@ -1,4 +1,4 @@
-import ChatList from '@/components/ChatList';
+import ChatRoomCard from '@/components/ChatRoomCard';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
 import NewChatButton from '@/components/NewChatButton';
@@ -11,18 +11,11 @@ import styled from 'styled-components';
 const mockChatList = [
   { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
   { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
-  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
-  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
-  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
-  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
-  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
-  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
-  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
 ];
 const mockProfile = {
   imgUrl: 'src/assets/images/맹구.jpg',
 };
-const ChatListPage = () => {
+const ChatRoomListPage = () => {
   const user = useSelector((state: RootState) => state.user);
   return (
     <ChatListContainer>
@@ -30,8 +23,9 @@ const ChatListPage = () => {
       <ProfileBox imgUrl={mockProfile.imgUrl} userId={user.id} userName={user.name} />
       <SubHeading>Chats</SubHeading>
       <Main>
-        {mockChatList.map((chatList) => (
-          <ChatList
+        {mockChatList.map((chatList, index) => (
+          <ChatRoomCard
+            key={index}
             imgUrl={chatList.imgUrl}
             userName={chatList.userName}
             recentMessage={chatList.recentMessage}
@@ -45,7 +39,7 @@ const ChatListPage = () => {
   );
 };
 
-export default ChatListPage;
+export default ChatRoomListPage;
 
 const ChatListContainer = styled.div`
   display: flex;

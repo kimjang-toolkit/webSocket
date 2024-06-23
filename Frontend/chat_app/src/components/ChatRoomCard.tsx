@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-interface ChatListProps {
+interface ChatRoomCardProps {
   imgUrl: string;
   userName: string;
   // timeStamp: string
@@ -8,7 +8,7 @@ interface ChatListProps {
   badgeCount: number;
 }
 
-const ChatList: React.FC<ChatListProps> = ({ imgUrl, userName, recentMessage, badgeCount }) => {
+const ChatRoomCard: React.FC<ChatRoomCardProps> = ({ imgUrl, userName, recentMessage, badgeCount }) => {
   return (
     <MainContainer>
       <ProfileImg src={imgUrl} />
@@ -26,7 +26,7 @@ const ChatList: React.FC<ChatListProps> = ({ imgUrl, userName, recentMessage, ba
   );
 };
 
-export default ChatList;
+export default ChatRoomCard;
 
 const MainContainer = styled.div`
   display: flex;

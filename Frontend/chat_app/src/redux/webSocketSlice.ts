@@ -13,8 +13,8 @@ const initialState: webSocketState = {
 export const initializeWebSocket = createAsyncThunk('webSocket/initializeWebSocket', async (_, { dispatch }) => {
   const client = new Client({
     brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs-guide-websocket`,
-    debug: (str) => {
-      console.log('bug', str);
+    debug: () => {
+      // console.log('bug', str);
     },
     reconnectDelay: 0,
     heartbeatIncoming: 1000,
@@ -57,9 +57,7 @@ export const webSocketSlice = createSlice({
         console.log('initializing');
       })
       .addCase(initializeWebSocket.fulfilled, (state, action) => {
-        console.log('fullfiled action', action);
         state.client = action.payload;
-        console.log('Wbsocket connection established');
       })
       .addCase(initializeWebSocket.rejected, (state, action) => {
         state.isConnected = false;

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useEffect } from 'react';
 import { initializeWebSocket } from '@/redux/webSocketSlice';
-import ChatListPage from '@/pages/ChatListPage';
+import ChatListPage from '@/pages/ChatRoomListPage';
 import { setUser } from '@/redux/userSlice';
 
 const router = createBrowserRouter([
