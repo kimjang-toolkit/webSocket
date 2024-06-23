@@ -1,7 +1,6 @@
 package kimjang.toolkit.solsol.message.dto;
 
-import kimjang.toolkit.solsol.customer.dto.CustomerDto;
-import org.springframework.beans.factory.annotation.Value;
+import kimjang.toolkit.solsol.customer.dto.UserDto;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +8,7 @@ public interface GetChatProj {
     String getContent();
     LocalDateTime getCreateDate();
     Long getChatRoom();
-    CustomerDto getCustomer();
+    UserDto getCustomer();
     interface ChatRoom{
         Long getId();
     }

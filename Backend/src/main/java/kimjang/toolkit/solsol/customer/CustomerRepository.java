@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    List<Customer> findByIdIn(List<Long> ids);
+public interface CustomerRepository extends JpaRepository<User, Long> {
+    List<User> findByIdIn(List<Long> ids);
 
 }
