@@ -3,7 +3,7 @@ package kimjang.toolkit.solsol.room;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kimjang.toolkit.solsol.customer.dto.CustomerDto;
+import kimjang.toolkit.solsol.customer.dto.UserDto;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.room.dto.CreateRoomReqDto;
 import kimjang.toolkit.solsol.room.service.ChatRoomStompService;
@@ -63,8 +63,8 @@ public class InviteIntegrationTests {
 		final AtomicReference<Throwable> failure = new AtomicReference<>();
 
 		CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
-				Arrays.asList(new CustomerDto(1L ,"오찬솔"), new CustomerDto(2L, "조승효"), new CustomerDto(3L, "강아지"), new CustomerDto(4L, "까미나무 삼계탕")),
-				"", "효승이 자니??", new CustomerDto(2L, "조승효"));
+				Arrays.asList(new UserDto(1L ,"오찬솔"), new UserDto(2L, "조승효"), new UserDto(3L, "강아지"), new UserDto(4L, "까미나무 삼계탕")),
+				"", "효승이 자니??", new UserDto(2L, "조승효"));
 
 		StompSessionHandler handler = new TestSessionHandler(failure) {
 

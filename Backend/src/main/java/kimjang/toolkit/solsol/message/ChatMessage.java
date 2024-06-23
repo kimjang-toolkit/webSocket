@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.message;
 
 import jakarta.persistence.*;
-import kimjang.toolkit.solsol.customer.Customer;
+import kimjang.toolkit.solsol.customer.User;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import lombok.*;
@@ -29,21 +29,21 @@ public class ChatMessage {
     @Column(name = "create_date")
     private LocalDateTime createDate; // 언제 보냈는지
     @ManyToOne
-    private Customer customer; // 누가 보냈는지
+    private User user; // 누가 보냈는지
 
-    public static ChatMessage toEntity(SendChatMessageDto dto, ChatRoom chatRoom, Customer customer){
+    public static ChatMessage toEntity(SendChatMessageDto dto, ChatRoom chatRoom, User user){
         return ChatMessage.builder()
                 .chatRoom(chatRoom)
-                .customer(customer)
+                .user(user)
                 .content(dto.getContent())
                 .createDate(dto.getCreateDate())
                 .build();
     }
 
-    public static ChatMessage toEntity(String content, ChatRoom chatRoom, Customer customer){
+    public static ChatMessage toEntity(String content, ChatRoom chatRoom, User user){
         return ChatMessage.builder()
                 .chatRoom(chatRoom)
-                .customer(customer)
+                .user(user)
                 .content(content)
                 .createDate(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .build();

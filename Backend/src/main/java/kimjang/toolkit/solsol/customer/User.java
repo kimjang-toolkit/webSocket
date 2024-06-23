@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @Column(name = "customer_id") // 컬럼의 이름을 바꿀 수 있다.
+    @Column(name = "user_id") // 컬럼의 이름을 바꿀 수 있다.
     private Long id;
 
     private String name;
@@ -37,7 +37,7 @@ public class Customer {
     private LocalDateTime createDt;
 
 //    @JsonIgnore // 디-시리얼라이제이션 될 때 json으로 값을 넣지 말도록 함
-//    @OneToMany(mappedBy = "customer")
+//    @OneToMany(mappedBy = "user")
 //    private Set<Authority> authorities;
 
 }

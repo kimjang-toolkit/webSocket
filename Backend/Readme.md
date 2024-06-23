@@ -65,7 +65,7 @@ destination:/sub/chat/{roomId}
   "roomId": 1,
   "content": "호식이 두마리 치킨 크크크 치킨은 최애!",
   "createDate": "2023-12-12 20:00",
-  "customer": {
+  "user": {
     "id" : 2,
     "name": "효승이"
   }
@@ -87,7 +87,7 @@ destination:/notification/room/{user-id}
   "roomId": 1,
   "roomName" : "찬솔이와 두근두근 데이또",
   "firstChat" : "효승이 자니...?",
-  "customer": {
+  "user": {
     "id" : 2,
     "name": "효승이"
   },
@@ -108,7 +108,7 @@ destination:/pub/chat/{roomId}
 {
   "roomId": 1,
   "content": "호식이 두마리 치킨 크크크 치킨은 회애!",
-  "customer": {
+  "user": {
     "id" : 2,
     "name": "효승이"
   }
