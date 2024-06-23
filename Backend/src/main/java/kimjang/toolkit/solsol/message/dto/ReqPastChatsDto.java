@@ -1,15 +1,15 @@
 package kimjang.toolkit.solsol.message.dto;
 
-import kimjang.toolkit.solsol.customer.dto.CustomerDto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 public class ReqPastChatsDto {
-    private Long roomId;
-    private int page; // 현재 페이지 번호
-    private int size; // 페이지에 채팅 개수
+    private final Long roomId;
+    private final Pageable pageable;
+    public ReqPastChatsDto (Long roomId, int page, int size){
+        this.roomId = roomId;
+        this.pageable = PageRequest.of(page, size);
+    }
 }
