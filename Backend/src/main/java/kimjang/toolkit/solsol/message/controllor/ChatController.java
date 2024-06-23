@@ -23,7 +23,7 @@ public class ChatController {
     public ResponseEntity<PastChatsDto> getChatLogs(@PathVariable Long roomId,
                                                     @RequestParam("roomExitTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime roomExitTime,
                                                     @RequestParam Integer page,
-                                                    @RequestParam Integer size){
+                                                    @RequestParam(defaultValue = "100") Integer size){
         ReqPastChatsDto reqPastChatsDto = new ReqPastChatsDto(roomId, page, size, roomExitTime);
         PastChatsDto pastChatsDto = chatService.getPastChats(reqPastChatsDto);
         return ResponseEntity.ok(pastChatsDto);
