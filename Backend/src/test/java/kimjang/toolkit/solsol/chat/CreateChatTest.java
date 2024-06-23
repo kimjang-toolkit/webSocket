@@ -4,9 +4,9 @@ package kimjang.toolkit.solsol.chat;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import kimjang.toolkit.solsol.SolsolApplication;
-import kimjang.toolkit.solsol.customer.Customer;
+import kimjang.toolkit.solsol.customer.User;
 import kimjang.toolkit.solsol.customer.CustomerRepository;
-import kimjang.toolkit.solsol.customer.dto.CustomerDto;
+import kimjang.toolkit.solsol.customer.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
@@ -41,8 +41,8 @@ public class CreateChatTest {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private Customer customer1;
-    private Customer customer2;
+    private User user1;
+    private User user2;
     private ChatRoom chatRoom;
     private ChatRoomCustomerRelationship relationship1;
     private ChatRoomCustomerRelationship relationship2;
@@ -55,7 +55,7 @@ public class CreateChatTest {
         SendChatMessageDto testMessage = SendChatMessageDto.builder().roomId(chatRoom.getId())
                 .content("호식이 두마리 치킨 크크크 치킨은 회애!")
                 .createDate(LocalDateTime.of(2023,12,12,20,0))
-                .customer(new CustomerDto(customer2.getId(), "효승이"))
+                .sender(new UserDto(user2.getId(), "효승이"))
                 .build();
 
         // 보낸 메세지 저장
@@ -68,23 +68,23 @@ public class CreateChatTest {
 
     @BeforeEach
     public void setUp(){
-        // Customer 1 생성
-        customer1 = Customer.builder()
-                .name("Customer 1")
-                .email("customer1@example.com")
+        // User 1 생성
+        user1 = User.builder()
+                .name("User 1")
+                .email("user1@example.com")
                 .mobileNumber("01000000001")
                 .createDt(LocalDateTime.now())
                 .build();
-        customerRepository.save(customer1);
+        customerRepository.save(user1);
 
-        // Customer 2 생성
-        customer2 = Customer.builder()
-                .name("Customer 2")
-                .email("customer2@example.com")
+        // User 2 생성
+        user2 = User.builder()
+                .name("User 2")
+                .email("user2@example.com")
                 .mobileNumber("01000000002")
                 .createDt(LocalDateTime.now())
                 .build();
-        customerRepository.save(customer2);
+        customerRepository.save(user2);
 
         // Chat Room 생성
         chatRoom = ChatRoom.builder()
@@ -97,7 +97,7 @@ public class CreateChatTest {
     public void cleanUp() {
         Long maxChatId = chatMessageRepository.findByChatRoom_Id(chatRoom.getId())
                 .stream().mapToLong(ChatMessage::getId).max().orElseThrow();
-        Long maxCustomerId = customer2.getId();
+        Long maxCustomerId = user2.getId();
         Long maxChatRoomId = chatRoom.getId();
         log.info("마무리");
         // 생성한 Chat 제거
@@ -105,13 +105,13 @@ public class CreateChatTest {
 
         // AUTO_INCREMENT 값 1개 감소 (Chat Message)
         entityManager.createNativeQuery("ALTER TABLE chat_message AUTO_INCREMENT="+(maxChatId-1)).executeUpdate();
-        // Customer 1 제거
-        customerRepository.delete(customer1);
+        // User 1 제거
+        customerRepository.delete(user1);
 
-        // Customer 2 제거
-        customerRepository.delete(customer2);
+        // User 2 제거
+        customerRepository.delete(user2);
 
-        // AUTO_INCREMENT 값 2개 감소 (Customer)
+        // AUTO_INCREMENT 값 2개 감소 (User)
         entityManager.createNativeQuery("ALTER TABLE customer AUTO_INCREMENT="+(maxCustomerId-2)).executeUpdate();
 
         // Chat Room 제거
