@@ -16,4 +16,13 @@ public class PastChatsDto {
     private List<SendChatMessageDto> pastChats;
     private int page; // 현재 페이지 번호
     private int size; // 페이지에 채팅 개수
+
+    public static PastChatsDto of(ReqPastChatsDto reqPastChatsDto, List<SendChatMessageDto> pastChats){
+        return PastChatsDto.builder()
+                .roomId(reqPastChatsDto.getRoomId())
+                .pastChats(pastChats)
+                .page(reqPastChatsDto.getPageable().getPageNumber())
+                .size(reqPastChatsDto.getPageable().getPageSize())
+                .build();
+    }
 }

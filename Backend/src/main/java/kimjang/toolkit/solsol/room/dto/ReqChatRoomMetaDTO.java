@@ -1,6 +1,6 @@
 package kimjang.toolkit.solsol.room.dto;
 
-import kimjang.toolkit.solsol.customer.dto.CustomerDto;
+import kimjang.toolkit.solsol.customer.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReqChatRoomMetaDTO {
     private Long roomId;
-    private CustomerDto user;
+    private UserDto user;
 }

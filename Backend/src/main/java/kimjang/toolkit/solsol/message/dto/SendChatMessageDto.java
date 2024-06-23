@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.message.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import kimjang.toolkit.solsol.customer.dto.CustomerDto;
+import kimjang.toolkit.solsol.customer.dto.UserDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,14 +11,14 @@ import java.time.format.DateTimeFormatter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SendChatMessageDto {
+public class SendChatMessageDto implements Comparable<SendChatMessageDto>{
     private Long roomId; // 어디서 보냈는지
     private String content; // 뭘 보냈는지
     @JsonFormat(shape = JsonFormat.Shape.STRING, // JSON <-> String 파싱
             pattern = "yyyy-MM-dd HH:mm:ss",
             timezone = "Asia/Seoul")
     private LocalDateTime createDate = LocalDateTime.now(); // 언제 보냈는지
-    private CustomerDto sender; // 누가 보냈는지
+    private UserDto sender; // 누가 보냈는지
     @Override
     public String toString(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -29,5 +29,21 @@ public class SendChatMessageDto {
                 .append("어디서 : ").append(roomId).append("\n")
                 .append("내용 : ").append(content).append("\n");
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(SendChatMessageDto o) {
+        // 최근순
+        if (createDate.isAfter(o.getCreateDate())) {
+            return 1;
+        }
+        return -1;
+    }
+
+    public SendChatMessageDto (Long roomId, String content, LocalDateTime createDate, Long senderId, String senderName){
+        this.roomId = roomId;
+        this.createDate = createDate;
+        this.content = content;
+        this.sender = new UserDto(senderId, senderName);
     }
 }

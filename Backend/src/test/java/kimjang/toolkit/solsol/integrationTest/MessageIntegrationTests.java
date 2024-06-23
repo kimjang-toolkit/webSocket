@@ -3,7 +3,7 @@ package kimjang.toolkit.solsol.integrationTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kimjang.toolkit.solsol.customer.dto.CustomerDto;
+import kimjang.toolkit.solsol.customer.dto.UserDto;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +59,7 @@ public class MessageIntegrationTests {
 		SendChatMessageDto testMessage = SendChatMessageDto.builder().roomId(1L)
 				.content("호식이 두마리 치킨 크크크 치킨은 회애!")
 				.createDate(LocalDateTime.of(2023,12,12,20,0))
-				.sender(new CustomerDto(1L, "효승이"))
+				.sender(new UserDto(1L, "효승이"))
 				.build();
 
 		StompSessionHandler handler = new TestSessionHandler(failure) {
