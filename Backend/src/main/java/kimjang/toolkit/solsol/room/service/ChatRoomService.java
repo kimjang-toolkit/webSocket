@@ -6,6 +6,7 @@ import kimjang.toolkit.solsol.customer.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
 import kimjang.toolkit.solsol.room.dto.ChatRoomDto;
+import kimjang.toolkit.solsol.room.dto.LastChatDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
@@ -108,7 +109,8 @@ public class ChatRoomService {
     }
 
 
-//    public List<ChatRoomDto> getChatRooms(Long userId) {
-//        return chatRoomRepository.findChatRoomsByUserId(userId).stream();
-//    }
+    public List<ChatRoomDto> getChatRooms(Long userId) {
+        return chatRoomRepository.findChatRoomsByUserId(userId);
+//        List<LastChatDto> lastChatDtos = chatRepository.findLastChatsByUserId(userId);
+    }
 }

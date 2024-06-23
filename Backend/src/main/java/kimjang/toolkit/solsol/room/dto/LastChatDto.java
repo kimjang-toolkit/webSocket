@@ -9,10 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoomDto {
-    private Long roomId;
-    private String roomName;
-    private Integer memberCnt;
+public class LastChatDto {
     private LocalDateTime lastChatTime;
     private String lastContent;
 }
