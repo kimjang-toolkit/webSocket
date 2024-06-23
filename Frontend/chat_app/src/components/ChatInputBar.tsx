@@ -20,9 +20,10 @@ function ChatInputBar() {
   const handleSendMessage = () => {
     if (client) {
       const messageFormat: MessageFormat = {
-        roomId: 1,
+        roomId: 303,
         content: message,
-        customer: {
+        sender: {
+          // sender로 바꿔야해!~
           id: user.id ?? 0,
           name: user.name ?? 'undefined',
         },
@@ -30,7 +31,7 @@ function ChatInputBar() {
       const publishMessageBody = JSON.stringify(messageFormat);
 
       client.publish({
-        destination: '/pub/chat/1',
+        destination: '/pub/chat/303',
         body: publishMessageBody,
         headers: {
           'content-type': 'application/json',
@@ -61,6 +62,7 @@ const ChatInputContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 30px;
+  padding: 8px 12px;
 `;
 const InputBar = styled.input`
   border-radius: 3.727px;

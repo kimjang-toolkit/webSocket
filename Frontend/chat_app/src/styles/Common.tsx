@@ -5,7 +5,5 @@ export const Main = styled.div`
   padding: 0 12px;
   overflow-y: auto;
   flex: 1;
-`;
-export const Footer = styled.div`
-  padding: 10px 12px;
+  height: 50vh;
 `;

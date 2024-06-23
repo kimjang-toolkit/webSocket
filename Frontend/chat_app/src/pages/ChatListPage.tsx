@@ -1,6 +1,11 @@
 import ChatList from '@/components/ChatList';
 import Header from '@/components/Header';
-import { Footer, Main } from '@/styles/Common';
+import Navbar from '@/components/Navbar';
+import NewChatButton from '@/components/NewChatButton';
+import ProfileBox from '@/components/ProfileBox';
+import { RootState } from '@/redux/store';
+import { Main } from '@/styles/Common';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const mockChatList = [
@@ -10,13 +15,20 @@ const mockChatList = [
   { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
   { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
   { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
+  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
+  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
+  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
 ];
-
+const mockProfile = {
+  imgUrl: 'src/assets/images/맹구.jpg',
+};
 const ChatListPage = () => {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <ChatListContainer>
       <Header title="채팅방 리스트" isBackArrow={false} />
-      <div> user</div>
+      <ProfileBox imgUrl={mockProfile.imgUrl} userId={user.id} userName={user.name} />
+      <SubHeading>Chats</SubHeading>
       <Main>
         {mockChatList.map((chatList) => (
           <ChatList
@@ -27,11 +39,22 @@ const ChatListPage = () => {
           />
         ))}
       </Main>
-      <Footer></Footer>
+      <NewChatButton />
+      <Navbar />
     </ChatListContainer>
   );
 };
 
 export default ChatListPage;
 
-const ChatListContainer = styled.div``;
+const ChatListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+const SubHeading = styled.div`
+  font-weight: 600;
+  font-size: var(--font-size-lg);
+  line-height: 24px;
+  padding: 0 12px;
+`;

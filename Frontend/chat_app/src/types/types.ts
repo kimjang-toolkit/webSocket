@@ -16,11 +16,13 @@ export interface Customer {
 export interface MessageFormat {
   roomId: number;
   content: string;
-  customer: Customer;
+  sender: Customer;
+  createDate: string;
 }
 //서버에서 받은 메시지데이터 가공
 export interface chatFormat {
+  roomId: number;
   content: string;
-  userId: number;
-  createdDate: ParsedDateTime;
+  sender: Customer;
+  createDate: ParsedDateTime;
 }
