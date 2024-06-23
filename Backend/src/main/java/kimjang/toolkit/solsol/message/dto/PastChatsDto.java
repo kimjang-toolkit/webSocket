@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
@@ -21,8 +22,8 @@ public class PastChatsDto {
         return PastChatsDto.builder()
                 .roomId(reqPastChatsDto.getRoomId())
                 .pastChats(pastChats)
-                .page(reqPastChatsDto.getPageable().getPageNumber())
-                .size(reqPastChatsDto.getPageable().getPageSize())
+                .page(reqPastChatsDto.getPage().getPageNumber())
+                .size(reqPastChatsDto.getPage().getPageSize())
                 .build();
     }
 }

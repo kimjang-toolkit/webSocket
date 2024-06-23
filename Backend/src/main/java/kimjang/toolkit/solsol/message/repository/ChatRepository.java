@@ -31,8 +31,9 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
     @Query(value="SELECT " +
             " new kimjang.toolkit.solsol.message.dto.SendChatMessageDto(" +
             " cr.id, cm.content, cm.createDate, u.id, u.name )" +
-            " FROM ChatMessage cm join fetch cm.chatRoom cr join fetch cm.user u" +
-            " WHERE cr.id = :roomId AND cm.createDate >= :roomExitTime" +
+            " FROM ChatMessage cm join ChatRoom cr ON cr.id = :roomId" +
+            " join User u ON u.id = cm.user.id" +
+            " WHERE cm.createDate >= :roomExitTime" +
             " ORDER BY cm.createDate ASC")
-    List<SendChatMessageDto> findPastChats(@Param("roomId") Long roomId, @Param("roomExitTime") LocalDateTime roomExitTime, Pageable pageable);
+    Slice<SendChatMessageDto> findPastChats(@Param("roomId") Long roomId, @Param("roomExitTime") LocalDateTime roomExitTime, Pageable pageable);
 }

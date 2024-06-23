@@ -10,7 +10,9 @@ import kimjang.toolkit.solsol.message.repository.ChatRepository;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,13 +32,12 @@ public class ChatService {
         chatRepository.save(chatMessage);
     }
 
+    @Transactional(readOnly = true)
     public PastChatsDto getPastChats(ReqPastChatsDto reqPastChatsDto) {
-//        List<SendChatMessageDto> pastChats =
-//                chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
-//                        reqPastChatsDto.getRoomExitTime(),
-//                        reqPastChatsDto.getPage(),
-//                        reqPastChatsDto.getSize());
-//        return PastChatsDto.of(reqPastChatsDto, pastChats);
-        return  null;
+        Slice<SendChatMessageDto> pastChats =
+                chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
+                        reqPastChatsDto.getRoomExitTime(),
+                        reqPastChatsDto.getPage());
+        return PastChatsDto.of(reqPastChatsDto, pastChats.getContent());
     }
 }
