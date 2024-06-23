@@ -1,7 +1,7 @@
-import ChatRoomCard from '@/components/ChatRoomCard';
+import ChatRoomCard from '@/components/ChatRoomList/ChatRoomCard';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
-import NewChatButton from '@/components/NewChatButton';
+import NewChatButton from '@/components/ChatRoomList/NewChatButton';
 import ProfileBox from '@/components/ProfileBox';
 import { RootState } from '@/redux/store';
 import { Main } from '@/styles/Common';
