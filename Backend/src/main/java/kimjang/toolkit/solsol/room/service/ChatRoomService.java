@@ -109,6 +109,6 @@ public class ChatRoomService {
 
 
     public List<ChatRoomDto> getChatRooms(Long userId) {
-        return null;
+        return chatRoomRepository.findByUserId(userId);
     }
 }
