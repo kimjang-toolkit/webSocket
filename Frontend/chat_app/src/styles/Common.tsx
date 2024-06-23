@@ -5,5 +5,4 @@ export const Main = styled.div`
   padding: 0 12px;
   overflow-y: auto;
   flex: 1;
-  height: 50vh;
 `;

@@ -23,7 +23,6 @@ function ChatInputBar() {
         roomId: 303,
         content: message,
         sender: {
-          // sender로 바꿔야해!~
           id: user.id ?? 0,
           name: user.name ?? 'undefined',
         },
