@@ -24,7 +24,8 @@ public class ChatRoom {
     @Column(name = "create_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate; // 언제 만들어졌는지
-    private int memberCnt;
+    @Column(name = "member_cnt")
+    private Integer memberCnt;
 
     public static ChatRoom of(int memberCnt){
         return ChatRoom.builder()
