@@ -58,9 +58,9 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public ChatRoom createChatRoom(int memeberCnt) {
+    public ChatRoom createChatRoom(int memberCnt) {
         try {
-            return chatRoomRepository.save(ChatRoom.of(memeberCnt));
+            return chatRoomRepository.save(ChatRoom.of(memberCnt));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             throw new RuntimeException("채팅방 생성하지 못했습니다.");
@@ -108,7 +108,7 @@ public class ChatRoomService {
     }
 
 
-    public List<ChatRoomDto> getChatRooms(Long userId) {
-        return chatRoomRepository.findByUserId(userId);
-    }
+//    public List<ChatRoomDto> getChatRooms(Long userId) {
+//        return chatRoomRepository.findChatRoomsByUserId(userId).stream();
+//    }
 }
