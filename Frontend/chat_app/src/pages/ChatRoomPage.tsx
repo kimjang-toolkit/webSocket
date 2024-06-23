@@ -1,5 +1,5 @@
-import ChatInputBar from '@/components/ChatInputBar';
-import ChatRoom from '@/components/ChatRoom';
+import ChatInputBar from '@/components/ChatRoom/ChatInputBar';
+import ChatRoom from '@/components/ChatRoom/ChatRoom';
 import Header from '@/components/Header';
 import { RootState } from '@/redux/store';
 import { Main } from '@/styles/Common';
