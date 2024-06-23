@@ -20,7 +20,7 @@ function App() {
 
   useEffect(() => {
     dispatch(initializeWebSocket());
-    //임시 테스트를 위해 로컬스토리지로 
+    //임시 테스트를 위해 로컬스토리지로
     const name = localStorage.getItem('userName');
     const id = Number(localStorage.getItem('userId'));
     dispatch(setUser({ name, id }));

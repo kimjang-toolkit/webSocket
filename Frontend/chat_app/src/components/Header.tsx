@@ -8,7 +8,11 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isBackArrow, title }) => {
   return (
     <HeaderContainer>
-      <BackButton>{isBackArrow && <BackArrowIcon />}</BackButton>
+      {isBackArrow && (
+        <BackButton>
+          <BackArrowIcon />
+        </BackButton>
+      )}
       <Title>{title}</Title>
     </HeaderContainer>
   );
@@ -19,11 +23,11 @@ export default Header;
 const HeaderContainer = styled.header`
   width: 100%;
   display: flex;
+  gap: 16px;
   height: 50px;
   background: #fff;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.12);
   padding: 12px 8px;
-  gap: 16px;
 `;
 const BackButton = styled.button`
   display: flex;

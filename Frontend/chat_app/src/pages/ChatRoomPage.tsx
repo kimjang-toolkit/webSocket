@@ -1,8 +1,8 @@
 import ChatInputBar from '@/components/ChatInputBar';
-import Chats from '@/components/ChatRoom';
+import ChatRoom from '@/components/ChatRoom';
 import Header from '@/components/Header';
 import { RootState } from '@/redux/store';
-import { Footer, Main } from '@/styles/Common';
+import { Main } from '@/styles/Common';
 import { chatFormat } from '@/types/types';
 import { ParsedDateTime } from '@/utils/parseDateTime';
 import { useEffect, useState } from 'react';
@@ -18,15 +18,13 @@ function ChatRoomPage() {
 
       try {
         client.onConnect = () => {
-          const subscription = client.subscribe(`/sub/chat/1`, (message) => {
+          const subscription = client.subscribe(`/sub/chat/303`, (message) => {
             const newChat = JSON.parse(message.body);
-            console.log('newChat', newChat);
+            console.log('nw', newChat);
             setLiveChats((prev) => {
-              // newChat.createDate = { ...ParsedDateTime(newChat.createDate) };
               const chat = {
-                content: newChat.content,
-                userId: newChat.customer.id,
-                createdDate: {
+                ...newChat,
+                createDate: {
                   ...ParsedDateTime(newChat.createDate),
                 },
               };
@@ -51,7 +49,7 @@ function ChatRoomPage() {
     <ChatRoomContainer>
       <Header title="채팅방" isBackArrow />
       <Main>
-        <Chats chatDatas={liveChats} />
+        <ChatRoom chatDatas={liveChats} />
       </Main>
       <Footer>
         <ChatInputBar />
@@ -65,4 +63,7 @@ const ChatRoomContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+`;
+const Footer = styled.div`
+  padding: 8px 12px;
 `;
