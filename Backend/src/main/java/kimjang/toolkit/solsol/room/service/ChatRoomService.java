@@ -5,6 +5,7 @@ import kimjang.toolkit.solsol.customer.CustomerRepository;
 import kimjang.toolkit.solsol.customer.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
+import kimjang.toolkit.solsol.room.dto.ChatRoomDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
@@ -39,7 +40,7 @@ public class ChatRoomService {
         List<User> users = fetchCustomers(createChatRoomDto.getParticipants()); // 채팅방 참여자들 불러오기
         User maker = validateParticipants(users, createChatRoomDto);
 
-        ChatRoom createdRoom = createChatRoom();
+        ChatRoom createdRoom = createChatRoom(users.size());
         saveRelationships(createdRoom, users, createChatRoomDto);
         saveFirstChat(createChatRoomDto.getFirstChat(), maker, createdRoom);
         return createdRoom.getId();
@@ -57,9 +58,9 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public ChatRoom createChatRoom() {
+    public ChatRoom createChatRoom(int memeberCnt) {
         try {
-            return chatRoomRepository.save(ChatRoom.of());
+            return chatRoomRepository.save(ChatRoom.of(memeberCnt));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             throw new RuntimeException("채팅방 생성하지 못했습니다.");
@@ -107,5 +108,7 @@ public class ChatRoomService {
     }
 
 
-
+    public List<ChatRoomDto> getChatRooms(Long userId) {
+        return null;
+    }
 }
