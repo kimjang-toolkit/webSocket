@@ -1,19 +1,18 @@
 package kimjang.toolkit.solsol.room.dto;
 
-import kimjang.toolkit.solsol.customer.dto.CustomerDto;
+import kimjang.toolkit.solsol.customer.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateChatRoomDto {
-    private List<CustomerDto> participants;
+    private List<UserDto> participants;
     private String roomName;
     private String firstChat;
-    private CustomerDto maker;
+    private UserDto maker;
 }
