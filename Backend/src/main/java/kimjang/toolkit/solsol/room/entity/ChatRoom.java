@@ -24,10 +24,12 @@ public class ChatRoom {
     @Column(name = "create_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate; // 언제 만들어졌는지
+    private int memberCnt;
 
-    public static ChatRoom of(){
+    public static ChatRoom of(int memberCnt){
         return ChatRoom.builder()
-                .createDate(LocalDateTime.now(ZoneId.of("Asia/Seoul"))).build();
+                .createDate(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
+                .memberCnt(memberCnt).build();
     }
 
     public static ChatRoom of(LocalDateTime date){

@@ -1,6 +1,8 @@
 package kimjang.toolkit.solsol.message.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import kimjang.toolkit.solsol.customer.dto.UserDto;
 import lombok.*;
 
@@ -17,6 +19,7 @@ public class SendChatMessageDto implements Comparable<SendChatMessageDto>{
     @JsonFormat(shape = JsonFormat.Shape.STRING, // JSON <-> String 파싱
             pattern = "yyyy-MM-dd HH:mm:ss",
             timezone = "Asia/Seoul")
+    @JsonSetter(nulls = Nulls.SKIP)
     private LocalDateTime createDate = LocalDateTime.now(); // 언제 보냈는지
     private UserDto sender; // 누가 보냈는지
     @Override

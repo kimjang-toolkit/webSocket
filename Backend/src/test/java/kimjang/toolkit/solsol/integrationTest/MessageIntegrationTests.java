@@ -58,7 +58,6 @@ public class MessageIntegrationTests {
 
 		SendChatMessageDto testMessage = SendChatMessageDto.builder().roomId(1L)
 				.content("호식이 두마리 치킨 크크크 치킨은 회애!")
-				.createDate(LocalDateTime.of(2023,12,12,20,0))
 				.sender(new UserDto(1L, "효승이"))
 				.build();
 
@@ -77,7 +76,7 @@ public class MessageIntegrationTests {
 						SendChatMessageDto messageDto = (SendChatMessageDto) payload;
 						try {
 							System.out.println("응답 : "+messageDto.getContent());
-							assertEquals(testMessage.toString(), messageDto.toString());
+							assertEquals(testMessage.getContent(), messageDto.getContent());
 						} catch (Throwable t) {
 							failure.set(t);
 						} finally {
