@@ -1,6 +1,6 @@
 package kimjang.toolkit.solsol.message.service;
 
-import kimjang.toolkit.solsol.customer.Customer;
+import kimjang.toolkit.solsol.customer.User;
 import kimjang.toolkit.solsol.customer.CustomerRepository;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.PastChatsDto;
@@ -22,23 +22,21 @@ public class ChatService {
     private final CustomerRepository customerRepository;
 
     public void saveChat(SendChatMessageDto message) {
-        Customer customer = customerRepository.findById(message.getSender().getId())
+        User user = customerRepository.findById(message.getSender().getId())
                 .orElseThrow();
         ChatRoom room = chatRoomRepository.findById(message.getRoomId())
                 .orElseThrow();
-        ChatMessage chatMessage = ChatMessage.toEntity(message, room, customer);
+        ChatMessage chatMessage = ChatMessage.toEntity(message, room, user);
         chatRepository.save(chatMessage);
     }
 
-
     public PastChatsDto getPastChats(ReqPastChatsDto reqPastChatsDto) {
-        List<SendChatMessageDto> pastChats = chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
-                reqPastChatsDto.getPageable());
-        return PastChatsDto.builder()
-                .roomId(reqPastChatsDto.getRoomId())
-                .pastChats(pastChats)
-                .page(reqPastChatsDto.getPageable().getPageNumber())
-                .size(reqPastChatsDto.getPageable().getPageSize())
-                .build();
+//        List<SendChatMessageDto> pastChats =
+//                chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
+//                        reqPastChatsDto.getRoomExitTime(),
+//                        reqPastChatsDto.getPage(),
+//                        reqPastChatsDto.getSize());
+//        return PastChatsDto.of(reqPastChatsDto, pastChats);
+        return  null;
     }
 }
