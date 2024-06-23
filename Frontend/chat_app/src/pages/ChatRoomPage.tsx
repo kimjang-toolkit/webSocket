@@ -14,13 +14,10 @@ function ChatRoomPage() {
   const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
   useEffect(() => {
     if (client && isConnected) {
-      console.log('Client is connected, subscribing to topic...');
-
       try {
         client.onConnect = () => {
           const subscription = client.subscribe(`/sub/chat/303`, (message) => {
             const newChat = JSON.parse(message.body);
-            console.log('nw', newChat);
             setLiveChats((prev) => {
               const chat = {
                 ...newChat,
