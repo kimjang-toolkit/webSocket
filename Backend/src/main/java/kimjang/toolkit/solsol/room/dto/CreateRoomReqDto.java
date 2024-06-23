@@ -1,7 +1,6 @@
 package kimjang.toolkit.solsol.room.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import kimjang.toolkit.solsol.customer.dto.CustomerDto;
+import kimjang.toolkit.solsol.customer.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,9 +14,9 @@ public class CreateRoomReqDto {
 
     private Long roomId;
     private String roomName;
-    private CustomerDto customer;
+    private UserDto customer;
     private String firstChat;
-    private CustomerDto maker;
+    private UserDto maker;
 
     public String toString(){
         StringBuilder sb = new StringBuilder();

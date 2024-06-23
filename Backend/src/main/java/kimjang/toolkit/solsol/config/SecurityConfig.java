@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .cors(cors -> {
                     cors.configurationSource(request -> {
                         CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:5173","http://localhost:5174","http://localhost:8080"));
+                        config.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:5173", "http://localhost:5174","http://localhost:8080"));
                         config.setAllowedMethods(Collections.singletonList("*"));
                         // 비밀번호 같은 자격증명을 헤더에 담아서 보낼 수 있도록 설정
 //                        config.setAllowCredentials(true);
