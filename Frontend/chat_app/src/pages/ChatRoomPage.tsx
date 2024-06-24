@@ -1,17 +1,39 @@
 import ChatInputBar from '@/components/ChatRoom/ChatInputBar';
 import ChatRoom from '@/components/ChatRoom/ChatRoom';
 import Header from '@/components/Header';
+import { useChatHistory } from '@/hooks/useChatHistory';
 import { RootState } from '@/redux/store';
 import { Main } from '@/styles/Common';
 import { chatFormat } from '@/types/types';
 import { ParsedDateTime } from '@/utils/parseDateTime';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 function ChatRoomPage() {
   const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
   const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
+
+  const { data, error, isLoading, fetchNextPage, hasNextPage } = useChatHistory({
+    roomId: 303,
+    timeLine: 'past',
+  });
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (loadMoreRef.current) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting && hasNextPage) {
+            fetchNextPage();
+          }
+        },
+        { threshold: 1.0 },
+      );
+      observer.observe(loadMoreRef.current);
+      return () => observer.disconnect();
+    }
+  }, [fetchNextPage, hasNextPage]);
   useEffect(() => {
     if (client && isConnected) {
       try {
@@ -42,11 +64,13 @@ function ChatRoomPage() {
     }
   }, [client, isConnected]);
 
+  if (isLoading) return <p>Loading,.,</p>;
+  if (error) return <p>Error loading chat history</p>;
   return (
     <ChatRoomContainer>
       <Header title="채팅방" isBackArrow />
-      <Main>
-        <ChatRoom chatDatas={liveChats} />
+      <Main $marginTop="12px">
+        <ChatRoom chatDatas={liveChats} loadMoreRef={loadMoreRef} data={data} />
       </Main>
       <Footer>
         <ChatInputBar />
