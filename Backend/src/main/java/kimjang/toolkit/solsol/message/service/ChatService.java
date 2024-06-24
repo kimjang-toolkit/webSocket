@@ -14,8 +14,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class ChatService {
@@ -33,11 +31,19 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public PastChatsDto getPastChats(ReqPastChatsDto reqPastChatsDto) {
-        Slice<SendChatMessageDto> pastChats =
-                chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
-                        reqPastChatsDto.getRoomExitTime(),
-                        reqPastChatsDto.getPage());
-        return PastChatsDto.of(reqPastChatsDto, pastChats.getContent());
+    public PastChatsDto getPastChats(ReqPastChatsDto reqPastChatsDto, String timeLine) {
+        if(timeLine.equals("recent")){
+            Slice<SendChatMessageDto> pastChats =
+                    chatRepository.findRecentChats(reqPastChatsDto.getRoomId(),
+                            reqPastChatsDto.getRoomExitTime(),
+                            reqPastChatsDto.getPage());
+            return PastChatsDto.of(reqPastChatsDto, pastChats);
+        } else{
+            Slice<SendChatMessageDto> pastChats =
+                    chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
+                            reqPastChatsDto.getRoomExitTime(),
+                            reqPastChatsDto.getPage());
+            return PastChatsDto.of(reqPastChatsDto, pastChats);
+        }
     }
 }
