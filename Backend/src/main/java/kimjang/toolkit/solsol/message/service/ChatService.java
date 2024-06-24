@@ -38,6 +38,6 @@ public class ChatService {
                 chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
                         reqPastChatsDto.getRoomExitTime(),
                         reqPastChatsDto.getPage());
-        return PastChatsDto.of(reqPastChatsDto, pastChats.getContent());
+        return PastChatsDto.of(reqPastChatsDto, pastChats);
     }
 }

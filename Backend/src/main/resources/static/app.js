@@ -50,7 +50,7 @@ function sendName() {
         body: JSON.stringify({
             'roomId' : 1,
             'content': $("#name").val(),
-            'customer' : {
+            'sender' : {
                 'id' : 1,
                 'name' : '효승이'
             }

@@ -26,7 +26,7 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
      *
      * @param roomId
      * @Param roomExitTime : 사용자가 최근 방에서 나간 시간
-     * @param pageable
+     * @param pageable : size(100)개 씩 채팅 전달
      * @return
      */
     @Query(value="SELECT " +
@@ -34,8 +34,8 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
             " cr.id, cm.content, cm.createDate, u.id, u.name )" +
             " FROM ChatMessage cm join ChatRoom cr ON cr.id = :roomId" +
             " join User u ON u.id = cm.user.id" +
-            " WHERE cm.createDate >= :roomExitTime" +
-            " ORDER BY cm.createDate ASC")
+            " WHERE cm.createDate >= :roomExitTime" + // 사용자가 채팅 방을 나간 시간
+            " ORDER BY cm.createDate ASC") // 오래된 순서로 채팅 정렬
     Slice<SendChatMessageDto> findPastChats(@Param("roomId") Long roomId, @Param("roomExitTime") LocalDateTime roomExitTime, Pageable pageable);
 
     // 유저가 속한 채팅방에 가장 최근 채팅만 쿼리

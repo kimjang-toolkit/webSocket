@@ -21,8 +21,8 @@ public class ChatController {
 
     @GetMapping("/chat-room/chat/{roomId}")
     public ResponseEntity<PastChatsDto> getChatLogs(@PathVariable Long roomId,
-                                                    @RequestParam("roomExitTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime roomExitTime,
-                                                    @RequestParam Integer page,
+                                                    @RequestParam(defaultValue = "0001-01-01 00:00:00") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime roomExitTime,
+                                                    @RequestParam(defaultValue = "0") Integer page,
                                                     @RequestParam(defaultValue = "100") Integer size){
         ReqPastChatsDto reqPastChatsDto = new ReqPastChatsDto(roomId, page, size, roomExitTime);
         PastChatsDto pastChatsDto = chatService.getPastChats(reqPastChatsDto);
