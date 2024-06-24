@@ -21,10 +21,10 @@ export default ProfileBox;
 
 const Container = styled.div`
   width: 100%;
-  height: 80px;
+  height: 74px;
   display: flex;
   gap: 12px;
-  padding: 16px 18px;
+  padding: 12px 18px;
 `;
 const ProfileImg = styled.img`
   width: 15%;
