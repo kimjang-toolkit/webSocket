@@ -24,7 +24,7 @@ public class ChatRoomStompService {
                             .roomId(roomId)
                             .roomName(withParticipationsName(createChatRoomDto, customerDto.getId()))
                             .firstChat(createChatRoomDto.getFirstChat())
-                            .customer(customerDto)
+                            .user(customerDto)
                             .maker(createChatRoomDto.getMaker())
                             .build();
                     messagingTemplate.convertAndSend("/notification/room/" + customerDto.getId(), // 각 고객에게 채팅방 생성을 알림
