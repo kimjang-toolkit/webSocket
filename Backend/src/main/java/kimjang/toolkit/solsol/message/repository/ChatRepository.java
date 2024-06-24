@@ -1,9 +1,7 @@
 package kimjang.toolkit.solsol.message.repository;
 
 import kimjang.toolkit.solsol.message.ChatMessage;
-import kimjang.toolkit.solsol.message.dto.GetChatProj;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
-import kimjang.toolkit.solsol.room.dto.LastChatDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,16 +32,18 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
             " cr.id, cm.content, cm.createDate, u.id, u.name )" +
             " FROM ChatMessage cm join ChatRoom cr ON cr.id = :roomId" +
             " join User u ON u.id = cm.user.id" +
-            " WHERE cm.createDate >= :roomExitTime" + // 사용자가 채팅 방을 나간 시간
+            " WHERE cm.createDate >= :roomExitTime" + // 사용자가 채팅 방을 나간 시간 이후에 생성된 채팅들
+            " ORDER BY cm.createDate ASC") // 오래된 순서로 채팅 정렬
+    Slice<SendChatMessageDto> findRecentChats(@Param("roomId") Long roomId, @Param("roomExitTime") LocalDateTime roomExitTime, Pageable pageable);
+
+    // 유저가 속한 채팅방에 가장 최근 채팅만 쿼리
+    @Query(value="SELECT " +
+            " new kimjang.toolkit.solsol.message.dto.SendChatMessageDto(" +
+            " cr.id, cm.content, cm.createDate, u.id, u.name )" +
+            " FROM ChatMessage cm join ChatRoom cr ON cr.id = :roomId" +
+            " join User u ON u.id = cm.user.id" +
+            " WHERE cm.createDate < :roomExitTime" + // 사용자가 채팅 방을 나간 시간 이전에 생성된 채팅들
             " ORDER BY cm.createDate ASC") // 오래된 순서로 채팅 정렬
     Slice<SendChatMessageDto> findPastChats(@Param("roomId") Long roomId, @Param("roomExitTime") LocalDateTime roomExitTime, Pageable pageable);
 
-    // 유저가 속한 채팅방에 가장 최근 채팅만 쿼리
-    @Query(value = "Select new kimjang.toolkit.solsol.room.dto.LastChatDto(cm.createDate, cm.content) " +
-            "FROM ChatMessage cm " +
-            " WHERE cm.createDate = (select MAX(ccm.createDate) from ChatMessage ccm" +
-            " Where ccm.chatRoom.id = cm.chatRoom.id)")
-    // userId가 속한 채팅 방에서
-    // 채팅 방의 채팅 중 가장 최근 채팅을 projection
-    List<LastChatDto> findLastChatsByUserId(Long userId);
 }

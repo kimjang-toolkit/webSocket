@@ -19,13 +19,25 @@ import java.util.Date;
 public class ChatController {
     private final ChatService chatService;
 
+    /**
+     * 채팅방 나간 시간 이전, 이후에 생성된 채팅을 불러오는 API
+     * timeLine이 past라면 채팅방 나간 시간 이전에 생성된 채팅
+     * timeLine이 recent라면 채팅방 나간 시간 이후에 생성된 채팅
+     * @param roomId
+     * @param roomExitTime
+     * @param page
+     * @param size
+     * @param timeLine
+     * @return
+     */
     @GetMapping("/chat-room/chat/{roomId}")
     public ResponseEntity<PastChatsDto> getChatLogs(@PathVariable Long roomId,
                                                     @RequestParam(defaultValue = "0001-01-01 00:00:00") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime roomExitTime,
                                                     @RequestParam(defaultValue = "0") Integer page,
-                                                    @RequestParam(defaultValue = "100") Integer size){
+                                                    @RequestParam(defaultValue = "100") Integer size,
+                                                    @RequestParam(defaultValue = "recent") String timeLine){
         ReqPastChatsDto reqPastChatsDto = new ReqPastChatsDto(roomId, page, size, roomExitTime);
-        PastChatsDto pastChatsDto = chatService.getPastChats(reqPastChatsDto);
+        PastChatsDto pastChatsDto = chatService.getPastChats(reqPastChatsDto, timeLine);
         return ResponseEntity.ok(pastChatsDto);
     }
 
