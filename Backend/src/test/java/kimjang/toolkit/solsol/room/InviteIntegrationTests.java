@@ -76,7 +76,7 @@ public class InviteIntegrationTests {
 							.roomId(1L)
 							.roomName(CreateRoomName.withParticipationsName(createChatRoomDto, createChatRoomDto.getParticipants().get(i-1).getId()))
 							.firstChat(createChatRoomDto.getFirstChat())
-							.customer(createChatRoomDto.getMaker())
+							.user(createChatRoomDto.getMaker())
 							.maker(createChatRoomDto.getMaker()).build();
 					session.subscribe("/notification/room/"+i, new StompFrameHandler() {
 						@Override
