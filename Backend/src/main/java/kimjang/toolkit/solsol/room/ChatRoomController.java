@@ -64,14 +64,14 @@ public class ChatRoomController {
       return deferredResult;
    }
 
-//   @GetMapping("/chat-room")
-//   public ResponseEntity<List<ChatRoomDto>> getChatRoomList(@RequestParam("userId") Long userId){
-//      try{
-//         List<ChatRoomDto> rooms = chatRoomService.getChatRooms(userId);
-//         return ResponseEntity.ok(rooms);
-//      } catch(RuntimeException e){
-//         log.error(e.getMessage());
-//         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//      }
-//   }
+   @GetMapping("/chat-room")
+   public ResponseEntity<List<ChatRoomDto>> getChatRoomList(@RequestParam("userId") Long userId){
+      try{
+         List<ChatRoomDto> rooms = chatRoomService.getChatRooms(userId);
+         return ResponseEntity.ok(rooms);
+      } catch(RuntimeException e){
+         log.error(e.getMessage());
+         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      }
+   }
 }
