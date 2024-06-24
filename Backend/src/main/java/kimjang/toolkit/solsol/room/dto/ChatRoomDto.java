@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.room.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,9 @@ public class ChatRoomDto {
     private Long roomId;
     private String roomName;
     private Integer memberCnt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, // JSON <-> String 파싱
+            pattern = "yyyy-MM-dd HH:mm:ss",
+            timezone = "Asia/Seoul")
     private LocalDateTime lastChatTime;
     private String lastContent;
 }
