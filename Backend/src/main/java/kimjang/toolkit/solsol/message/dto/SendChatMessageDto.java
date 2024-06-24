@@ -3,7 +3,7 @@ package kimjang.toolkit.solsol.message.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
-import kimjang.toolkit.solsol.customer.dto.UserDto;
+import kimjang.toolkit.solsol.user.dto.UserDto;
 import lombok.*;
 
 import java.time.LocalDateTime;

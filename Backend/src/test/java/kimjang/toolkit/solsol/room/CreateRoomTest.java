@@ -1,6 +1,6 @@
 package kimjang.toolkit.solsol.room;
 
-import kimjang.toolkit.solsol.customer.dto.UserDto;
+import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
