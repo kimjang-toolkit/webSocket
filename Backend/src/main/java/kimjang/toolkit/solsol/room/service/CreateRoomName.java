@@ -10,7 +10,7 @@ public class CreateRoomName {
     public static String withParticipationsName(CreateChatRoomDto createChatRoomDto, Long customerId){
         List<UserDto> participants = createChatRoomDto.getParticipants();
         // 3명 이상일 경우 본인을 제외한 나머지 사람들의 이름 나열, 단 10글자 이후론 ...으로 처리
-        if(participants.size() >= 3 || (createChatRoomDto.getRoomName() != null && !createChatRoomDto.getRoomName().isEmpty())){
+        if(participants.size() >= 3 && createChatRoomDto.getRoomName() != null && !createChatRoomDto.getRoomName().isEmpty()){
             // 채팅방 만든 사람이 방 이름을 설정할 수 있다.
             return createChatRoomDto.getRoomName();
         } else{ // 상대 이름

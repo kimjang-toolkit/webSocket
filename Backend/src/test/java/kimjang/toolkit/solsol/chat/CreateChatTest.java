@@ -89,6 +89,7 @@ public class CreateChatTest {
         // Chat Room 생성
         chatRoom = ChatRoom.builder()
                 .createDate(LocalDateTime.now())
+                .memberCnt(2)
                 .build();
         chatRoomRepository.save(chatRoom);
     }
@@ -112,7 +113,7 @@ public class CreateChatTest {
         customerRepository.delete(user2);
 
         // AUTO_INCREMENT 값 2개 감소 (User)
-        entityManager.createNativeQuery("ALTER TABLE customer AUTO_INCREMENT="+(maxCustomerId-2)).executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT="+(maxCustomerId-2)).executeUpdate();
 
         // Chat Room 제거
         chatRoomRepository.delete(chatRoom);
