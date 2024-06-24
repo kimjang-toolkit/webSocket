@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,7 +32,7 @@ public class User {
 
     private String pwd;
 
-    @OneToMany(mappedBy="user",fetch=FetchType.LAZY)
+    @OneToMany(mappedBy="user",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Authority> authorities;
 
     @JoinColumn(name = "mobile_number")
@@ -42,12 +43,15 @@ public class User {
 
 
     public static User of(CreateUserDto dto, String hashPwd){
-        return User.builder()
+        User user =  User.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .pwd(hashPwd)
                 .mobileNumber(dto.getMobileNumber())
                 .createDate(LocalDateTime.now())
+                .authorities(new HashSet<>())
                 .build();
+        user.authorities.add(Authority.of(user));
+        return user;
     }
 }
