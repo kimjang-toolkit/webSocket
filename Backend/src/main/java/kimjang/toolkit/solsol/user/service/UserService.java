@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.user.service;
 
+import kimjang.toolkit.solsol.user.Authority;
 import kimjang.toolkit.solsol.user.User;
 import kimjang.toolkit.solsol.user.UserRepository;
 import kimjang.toolkit.solsol.user.dto.CreateUserDto;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -17,6 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public UserDto registerUser(CreateUserDto createUserDto){
         String hashPwd = passwordEncoder.encode(createUserDto.getPwd());
         User user = User.of(createUserDto, hashPwd);
