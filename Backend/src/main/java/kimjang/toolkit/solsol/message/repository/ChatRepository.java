@@ -3,6 +3,7 @@ package kimjang.toolkit.solsol.message.repository;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.GetChatProj;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
+import kimjang.toolkit.solsol.room.dto.LastChatDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,4 +37,13 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
             " WHERE cm.createDate >= :roomExitTime" +
             " ORDER BY cm.createDate ASC")
     Slice<SendChatMessageDto> findPastChats(@Param("roomId") Long roomId, @Param("roomExitTime") LocalDateTime roomExitTime, Pageable pageable);
+
+    // 유저가 속한 채팅방에 가장 최근 채팅만 쿼리
+    @Query(value = "Select new kimjang.toolkit.solsol.room.dto.LastChatDto(cm.createDate, cm.content) " +
+            "FROM ChatMessage cm " +
+            " WHERE cm.createDate = (select MAX(ccm.createDate) from ChatMessage ccm" +
+            " Where ccm.chatRoom.id = cm.chatRoom.id)")
+    // userId가 속한 채팅 방에서
+    // 채팅 방의 채팅 중 가장 최근 채팅을 projection
+    List<LastChatDto> findLastChatsByUserId(Long userId);
 }

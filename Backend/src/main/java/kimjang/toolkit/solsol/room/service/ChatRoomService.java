@@ -6,6 +6,7 @@ import kimjang.toolkit.solsol.customer.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
 import kimjang.toolkit.solsol.room.dto.ChatRoomDto;
+import kimjang.toolkit.solsol.room.dto.LastChatDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
@@ -58,9 +59,9 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public ChatRoom createChatRoom(int memeberCnt) {
+    public ChatRoom createChatRoom(int memberCnt) {
         try {
-            return chatRoomRepository.save(ChatRoom.of(memeberCnt));
+            return chatRoomRepository.save(ChatRoom.of(memberCnt));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             throw new RuntimeException("채팅방 생성하지 못했습니다.");
@@ -109,6 +110,7 @@ public class ChatRoomService {
 
 
     public List<ChatRoomDto> getChatRooms(Long userId) {
-        return null;
+        return chatRoomRepository.findChatRoomsByUserId(userId);
+//        List<LastChatDto> lastChatDtos = chatRepository.findLastChatsByUserId(userId);
     }
 }
