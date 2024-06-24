@@ -33,10 +33,14 @@ public class CustomUserNamePwdAuthenticationProvider implements AuthenticationPr
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getName();
         String pwd = authentication.getCredentials().toString();
+        System.out.println("email : "+email+" pwd : "+pwd);
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             if (passwordEncoder.matches(pwd, user.get().getPwd())) {
-                return new UsernamePasswordAuthenticationToken(email, pwd, getGrantedAuthorities(user.get().getAuthorities()));
+                System.out.println("비밀번호 통과!");
+                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email, pwd, getGrantedAuthorities(user.get().getAuthorities()));
+                System.out.println("인증이 되었는가 : "+token.isAuthenticated()+" 권한은 무엇인가 : "+token.getAuthorities());
+                return token;
             } else {
                 throw new BadCredentialsException("Invalid password!");
             }
@@ -49,6 +53,7 @@ public class CustomUserNamePwdAuthenticationProvider implements AuthenticationPr
     private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Authority authority : authorities) {
+            System.out.println("권한 : "+authority.getName());
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
         }
         return grantedAuthorities;

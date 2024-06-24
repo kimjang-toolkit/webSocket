@@ -13,7 +13,7 @@ import java.util.Base64;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-public class RequestVaiildationFilter implements Filter {
+public class RequestValidationFilter implements Filter {
     public static final String AUTHENTICATION_SCHEME_BASIC = "basic";
     private Charset credentialsCharset = StandardCharsets.UTF_8;
     @Override
