@@ -1,0 +1,70 @@
+package kimjang.toolkit.solsol.filter;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kimjang.toolkit.solsol.constants.SecurityConstants;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.crypto.SecretKey;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (null != authentication) {
+            // Key 자동 생성
+            SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
+            // 서명자나 주제 같은 건 다 환경변수로 빼야한다.
+            String jwt = Jwts.builder().issuer("Eazy Bank").subject("JWT Token")
+                    // 비밀번호는 절대 안된다.
+                    .claim("username", authentication.getName())
+                    .claim("authorities", populateAuthorities(authentication.getAuthorities()))
+                    .issuedAt(new Date())
+                    // 만료시간, ms 단위, 만료 시간을 넘어선 토큰이 들어오면 만료됐다고 예외가 발생한다.
+                    .expiration(new Date((new Date()).getTime() + 3000000))
+                    // 디지털 서명 작성
+                    .signWith(key).compact();
+            response.setHeader(SecurityConstants.JWT_HEADER, jwt);
+        }
+
+        filterChain.doFilter(request, response);
+
+    }
+
+    /**
+     * 메서드의 조건을 통과하면 필터를 실행하지 않도록한다.
+     * JWT 토큰 생성은 로그인 과정에서만 진행되어야한다.
+     *  따라서 다른 path에 대한 요청에서는 실행하지 않아야한다.
+     *  즉, "/user"가 아니라면 실행하지 않는 것
+     * @param request
+     * @return
+     */
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return !request.getServletPath().equals("/user");
+    }
+
+    // 권한 배열을 문자열로 변환하는 메서드
+    private String populateAuthorities(Collection<? extends GrantedAuthority> collection) {
+        Set<String> authoritiesSet = new HashSet<>();
+        for (GrantedAuthority authority : collection) {
+            authoritiesSet.add(authority.getAuthority());
+        }
+        return String.join(",", authoritiesSet);
+    }
+}

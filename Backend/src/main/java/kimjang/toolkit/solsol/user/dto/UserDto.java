@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.customer.dto;
+package kimjang.toolkit.solsol.user.dto;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

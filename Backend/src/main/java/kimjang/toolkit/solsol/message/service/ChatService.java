@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.message.service;
 
-import kimjang.toolkit.solsol.customer.User;
-import kimjang.toolkit.solsol.customer.CustomerRepository;
+import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.CustomerRepository;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.PastChatsDto;
 import kimjang.toolkit.solsol.message.dto.ReqPastChatsDto;

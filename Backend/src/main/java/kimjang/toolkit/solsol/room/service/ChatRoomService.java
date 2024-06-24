@@ -1,12 +1,11 @@
 package kimjang.toolkit.solsol.room.service;
 
-import kimjang.toolkit.solsol.customer.User;
-import kimjang.toolkit.solsol.customer.CustomerRepository;
-import kimjang.toolkit.solsol.customer.dto.UserDto;
+import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.CustomerRepository;
+import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
 import kimjang.toolkit.solsol.room.dto.ChatRoomDto;
-import kimjang.toolkit.solsol.room.dto.LastChatDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;

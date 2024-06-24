@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.room;
 
 
-import kimjang.toolkit.solsol.customer.dto.UserDto;
+import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.room.service.CreateRoomName;
 import org.junit.jupiter.api.DisplayName;

@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.customer;
+package kimjang.toolkit.solsol.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

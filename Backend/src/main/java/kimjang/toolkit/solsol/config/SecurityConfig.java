@@ -1,6 +1,6 @@
 package kimjang.toolkit.solsol.config;
 
-import kimjang.toolkit.solsol.filter.CsrfCookieFilter;
+import kimjang.toolkit.solsol.filter.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -40,24 +41,23 @@ public class SecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         // CSRF 토큰을 이용해서 원하는 브라우저에서만 요청할 수 있도록, CSRF 공격 방지
         // CSRF 토큰 값을 사용하는 헤더는 왜 CORS 설정을 하지 않았냐면, 프레임워크에서 csrf 헤더를 조작하기 때문이다.
-//        CsrfTokenRequestAttributeHandler requestAttributeHandler = new CsrfTokenRequestAttributeHandler();
-//        requestAttributeHandler.setCsrfRequestAttributeName("_csrf");
+        CsrfTokenRequestAttributeHandler requestAttributeHandler = new CsrfTokenRequestAttributeHandler();
+        requestAttributeHandler.setCsrfRequestAttributeName("_csrf");
 
         // 모든 uri에 인증이 필요하지 않도록 설정
         // 한번 자격증명을 보내면 JSSESSIONID 값을 이용해서 보안 API 호출할 때 자격증명을 제공하지 않아도 괜찮은 상태
         // 세션 정보를 서버에 저장하지 않고 세션 ID를 제공하지 않도록함
-        http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> {
                     cors.configurationSource(request -> {
                         CorsConfiguration config = new CorsConfiguration();
                         config.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:5173", "http://localhost:5174","http://localhost:8080"));
                         config.setAllowedMethods(Collections.singletonList("*"));
                         // 비밀번호 같은 자격증명을 헤더에 담아서 보낼 수 있도록 설정
-//                        config.setAllowCredentials(true);
+                        config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
                         // Authorization 헤더를 노출하는 것을 허용, 여기에 JWT 토큰 값을 보낼 것
-//                        config.setExposedHeaders(Arrays.asList("Authorization"));
+                        config.setExposedHeaders(List.of("Authorization"));
                         config.setMaxAge(3600L);
                         return config;
                     });
@@ -65,14 +65,19 @@ public class SecurityConfig {
 //                // CookieCsrfTokenRepository 는 csrf 토큰을 쿠키로 유지하고 헤더 "XSRF-TOKEN"이란 이름으로 csrf 토큰을 저장한다.
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
-//                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestAttributeHandler).ignoringRequestMatchers("/contact", "/register")
-//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-//                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestAttributeHandler).ignoringRequestMatchers("/**")
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new RequestVaiildationFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
+                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
                 .authorizeHttpRequests((requests) -> requests
                         // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
-                        .requestMatchers("/**").permitAll()
-                        .requestMatchers( "/api-docs" ).permitAll())
+                        .requestMatchers("/chat-room").hasRole("USER")
+                        .requestMatchers( "/api-docs", "/swagger-ui/**" ).permitAll())
 //                // Resource server로 동작하기 위해 jwt 컨버터를 세팅
 //                .oauth2ResourceServer(server ->
 //                        server.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(converter)));
@@ -99,6 +104,7 @@ public class SecurityConfig {
                 .username("user")
                 .password("1234")
                 .authorities("admin")
+                .roles("User")
                 .build();
 
         return new InMemoryUserDetailsManager(admin); // 메모리 상에 유저의 자격증명 정보를 저장
