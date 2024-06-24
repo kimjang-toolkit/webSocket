@@ -1,12 +1,17 @@
 package kimjang.toolkit.solsol.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import kimjang.toolkit.solsol.user.dto.CreateUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,20 +29,25 @@ public class User {
 
     private String email;
 
+    private String pwd;
+
+    @OneToMany(mappedBy="user",fetch=FetchType.LAZY)
+    private Set<Authority> authorities;
+
     @JoinColumn(name = "mobile_number")
     private String mobileNumber;
 
-    // json -> 객체로 시리얼라이제이션은 가능하지만 그 반대로는 불가능하게 해서 외부로 DB의 비밀번호가 유출되지 않도록 함.
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    private String pwd;
-//
-//    private String role;
-//
     @Column(name = "create_dt")
-    private LocalDateTime createDt;
+    private LocalDateTime createDate;
 
-//    @JsonIgnore // 디-시리얼라이제이션 될 때 json으로 값을 넣지 말도록 함
-//    @OneToMany(mappedBy = "user")
-//    private Set<Authority> authorities;
 
+    public static User of(CreateUserDto dto, String hashPwd){
+        return User.builder()
+                .name(dto.getName())
+                .email(dto.getEmail())
+                .pwd(hashPwd)
+                .mobileNumber(dto.getMobileNumber())
+                .createDate(LocalDateTime.now())
+                .build();
+    }
 }
