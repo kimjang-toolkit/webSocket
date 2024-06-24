@@ -47,7 +47,7 @@ public class SecurityConfig {
         // 모든 uri에 인증이 필요하지 않도록 설정
         // 한번 자격증명을 보내면 JSSESSIONID 값을 이용해서 보안 API 호출할 때 자격증명을 제공하지 않아도 괜찮은 상태
         // 세션 정보를 서버에 저장하지 않고 세션 ID를 제공하지 않도록함
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        http //.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> {
                     cors.configurationSource(request -> {
                         CorsConfiguration config = new CorsConfiguration();
@@ -65,20 +65,21 @@ public class SecurityConfig {
 //                // CookieCsrfTokenRepository 는 csrf 토큰을 쿠키로 유지하고 헤더 "XSRF-TOKEN"이란 이름으로 csrf 토큰을 저장한다.
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestAttributeHandler).ignoringRequestMatchers("/**")
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .csrf((csrf) -> csrf.disable())
+//                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestAttributeHandler).ignoringRequestMatchers("/**")
+//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(new RequestVaiildationFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
-                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
+                .addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
+//                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
+//                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
                 .authorizeHttpRequests((requests) -> requests
                         // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
-                        .requestMatchers("/chat-room").hasRole("USER")
+                        .requestMatchers("/chat-room", "/**" ).authenticated()
                         .requestMatchers("/user").authenticated()
-                        .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**" ).permitAll())
+                        .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**").permitAll())
 //                // Resource server로 동작하기 위해 jwt 컨버터를 세팅
 //                .oauth2ResourceServer(server ->
 //                        server.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(converter)));
