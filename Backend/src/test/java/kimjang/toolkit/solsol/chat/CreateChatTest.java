@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import kimjang.toolkit.solsol.SolsolApplication;
 import kimjang.toolkit.solsol.user.User;
-import kimjang.toolkit.solsol.user.CustomerRepository;
+import kimjang.toolkit.solsol.user.UserRepository;
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
@@ -32,7 +32,7 @@ public class CreateChatTest {
     @Autowired
     ChatService chatService;
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
     @Autowired
     private ChatRoomRepository chatRoomRepository;
     @Autowired
@@ -75,7 +75,7 @@ public class CreateChatTest {
                 .mobileNumber("01000000001")
                 .createDt(LocalDateTime.now())
                 .build();
-        customerRepository.save(user1);
+        userRepository.save(user1);
 
         // User 2 생성
         user2 = User.builder()
@@ -84,7 +84,7 @@ public class CreateChatTest {
                 .mobileNumber("01000000002")
                 .createDt(LocalDateTime.now())
                 .build();
-        customerRepository.save(user2);
+        userRepository.save(user2);
 
         // Chat Room 생성
         chatRoom = ChatRoom.builder()
@@ -107,10 +107,10 @@ public class CreateChatTest {
         // AUTO_INCREMENT 값 1개 감소 (Chat Message)
         entityManager.createNativeQuery("ALTER TABLE chat_message AUTO_INCREMENT="+(maxChatId-1)).executeUpdate();
         // User 1 제거
-        customerRepository.delete(user1);
+        userRepository.delete(user1);
 
         // User 2 제거
-        customerRepository.delete(user2);
+        userRepository.delete(user2);
 
         // AUTO_INCREMENT 값 2개 감소 (User)
         entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT="+(maxCustomerId-2)).executeUpdate();

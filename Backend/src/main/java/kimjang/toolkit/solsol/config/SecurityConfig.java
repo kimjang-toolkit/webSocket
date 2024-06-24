@@ -116,7 +116,7 @@ public class SecurityConfig {
      * 인증을 keycloak에 전담했으니 비밀번호를 다루지 않을 것이다.
      * @return
      */
-//    @Bean
+    @Bean
     public PasswordEncoder passwordEncoder(){
         // 비밀번호를 일반 텍스트로 관리되기 때문에 프로덕션 환경에서는 위험하다.
         // BCrypt 알고리즘을 이용해서 비밀번호를 해싱하자

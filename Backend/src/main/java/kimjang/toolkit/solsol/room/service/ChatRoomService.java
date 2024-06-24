@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.room.service;
 
 import kimjang.toolkit.solsol.user.User;
-import kimjang.toolkit.solsol.user.CustomerRepository;
+import kimjang.toolkit.solsol.user.UserRepository;
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
@@ -28,7 +28,7 @@ import static kimjang.toolkit.solsol.room.service.CreateRoomName.withParticipati
 public class ChatRoomService {
 
 
-    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
     private final ChatRoomCustormerRelationshipRepository relationshipRepository;
@@ -90,7 +90,7 @@ public class ChatRoomService {
                 .map(UserDto::getId)
                 .toList();
 
-        List<User> users = customerRepository.findByIdIn(customerIds);
+        List<User> users = userRepository.findByIdIn(customerIds);
         if (users.size() != participants.size()) {
             throw new RuntimeException("존재하지 않는 유저에게 채팅방을 초대했습니다.");
         }
