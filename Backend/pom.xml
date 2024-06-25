@@ -42,6 +42,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+		<!--	WebSocket 메세지에 대한 AuthenticationManager 의존성	-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-messaging</artifactId>
+		</dependency>
 		<!--		롬복-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
