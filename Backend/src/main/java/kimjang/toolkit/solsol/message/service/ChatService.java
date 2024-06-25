@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.message.service;
 
-import kimjang.toolkit.solsol.customer.User;
-import kimjang.toolkit.solsol.customer.CustomerRepository;
+import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.UserRepository;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.PastChatsDto;
 import kimjang.toolkit.solsol.message.dto.ReqPastChatsDto;
@@ -19,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatService {
     private final ChatRepository chatRepository;
     private final ChatRoomRepository chatRoomRepository;
-    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
 
     public void saveChat(SendChatMessageDto message) {
-        User user = customerRepository.findById(message.getSender().getId())
+        User user = userRepository.findById(message.getSender().getId())
                 .orElseThrow();
         ChatRoom room = chatRoomRepository.findById(message.getRoomId())
                 .orElseThrow();

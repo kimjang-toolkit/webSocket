@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>kimjang.toolkit</groupId>
 	<artifactId>solsol</artifactId>
-	<version>0.3.3</version>
+	<version>1.0.3</version>
 	<name>solsol</name>
 	<description>develop chatting server</description>
 	<properties>
@@ -19,11 +19,7 @@
 
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 		<!--	JUnit	-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -41,6 +37,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		<!--	WebSocket 메세지에 대한 AuthenticationManager 의존성	-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-messaging</artifactId>
 		</dependency>
 		<!--		롬복-->
 		<dependency>
@@ -88,6 +89,24 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 			<version>${querydsl.version}</version>
+		</dependency>
+		<!--		JWT를 위한 의존성-->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.3</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.3</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.3</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 

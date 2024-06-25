@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.room.entity;
 
 import jakarta.persistence.*;
-import kimjang.toolkit.solsol.customer.User;
+import kimjang.toolkit.solsol.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
