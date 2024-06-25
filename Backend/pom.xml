@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>kimjang.toolkit</groupId>
 	<artifactId>solsol</artifactId>
-	<version>0.3.3</version>
+	<version>1.0.3</version>
 	<name>solsol</name>
 	<description>develop chatting server</description>
 	<properties>
@@ -19,11 +19,7 @@
 
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 		<!--	JUnit	-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
