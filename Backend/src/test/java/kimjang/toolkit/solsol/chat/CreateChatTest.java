@@ -73,7 +73,7 @@ public class CreateChatTest {
                 .name("User 1")
                 .email("user1@example.com")
                 .mobileNumber("01000000001")
-                .createDt(LocalDateTime.now())
+                .createDate(LocalDateTime.now())
                 .build();
         userRepository.save(user1);
 
@@ -82,7 +82,7 @@ public class CreateChatTest {
                 .name("User 2")
                 .email("user2@example.com")
                 .mobileNumber("01000000002")
-                .createDt(LocalDateTime.now())
+                .createDate(LocalDateTime.now())
                 .build();
         userRepository.save(user2);
 
