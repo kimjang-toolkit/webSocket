@@ -66,19 +66,20 @@ public class SecurityConfig {
 //                // CookieCsrfTokenRepository 는 csrf 토큰을 쿠키로 유지하고 헤더 "XSRF-TOKEN"이란 이름으로 csrf 토큰을 저장한다.
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
-//                .csrf((csrf) -> csrf.disable())
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/contact","/register")
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .csrf((csrf) -> csrf.disable())
+//                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/notification/**","/register")
+//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+//                .addFilterAt(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
-                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+//                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
                 .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
                 .authorizeHttpRequests((requests) -> requests
                         // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
-                        .requestMatchers( "/chat-room/**" ).hasRole("USER")
+                        .requestMatchers( HttpMethod.POST,"/chat-room/**" ).hasRole("USER")
+                        .requestMatchers( HttpMethod.GET,"/chat-room/**" ).hasRole("USER")
                         .requestMatchers("/user").authenticated()
                         .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
