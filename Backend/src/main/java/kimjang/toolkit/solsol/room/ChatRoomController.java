@@ -48,20 +48,17 @@ public class ChatRoomController {
     */
    @PostMapping("/chat-room")
    @SendTo("/notification/room/{user-id}") // /notification/room/chat 을 구독하면 SendMessageDto를 받음
-   public DeferredResult<ResponseEntity<String>> createChatRoom(@RequestBody CreateChatRoomDto dto){
-      Long roomId = chatRoomService.createChatRoomAndFirstChat(dto);
-      DeferredResult<ResponseEntity<String>> deferredResult = new DeferredResult<>();
-      CompletableFuture.runAsync(() -> {
+   public ResponseEntity<String> createChatRoom(@RequestBody CreateChatRoomDto dto){
+      try{
+         Long roomId = chatRoomService.createChatRoomAndFirstChat(dto);
+         DeferredResult<ResponseEntity<String>> deferredResult = new DeferredResult<>();
          chatRoomStompService.inviteParticipates(dto,roomId);
-      }).handle((result, throwable) -> {
-         if (throwable != null) {
-            deferredResult.setErrorResult("Failed to create chat room and send notifications: " + throwable.getMessage());
-         } else {
-            deferredResult.setResult(ResponseEntity.ok("Chat room created and notifications sent"));
-         }
-         return null;
-      });;
-      return deferredResult;
+         return ResponseEntity.ok("Chat room created and notifications sent");
+      }
+      catch(RuntimeException e){
+         log.error(e.getMessage());
+         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러 발생!");
+      }
    }
 
    @GetMapping("/chat-room")
@@ -70,7 +67,7 @@ public class ChatRoomController {
          List<ChatRoomDto> rooms = chatRoomService.getChatRooms(userId);
          return ResponseEntity.ok(rooms);
       } catch(RuntimeException e){
-         log.error(e.getMessage());
+         log.error("Error creating chat room", e);
          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
       }
    }
