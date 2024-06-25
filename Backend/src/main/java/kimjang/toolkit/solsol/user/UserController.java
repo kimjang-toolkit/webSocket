@@ -5,10 +5,8 @@ import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,5 +17,9 @@ public class UserController {
         UserDto userDto = userService.registerUser(createUserDto);
         return ResponseEntity.ok(userDto);
     }
-
+    @RequestMapping("/user")
+    public UserDto getUserDetailsAfterLogin(Authentication authentication) {
+        System.out.println(authentication.getName()+"님의 유저 정보 불러오기");
+        return userService.findByEmail(authentication.getName());
+    }
 }

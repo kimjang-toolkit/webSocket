@@ -29,15 +29,25 @@ public class CustomUserNamePwdAuthenticationProvider implements AuthenticationPr
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * HTTP의 Authorization 헤더에서 인증 정보 찾기
+     * {email}:{password}를 Base64로 인코딩한 값 => <encodedCredentials>
+     *
+     * 요청 포멧
+     * Key : Authorization
+     * Value : "Basic <encodedCredentials>"
+     *
+     * @param authentication the authentication request object.
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getName();
         String pwd = authentication.getCredentials().toString();
-        System.out.println("email : "+email+" pwd : "+pwd);
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             if (passwordEncoder.matches(pwd, user.get().getPwd())) {
-                System.out.println("비밀번호 통과!");
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(email, pwd, getGrantedAuthorities(user.get().getAuthorities()));
                 System.out.println("인증이 되었는가 : "+token.isAuthenticated()+" 권한은 무엇인가 : "+token.getAuthorities());
                 return token;
@@ -53,7 +63,6 @@ public class CustomUserNamePwdAuthenticationProvider implements AuthenticationPr
     private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Authority authority : authorities) {
-            System.out.println("권한 : "+authority.getName());
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
         }
         return grantedAuthorities;

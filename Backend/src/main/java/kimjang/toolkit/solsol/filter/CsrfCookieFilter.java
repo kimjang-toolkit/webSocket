@@ -15,6 +15,7 @@ public class CsrfCookieFilter extends OncePerRequestFilter {
         // 이용 가능한 Csrf 토큰을 찾는다.
         CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         if(csrfToken != null){
+            System.out.println("CSRF 토큰 받았음 : "+ csrfToken.getToken());
             response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
         }
         filterChain.doFilter(request, response);

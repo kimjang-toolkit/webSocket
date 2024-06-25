@@ -47,6 +47,8 @@ public class RequestValidationFilter implements Filter {
                     throw new BadCredentialsException("Failed to decode basic authentication token");
                 }
             }
+        } else{
+            System.out.println("jwt 토큰이 없습니다.");
         }
         chain.doFilter(request, response);
     }
