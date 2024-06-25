@@ -35,11 +35,12 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
                         .parseSignedClaims(jwt)
                         .getPayload();
                 // 토큰 속 payload를 추출
-                String username = String.valueOf(claims.get("username"));
+                String email = String.valueOf(claims.get("email"));
                 String authorities = (String) claims.get("authorities");
                 // payload를 바탕으로 인증 객체를 생성
-                Authentication auth = new UsernamePasswordAuthenticationToken(username, null,
+                Authentication auth = new UsernamePasswordAuthenticationToken(email, null,
                         AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
+                System.out.println(email+"님 인증 됐습니다.");
                 // 인증 객체를 contextHolder에 저장하기
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (Exception e) {

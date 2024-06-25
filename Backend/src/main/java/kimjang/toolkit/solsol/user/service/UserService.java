@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,5 +26,10 @@ public class UserService {
         User user = User.of(createUserDto, hashPwd);
         User savedUser = userRepository.save(user);
         return UserDto.toDto(savedUser);
+    }
+
+    public UserDto findByEmail(String email){
+        User user = userRepository.findByEmail(email).orElseThrow();
+        return UserDto.toDto(user);
     }
 }
