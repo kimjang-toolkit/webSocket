@@ -16,6 +16,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -66,12 +67,12 @@ public class SecurityConfig {
 //                // CookieCsrfTokenRepository 는 csrf 토큰을 쿠키로 유지하고 헤더 "XSRF-TOKEN"이란 이름으로 csrf 토큰을 저장한다.
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
-                .csrf((csrf) -> csrf.disable())
-//                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/notification/**","/register")
-//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-//                .addFilterAt(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+//                .csrf((csrf) -> csrf.disable())
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register")
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .addFilterAt(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
-//                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
                 .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
