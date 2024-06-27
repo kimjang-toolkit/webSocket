@@ -7,7 +7,7 @@ export interface ParsedDateTime {
   sec: number;
 }
 
-export interface Customer {
+export interface User {
   id: number;
   name: string;
 }
@@ -16,12 +16,12 @@ export interface Customer {
 export interface MessageFormat {
   roomId: number;
   content: string;
-  sender: Customer;
+  sender: User;
 }
 //서버에서 받은 메시지데이터 가공
 export interface chatFormat {
   roomId: number;
   content: string;
-  sender: Customer;
+  sender: User;
   createDate: ParsedDateTime;
 }

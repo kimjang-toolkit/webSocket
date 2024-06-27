@@ -8,6 +8,10 @@ import { Main, SubHeading } from '@/styles/Common';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import SelectParticipants from '@/components/SelectParticipants';
+import { useEffect } from 'react';
+import { initializeWebSocket } from '@/redux/webSocketSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
 
 const mockChatList = [
   { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
@@ -17,7 +21,12 @@ const mockProfile = {
   imgUrl: 'src/assets/images/맹구.jpg',
 };
 const ChatRoomListPage = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user);
+  useEffect(() => {
+    dispatch(initializeWebSocket());
+  }, [dispatch]);
+
   return (
     <ChatListContainer>
       <Header title="채팅방 리스트" isBackArrow={false} />
