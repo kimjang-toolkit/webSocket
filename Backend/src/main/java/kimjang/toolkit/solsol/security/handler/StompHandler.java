@@ -23,6 +23,7 @@ public class StompHandler implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         System.out.println("message:" + message);
         System.out.println("헤더 : " + message.getHeaders());
+        System.out.println("요청 메서드 : " + accessor.getCommand());
         String token = accessor.getFirstNativeHeader(SecurityConstants.JWT_HEADER);
         System.out.println("토큰 " + token);
         // STOMP 메서드가 CONNECT인 경우
