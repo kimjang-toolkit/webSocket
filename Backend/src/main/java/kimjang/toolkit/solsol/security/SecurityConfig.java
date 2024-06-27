@@ -1,6 +1,5 @@
 package kimjang.toolkit.solsol.security;
 
-import kimjang.toolkit.solsol.filter.*;
 import kimjang.toolkit.solsol.security.filter.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

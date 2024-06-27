@@ -6,7 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kimjang.toolkit.solsol.constants.SecurityConstants;
+import kimjang.toolkit.solsol.security.jwt.SecurityConstants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,8 +42,6 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
                     .signWith(key).compact();
             response.setHeader(SecurityConstants.JWT_HEADER, jwt);
             System.out.println(authentication.getName()+"님 jwt 발급됐습니다.");
-        } else{
-            System.out.println("인증되지 않아 jwt 토큰을 발급하지 못했습니다.");
         }
 
         filterChain.doFilter(request, response);
@@ -78,7 +76,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         System.out.println("auth request url : "+request.getServletPath());
-        return !(request.getServletPath().equals("/user") || request.getServletPath().equals("/gs-guide-websocket"));
+        return !request.getServletPath().equals("/user") ;
     }
 
     // 권한 배열을 문자열로 변환하는 메서드

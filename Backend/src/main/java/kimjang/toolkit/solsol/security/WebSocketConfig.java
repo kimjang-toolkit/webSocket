@@ -4,6 +4,7 @@ package kimjang.toolkit.solsol.security;
 import kimjang.toolkit.solsol.security.handler.LoggingHandshakeInterceptor;
 import kimjang.toolkit.solsol.security.handler.LoggingWebSocketHandlerDecoratorFactory;
 import kimjang.toolkit.solsol.security.handler.StompHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -17,9 +18,11 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSocketMessageBroker // 메세지 브로커가 WebSocket 메세지를 처리한다.
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+	private final ChannelInterceptor stompChannelInterceptor;
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
 		// 메모리 기반 메세지 브로커를 동작시킴 그리고 "/topic" 접두사를 가진 구독 URI에게 메세지 전달을 수행함
@@ -51,14 +54,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		return new LoggingWebSocketHandlerDecoratorFactory();
 	}
 
+	/**
+	 * Security가 인식하지 못하는 헤더 값 속 JWT를 찾아서 검증한 후
+	 * Authentication에 저장하기 like AuthenticationProvider
+	 * @param registration
+	 */
 	@Override
 	public void configureClientInboundChannel(ChannelRegistration registration){
-		registration.interceptors(stompChannelInterceptor());
-	}
-
-	@Bean
-	public ChannelInterceptor stompChannelInterceptor(){
-		return new StompHandler();
+		registration.interceptors(stompChannelInterceptor);
 	}
 
 }
