@@ -13,11 +13,12 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 
     private Long id;
+    private String email;
 
     @Pattern(regexp = "^[/\\,'₩`{}|\"#\\$%^&*()]+$", message = "Name contains invalid characters.")
     @Size(max = 10, message = "Name must be less than 10 characters.")
     private String name;
     public static UserDto toDto(User user){
-        return new UserDto(user.getId(), user.getName());
+        return new UserDto(user.getId(), user.getEmail(), user.getName());
     }
 }

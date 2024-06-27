@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.room.service;
 
+import kimjang.toolkit.solsol.room.dto.LeaveRoomDto;
 import kimjang.toolkit.solsol.user.User;
 import kimjang.toolkit.solsol.user.UserRepository;
 import kimjang.toolkit.solsol.user.dto.UserDto;
@@ -13,6 +14,7 @@ import kimjang.toolkit.solsol.room.repository.ChatRoomCustormerRelationshipRepos
 import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,5 +113,16 @@ public class ChatRoomService {
     public List<ChatRoomDto> getChatRooms(Long userId) {
         return chatRoomRepository.findChatRoomsByUserId(userId);
 //        List<LastChatDto> lastChatDtos = chatRepository.findLastChatsByUserId(userId);
+    }
+
+    @PreAuthorize("# leaveRoomDto.leaveUser.email == authentication.principal.username")
+    public LeaveRoomDto leaveRoom(LeaveRoomDto leaveRoomDto) {
+        System.out.println(leaveRoomDto.getLeaveUser().getEmail()+"은 인증된 사람이다!!");
+        LeaveRoomDto dto = null;
+
+        // room에 memberCnt 1개 줄이기
+        // user에 맞는 ChatRoomCustomerRelationship delete 하기
+
+        return dto;
     }
 }
