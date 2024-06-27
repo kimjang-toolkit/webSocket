@@ -4,9 +4,9 @@ package kimjang.toolkit.solsol.chat;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import kimjang.toolkit.solsol.SolsolApplication;
-import kimjang.toolkit.solsol.customer.User;
-import kimjang.toolkit.solsol.customer.CustomerRepository;
-import kimjang.toolkit.solsol.customer.dto.UserDto;
+import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.UserRepository;
+import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
@@ -32,7 +32,7 @@ public class CreateChatTest {
     @Autowired
     ChatService chatService;
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
     @Autowired
     private ChatRoomRepository chatRoomRepository;
     @Autowired
@@ -73,22 +73,23 @@ public class CreateChatTest {
                 .name("User 1")
                 .email("user1@example.com")
                 .mobileNumber("01000000001")
-                .createDt(LocalDateTime.now())
+                .createDate(LocalDateTime.now())
                 .build();
-        customerRepository.save(user1);
+        userRepository.save(user1);
 
         // User 2 생성
         user2 = User.builder()
                 .name("User 2")
                 .email("user2@example.com")
                 .mobileNumber("01000000002")
-                .createDt(LocalDateTime.now())
+                .createDate(LocalDateTime.now())
                 .build();
-        customerRepository.save(user2);
+        userRepository.save(user2);
 
         // Chat Room 생성
         chatRoom = ChatRoom.builder()
                 .createDate(LocalDateTime.now())
+                .memberCnt(2)
                 .build();
         chatRoomRepository.save(chatRoom);
     }
@@ -106,13 +107,13 @@ public class CreateChatTest {
         // AUTO_INCREMENT 값 1개 감소 (Chat Message)
         entityManager.createNativeQuery("ALTER TABLE chat_message AUTO_INCREMENT="+(maxChatId-1)).executeUpdate();
         // User 1 제거
-        customerRepository.delete(user1);
+        userRepository.delete(user1);
 
         // User 2 제거
-        customerRepository.delete(user2);
+        userRepository.delete(user2);
 
         // AUTO_INCREMENT 값 2개 감소 (User)
-        entityManager.createNativeQuery("ALTER TABLE customer AUTO_INCREMENT="+(maxCustomerId-2)).executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT="+(maxCustomerId-2)).executeUpdate();
 
         // Chat Room 제거
         chatRoomRepository.delete(chatRoom);

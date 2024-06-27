@@ -21,5 +21,6 @@ public class ReqPastChatsDto {
         this.roomId = roomId;
         this.page = PageRequest.of(page, size);
         this.roomExitTime = roomExitTime;
+
     }
 }

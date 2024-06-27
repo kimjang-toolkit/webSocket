@@ -1,4 +1,5 @@
 const stompClient = new StompJs.Client({
+    brokerURL: 'ws://localhost:8080/gs-guide-websocket'
   brokerURL:
     'ws://ec2-43-203-206-14.ap-northeast-2.compute.amazonaws.com/gs-guide-websocket',
 });
@@ -50,7 +51,7 @@ function sendName() {
     body: JSON.stringify({
       roomId: 1,
       content: $('#name').val(),
-      customer: {
+      sender: {
         id: 1,
         name: '효승이',
       },

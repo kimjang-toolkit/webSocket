@@ -1,6 +1,6 @@
 package kimjang.toolkit.solsol.message.dto;
 
-import kimjang.toolkit.solsol.customer.dto.UserDto;
+import kimjang.toolkit.solsol.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
