@@ -3,23 +3,23 @@ package kimjang.toolkit.solsol.room;
 import kimjang.toolkit.solsol.room.dto.ChatRoomDto;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
+import kimjang.toolkit.solsol.room.dto.LeaveRoomDto;
 import kimjang.toolkit.solsol.room.service.ChatRoomService;
 import kimjang.toolkit.solsol.room.service.ChatRoomStompService;
 import kimjang.toolkit.solsol.message.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -66,6 +66,20 @@ public class ChatRoomController {
       try{
          List<ChatRoomDto> rooms = chatRoomService.getChatRooms(userId);
          return ResponseEntity.ok(rooms);
+      } catch(RuntimeException e){
+         log.error("Error creating chat room", e);
+         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      }
+   }
+
+   @PutMapping("/chat-room/leave")
+   public ResponseEntity<LeaveRoomDto> leaveRoom(@RequestBody LeaveRoomDto leaveRoomDto){
+      try{
+         LeaveRoomDto result = chatRoomService.leaveRoom(leaveRoomDto);
+         return ResponseEntity.ok(result);
+      } catch (IllegalArgumentException e){
+         log.error("Error ");
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
       } catch(RuntimeException e){
          log.error("Error creating chat room", e);
          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
