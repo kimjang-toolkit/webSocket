@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
@@ -76,6 +77,9 @@ public class ChatRoomController {
       try{
          LeaveRoomDto result = chatRoomService.leaveRoom(leaveRoomDto);
          return ResponseEntity.ok(result);
+      } catch (IllegalArgumentException e){
+         log.error("Error ");
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
       } catch(RuntimeException e){
          log.error("Error creating chat room", e);
          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
