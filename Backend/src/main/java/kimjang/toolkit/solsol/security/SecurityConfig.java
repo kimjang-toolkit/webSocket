@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,6 +48,9 @@ public class SecurityConfig {
         // 한번 자격증명을 보내면 JSSESSIONID 값을 이용해서 보안 API 호출할 때 자격증명을 제공하지 않아도 괜찮은 상태
         // 세션 정보를 서버에 저장하지 않고 세션 ID를 제공하지 않도록함
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .cors(cors -> {
+//                    cors.disable();
+//                })
                 .cors(cors -> {
                     cors.configurationSource(request -> {
                         CorsConfiguration config = new CorsConfiguration();
@@ -64,8 +68,8 @@ public class SecurityConfig {
 //                // CookieCsrfTokenRepository 는 csrf 토큰을 쿠키로 유지하고 헤더 "XSRF-TOKEN"이란 이름으로 csrf 토큰을 저장한다.
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
-//                .csrf((csrf) -> csrf.disable())
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register", "/gs-guide-websocket")
+//                .csrf(AbstractHttpConfigurer::disable)
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register", "/gs-guide-websocket/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAt(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
@@ -79,7 +83,7 @@ public class SecurityConfig {
                         .requestMatchers( HttpMethod.POST,"/chat-room/**" ).hasRole("USER")
                         .requestMatchers( HttpMethod.GET,"/chat-room/**" ).hasRole("USER")
                         .requestMatchers("/user").authenticated()
-                        .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs-guide-websocket").permitAll()
+                        .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs-guide-websocket/**").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
 //                // Resource server로 동작하기 위해 jwt 컨버터를 세팅
 //                .oauth2ResourceServer(server ->
