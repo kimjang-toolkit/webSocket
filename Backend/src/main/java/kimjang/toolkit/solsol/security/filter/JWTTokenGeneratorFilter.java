@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.filter;
+package kimjang.toolkit.solsol.security.filter;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -77,7 +77,8 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
      */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getServletPath().equals("/user");
+        System.out.println("auth request url : "+request.getServletPath());
+        return !(request.getServletPath().equals("/user") || request.getServletPath().equals("/gs-guide-websocket"));
     }
 
     // 권한 배열을 문자열로 변환하는 메서드

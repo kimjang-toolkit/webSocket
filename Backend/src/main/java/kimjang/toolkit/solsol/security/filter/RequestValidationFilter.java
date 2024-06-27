@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.filter;
+package kimjang.toolkit.solsol.security.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +21,8 @@ public class RequestValidationFilter implements Filter {
         // 서블릿 요청과 응답을 HTTP서블릿 요청, 응답으로 수
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+        String authHeader = req.getHeader("Authorization");
+        System.out.println("header : "+authHeader);
         String header = req.getHeader(AUTHORIZATION); // AUTHORIZATION 이라는 헤더 값 가져오기
         if (header != null) {
             header = header.trim();

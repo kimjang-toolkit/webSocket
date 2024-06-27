@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.filter;
+package kimjang.toolkit.solsol.security.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

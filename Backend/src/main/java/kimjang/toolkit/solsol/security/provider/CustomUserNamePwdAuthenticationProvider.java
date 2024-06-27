@@ -1,11 +1,9 @@
-package kimjang.toolkit.solsol.config;
+package kimjang.toolkit.solsol.security.provider;
 
 import kimjang.toolkit.solsol.user.Authority;
 import kimjang.toolkit.solsol.user.User;
 import kimjang.toolkit.solsol.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
