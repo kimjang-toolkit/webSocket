@@ -1,3 +1,4 @@
+
 package kimjang.toolkit.solsol.config;
 
 import org.springframework.context.annotation.Bean;
@@ -16,17 +17,7 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 
 @Configuration
 @EnableWebSocketMessageBroker // 메세지 브로커가 WebSocket 메세지를 처리한다.
-@EnableWebSocketSecurity // websocket 메세지에 대한 보안을 적용한다.
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-
-	@Bean
-	AuthorizationManager<Message<?>> messageAuthorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
-		messages.nullDestMatcher().authenticated()
-				.simpDestMatchers("/pub/chat/**").hasRole("USER")
-				.simpSubscribeDestMatchers("/notification/room/**", "/sub/chat/**").hasRole("USER")
-				.anyMessage().denyAll();
-		return messages.build();
-	}
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
