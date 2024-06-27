@@ -55,7 +55,7 @@ public class CreateChatTest {
         SendChatMessageDto testMessage = SendChatMessageDto.builder().roomId(chatRoom.getId())
                 .content("호식이 두마리 치킨 크크크 치킨은 회애!")
                 .createDate(LocalDateTime.of(2023,12,12,20,0))
-                .sender(new UserDto(user2.getId(), "효승이"))
+                .sender(new UserDto(user2.getId(), "solsol@naver.com", "효승이"))
                 .build();
 
         // 보낸 메세지 저장
