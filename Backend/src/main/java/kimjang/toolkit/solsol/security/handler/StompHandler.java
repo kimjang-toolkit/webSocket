@@ -21,13 +21,17 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        System.out.println("message:" + message);
-        System.out.println("헤더 : " + message.getHeaders());
-        System.out.println("요청 메서드 : " + accessor.getCommand());
+//        System.out.println("message:" + message);
+//        System.out.println("헤더 : " + message.getHeaders());
+//        System.out.println("요청 메서드 : " + accessor.getCommand());
         String token = accessor.getFirstNativeHeader(SecurityConstants.JWT_HEADER);
-        System.out.println("토큰 " + token);
+//        System.out.println("토큰 " + token);
         // STOMP 메서드가 CONNECT인 경우
         if (StompCommand.CONNECT.equals(accessor.getCommand()) && token != null) {
+            System.out.println("토큰 유효성 검사 시작!");
+            jwtAuthenticationProvider.isValid(token);
+        } else if(StompCommand.UNSUBSCRIBE.equals(accessor.getCommand())){
+            System.out.println("구독 해제 합니다. 그런데 토큰은 오는지 보겠오");
             System.out.println("토큰 유효성 검사 시작!");
             jwtAuthenticationProvider.isValid(token);
         }
