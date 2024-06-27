@@ -1,6 +1,6 @@
 package kimjang.toolkit.solsol.room.dto;
 
-import kimjang.toolkit.solsol.customer.dto.UserDto;
+import kimjang.toolkit.solsol.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,9 +14,9 @@ public class CreateRoomReqDto {
 
     private Long roomId;
     private String roomName;
-    private UserDto customer;
+    private UserDto user; // 초대 받는 사람
     private String firstChat;
-    private UserDto maker;
+    private UserDto maker; // 방 만드는 사람
 
     public String toString(){
         StringBuilder sb = new StringBuilder();

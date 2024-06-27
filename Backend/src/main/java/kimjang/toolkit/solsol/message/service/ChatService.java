@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.message.service;
 
-import kimjang.toolkit.solsol.customer.User;
-import kimjang.toolkit.solsol.customer.CustomerRepository;
+import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.UserRepository;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.PastChatsDto;
 import kimjang.toolkit.solsol.message.dto.ReqPastChatsDto;
@@ -14,17 +14,15 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class ChatService {
     private final ChatRepository chatRepository;
     private final ChatRoomRepository chatRoomRepository;
-    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
 
     public void saveChat(SendChatMessageDto message) {
-        User user = customerRepository.findById(message.getSender().getId())
+        User user = userRepository.findById(message.getSender().getId())
                 .orElseThrow();
         ChatRoom room = chatRoomRepository.findById(message.getRoomId())
                 .orElseThrow();
@@ -33,11 +31,19 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public PastChatsDto getPastChats(ReqPastChatsDto reqPastChatsDto) {
-        Slice<SendChatMessageDto> pastChats =
-                chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
-                        reqPastChatsDto.getRoomExitTime(),
-                        reqPastChatsDto.getPage());
-        return PastChatsDto.of(reqPastChatsDto, pastChats.getContent());
+    public PastChatsDto getPastChats(ReqPastChatsDto reqPastChatsDto, String timeLine) {
+        if(timeLine.equals("recent")){
+            Slice<SendChatMessageDto> pastChats =
+                    chatRepository.findRecentChats(reqPastChatsDto.getRoomId(),
+                            reqPastChatsDto.getRoomExitTime(),
+                            reqPastChatsDto.getPage());
+            return PastChatsDto.of(reqPastChatsDto, pastChats);
+        } else{
+            Slice<SendChatMessageDto> pastChats =
+                    chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
+                            reqPastChatsDto.getRoomExitTime(),
+                            reqPastChatsDto.getPage());
+            return PastChatsDto.of(reqPastChatsDto, pastChats);
+        }
     }
 }

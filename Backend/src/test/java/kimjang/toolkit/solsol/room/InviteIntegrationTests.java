@@ -3,7 +3,7 @@ package kimjang.toolkit.solsol.room;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kimjang.toolkit.solsol.customer.dto.UserDto;
+import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.room.dto.CreateRoomReqDto;
 import kimjang.toolkit.solsol.room.service.ChatRoomStompService;
@@ -76,7 +76,7 @@ public class InviteIntegrationTests {
 							.roomId(1L)
 							.roomName(CreateRoomName.withParticipationsName(createChatRoomDto, createChatRoomDto.getParticipants().get(i-1).getId()))
 							.firstChat(createChatRoomDto.getFirstChat())
-							.customer(createChatRoomDto.getMaker())
+							.user(createChatRoomDto.getMaker())
 							.maker(createChatRoomDto.getMaker()).build();
 					session.subscribe("/notification/room/"+i, new StompFrameHandler() {
 						@Override
