@@ -63,8 +63,8 @@ public class InviteIntegrationTests {
 		final AtomicReference<Throwable> failure = new AtomicReference<>();
 
 		CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
-				Arrays.asList(new UserDto(1L ,"오찬솔"), new UserDto(2L, "조승효"), new UserDto(3L, "강아지"), new UserDto(4L, "까미나무 삼계탕")),
-				"", "효승이 자니??", new UserDto(2L, "조승효"));
+				Arrays.asList(new UserDto(1L ,"solsol@naver.com","오찬솔"), new UserDto(2L,"solsol@naver.com", "조승효"), new UserDto(3L,"solsol@naver.com", "강아지"), new UserDto(4L,"solsol@naver.com", "까미나무 삼계탕")),
+				"", "효승이 자니??", new UserDto(2L, "solsol@naver.com","조승효"));
 
 		StompSessionHandler handler = new TestSessionHandler(failure) {
 
