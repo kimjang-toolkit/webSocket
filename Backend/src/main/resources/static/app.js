@@ -47,7 +47,7 @@ function disconnect() {
 function sendName() {
     stompClient.publish({
         destination: "/pub/chat/1",
-        body: JSON.stringify({
+            body: JSON.stringify({
             'roomId' : 1,
             'content': $("#name").val(),
             'sender' : {

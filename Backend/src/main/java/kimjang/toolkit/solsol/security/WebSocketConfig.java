@@ -1,13 +1,14 @@
 
-package kimjang.toolkit.solsol.config;
+package kimjang.toolkit.solsol.security;
 
+import kimjang.toolkit.solsol.security.handler.LoggingHandshakeInterceptor;
+import kimjang.toolkit.solsol.security.handler.LoggingWebSocketHandlerDecoratorFactory;
+import kimjang.toolkit.solsol.security.handler.StompHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.Message;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.security.authorization.AuthorizationManager;
-import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
-import org.springframework.security.messaging.access.intercept.MessageMatcherDelegatingAuthorizationManager;
+import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -49,4 +50,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	public WebSocketHandlerDecoratorFactory loggingWebSocketHandlerDecoratorFactory() {
 		return new LoggingWebSocketHandlerDecoratorFactory();
 	}
+
+	@Override
+	public void configureClientInboundChannel(ChannelRegistration registration){
+		registration.interceptors(stompChannelInterceptor());
+	}
+
+	@Bean
+	public ChannelInterceptor stompChannelInterceptor(){
+		return new StompHandler();
+	}
+
 }

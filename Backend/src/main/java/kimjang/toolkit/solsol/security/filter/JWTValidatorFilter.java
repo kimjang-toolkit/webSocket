@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.filter;
+package kimjang.toolkit.solsol.security.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -59,7 +59,7 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
      */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().equals("/user");
+        return (request.getServletPath().equals("/user") || request.getServletPath().equals("/gs-guide-websocket"));
     }
 
 }
