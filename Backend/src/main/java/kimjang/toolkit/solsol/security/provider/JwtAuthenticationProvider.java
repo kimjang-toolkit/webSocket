@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class JwtAuthenticationProvider {
 
-    public void isValid(String jwt){
+    public String isValid(String jwt){
         if (null != jwt) { // 토큰이 있는 경우
             try {
                 SecretKey key = Keys.hmacShaKeyFor(
@@ -42,6 +42,7 @@ public class JwtAuthenticationProvider {
                 System.out.println(email+"님 인증 됐습니다.");
                 // 인증 객체를 contextHolder에 저장하기
                 SecurityContextHolder.getContext().setAuthentication(auth);
+                return email;
             } catch (Exception e) {
                 log.error(e.getMessage());
                 // 토큰의 문제가 생길 경우 예외처리
