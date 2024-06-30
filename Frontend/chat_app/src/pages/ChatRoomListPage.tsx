@@ -1,4 +1,4 @@
-import ChatRoomCard from '@/components/ChatRoomList/ChatRoomCard';
+import ChatRoomCard, { ChatRoomCardProps } from '@/components/ChatRoomList/ChatRoomCard';
 import Header from '@/components/Header';
 import Navbar from '@/components/Navbar';
 import NewChatButton from '@/components/ChatRoomList/NewChatButton';
@@ -15,10 +15,6 @@ import { AppDispatch } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query';
 import { fetchChatList } from '@/apis/chat';
 
-const mockChatList = [
-  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
-  { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
-];
 const mockProfile = {
   imgUrl: 'src/assets/images/맹구.jpg',
 };
@@ -30,14 +26,23 @@ const ChatRoomListPage = () => {
     data: chatList,
     error,
     isLoading,
-  } = useQuery('chatList', fetchChatList, {
-    onError: (error) => {
-      console.log('Error fetching chat list:', error);
-    },
+  } = useQuery({
+    queryKey: ['chatList'],
+    queryFn: fetchChatList,
   });
   useEffect(() => {
-    dispatch(initializeWebSocket());
-  }, [dispatch]);
+    if (user.id) {
+      dispatch(initializeWebSocket(user.id));
+    }
+  }, [dispatch, user.id]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading chat list</p>;
+  }
 
   return (
     <ChatListContainer>
@@ -45,13 +50,16 @@ const ChatRoomListPage = () => {
       <ProfileBox imgUrl={mockProfile.imgUrl} userId={user.id} userName={user.name} />
       <SubHeading $margin="0px 0px 8px 0px">Chats</SubHeading>
       <Main $marginTop="0px">
-        {mockChatList.map((chatList, index) => (
+        {chatList?.map((chat: ChatRoomCardProps) => (
           <ChatRoomCard
-            key={index}
-            imgUrl={chatList.imgUrl}
-            userName={chatList.userName}
-            recentMessage={chatList.recentMessage}
-            badgeCount={chatList.badgeCount}
+            key={chat.roomId}
+            imgUrl="src/assets/images/맹구.jpg"
+            roomName={chat.roomName}
+            roomId={chat.roomId}
+            lastContent={chat.lastContent}
+            lastChatTime={chat.lastChatTime}
+            memberCnt={chat.memberCnt}
+            unreadCnt={3}
           />
         ))}
       </Main>
