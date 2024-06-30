@@ -14,9 +14,11 @@ const initialState: webSocketState = {
 
 export const initializeWebSocket = createAsyncThunk(
   'webSocket/initializeWebSocket',
-  async (userId: number, { dispatch }) => {
+  async ({ userId, accessToken }: { userId: number; accessToken: string }, { dispatch }) => {
+    console.log('websocket', userId, accessToken);
     const client = new Client({
-      brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs-guide-websocket`,
+      brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs`,
+      connectHeaders: { Authorization: accessToken },
       debug: () => {
         // console.log('bug', str);
       },

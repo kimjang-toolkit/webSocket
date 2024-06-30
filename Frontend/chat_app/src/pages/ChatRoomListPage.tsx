@@ -31,10 +31,11 @@ const ChatRoomListPage = () => {
     queryFn: fetchChatList,
   });
   useEffect(() => {
-    if (user.id) {
-      dispatch(initializeWebSocket(user.id));
+    if (user.id && user.accessToken) {
+      console.log('user.id', user.id, user.accessToken);
+      dispatch(initializeWebSocket({ userId: user.id, accessToken: user.accessToken }));
     }
-  }, [dispatch, user.id]);
+  }, [dispatch, user]);
 
   if (isLoading) {
     return <p>Loading...</p>;
