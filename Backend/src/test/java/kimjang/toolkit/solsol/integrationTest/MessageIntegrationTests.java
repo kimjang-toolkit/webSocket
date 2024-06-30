@@ -57,7 +57,7 @@ public class MessageIntegrationTests {
 
 		SendChatMessageDto testMessage = SendChatMessageDto.builder().roomId(1L)
 				.content("호식이 두마리 치킨 크크크 치킨은 회애!")
-				.sender(new UserDto(1L, "효승이"))
+				.sender(new UserDto(1L,"solsol@naver.com", "효승이"))
 				.build();
 
 		StompSessionHandler handler = new TestSessionHandler(failure) {

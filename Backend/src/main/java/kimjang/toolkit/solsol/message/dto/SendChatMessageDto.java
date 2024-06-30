@@ -43,10 +43,10 @@ public class SendChatMessageDto implements Comparable<SendChatMessageDto>{
         return -1;
     }
 
-    public SendChatMessageDto (Long roomId, String content, LocalDateTime createDate, Long senderId, String senderName){
+    public SendChatMessageDto (Long roomId, String content, LocalDateTime createDate, Long senderId, String senderEmail, String senderName){
         this.roomId = roomId;
         this.createDate = createDate;
         this.content = content;
-        this.sender = new UserDto(senderId, senderName);
+        this.sender = new UserDto(senderId, senderEmail, senderName);
     }
 }
