@@ -80,8 +80,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
-                        .requestMatchers( HttpMethod.POST,"/chat-room/**" ).hasRole("USER")
-                        .requestMatchers( HttpMethod.GET,"/chat-room/**" ).hasRole("USER")
+                        .requestMatchers( HttpMethod.POST,"/chat-room**" ).hasRole("USER")
+                        .requestMatchers( HttpMethod.GET,"/chat-room**" ).hasRole("USER")
                         .requestMatchers("/user").authenticated()
                         .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs-guide-websocket/**").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
