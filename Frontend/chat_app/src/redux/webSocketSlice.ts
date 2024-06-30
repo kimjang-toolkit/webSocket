@@ -1,5 +1,7 @@
+import { RootState } from '@/redux/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Client } from '@stomp/stompjs';
+import { useSelector } from 'react-redux';
 
 interface webSocketState {
   client: Client | null;
@@ -10,30 +12,33 @@ const initialState: webSocketState = {
   isConnected: false,
 };
 
-export const initializeWebSocket = createAsyncThunk('webSocket/initializeWebSocket', async (_, { dispatch }) => {
-  const client = new Client({
-    brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs-guide-websocket`,
-    debug: () => {
-      // console.log('bug', str);
-    },
-    reconnectDelay: 0,
-    heartbeatIncoming: 1000,
-    heartbeatOutgoing: 1000,
-  });
-
-  client.onConnect = () => {
-    console.log('WebSocket connected');
-    // Subscribe to any topics here
-    client.subscribe('/notification/room/1', (message) => {
-      console.log('Chat room created:', message.body);
+export const initializeWebSocket = createAsyncThunk(
+  'webSocket/initializeWebSocket',
+  async (userId: number, { dispatch }) => {
+    const client = new Client({
+      brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs-guide-websocket`,
+      debug: () => {
+        // console.log('bug', str);
+      },
+      reconnectDelay: 0,
+      heartbeatIncoming: 1000,
+      heartbeatOutgoing: 1000,
     });
-    dispatch(setConnected(true));
-  };
 
-  client.activate();
+    client.onConnect = () => {
+      console.log('WebSocket connected');
+      // Subscribe to any topics here
+      client.subscribe(`/notification/room/${userId}`, (message) => {
+        console.log('Chat room created:', message.body);
+      });
+      dispatch(setConnected(true));
+    };
 
-  return client;
-});
+    client.activate();
+
+    return client;
+  },
+);
 
 //reducer(${payload}')
 // onCOnnect( ){

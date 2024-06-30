@@ -1,25 +1,34 @@
 import styled from 'styled-components';
 
-interface ChatRoomCardProps {
+export interface ChatRoomCardProps {
   imgUrl: string;
-  userName: string;
-  // timeStamp: string
-  recentMessage: string;
-  badgeCount: number;
+  roomId: number;
+  roomName: string;
+  memberCnt: number;
+  lastChatTime: string;
+  lastContent: string;
+  unreadCnt: number;
 }
 
-const ChatRoomCard: React.FC<ChatRoomCardProps> = ({ imgUrl, userName, recentMessage, badgeCount }) => {
+const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
+  imgUrl,
+  roomId,
+  roomName,
+  memberCnt,
+  lastChatTime,
+  unreadCnt,
+}) => {
   return (
     <MainContainer>
       <ProfileImg src={imgUrl} />
       <InfoContainer>
         <InfoWrapper>
-          <UserName>{userName}</UserName>
+          <RoomName>{roomName}</RoomName>
           <TimeStamp>now</TimeStamp>
         </InfoWrapper>
         <InfoWrapper>
-          <RecentMessage>{recentMessage}</RecentMessage>
-          <BadgeCount>{badgeCount}</BadgeCount>
+          <LastContent>{LastContent}</LastContent>
+          <BadgeCount>{unreadCnt}</BadgeCount>
         </InfoWrapper>
       </InfoContainer>
     </MainContainer>
@@ -49,13 +58,13 @@ const InfoWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-const UserName = styled.p`
+const RoomName = styled.p`
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
   line-height: 24px;
 `;
-const RecentMessage = styled.div`
+const LastContent = styled.div`
   color: #adb5bd;
   font-size: 12px;
   font-weight: 400;

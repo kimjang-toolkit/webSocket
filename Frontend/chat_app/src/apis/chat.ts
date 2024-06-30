@@ -18,5 +18,5 @@ export const fetchChatHistory = async ({ pageParam = 0, queryKey }: { pageParam?
 export const fetchChatList = async () => {
   const { id } = useSelector((state: RootState) => state.user);
   const response = await api.get(`/chat-room?userId=${id}`);
-  return response;
+  return response.data;
 };
