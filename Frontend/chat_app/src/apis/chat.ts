@@ -1,6 +1,4 @@
 import api from '@/apis/axiosInstance';
-import { RootState } from '@/redux/store';
-import { useSelector } from 'react-redux';
 
 export const fetchChatHistory = async ({ pageParam = 0, queryKey }: { pageParam?: number; queryKey: any }) => {
   const [roomId, timeLine] = queryKey;
@@ -15,8 +13,8 @@ export const fetchChatHistory = async ({ pageParam = 0, queryKey }: { pageParam?
   return data;
 };
 
-export const fetchChatList = async () => {
-  const { id } = useSelector((state: RootState) => state.user);
-  const response = await api.get(`/chat-room?userId=${id}`);
+export const fetchChatList = async (userId: number | null) => {
+  if (userId === null) throw new Error("User ID is null");
+  const response = await api.get(`/chat-room?userId=${userId}`);
   return response.data;
 };

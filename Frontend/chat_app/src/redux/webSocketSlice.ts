@@ -1,7 +1,5 @@
-import { RootState } from '@/redux/store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Client } from '@stomp/stompjs';
-import { useSelector } from 'react-redux';
 
 interface webSocketState {
   client: Client | null;
@@ -15,7 +13,6 @@ const initialState: webSocketState = {
 export const initializeWebSocket = createAsyncThunk(
   'webSocket/initializeWebSocket',
   async ({ userId, accessToken }: { userId: number; accessToken: string }, { dispatch }) => {
-    console.log('websocket', userId, accessToken);
     const client = new Client({
       brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs`,
       connectHeaders: { Authorization: accessToken },
