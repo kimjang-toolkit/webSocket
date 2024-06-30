@@ -19,4 +19,5 @@ public class ChatRoomDto {
             timezone = "Asia/Seoul")
     private LocalDateTime lastChatTime;
     private String lastContent;
+    private Long unReadCnt;
 }
