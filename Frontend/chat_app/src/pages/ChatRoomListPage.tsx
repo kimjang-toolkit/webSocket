@@ -12,6 +12,8 @@ import { useEffect } from 'react';
 import { initializeWebSocket } from '@/redux/webSocketSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
+import { useQuery } from '@tanstack/react-query';
+import { fetchChatList } from '@/apis/chat';
 
 const mockChatList = [
   { imgUrl: 'src/assets/images/맹구.jpg', userName: '맹구', recentMessage: '너무너무즐겁다', badgeCount: 3 },
@@ -23,6 +25,16 @@ const mockProfile = {
 const ChatRoomListPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user);
+
+  const {
+    data: chatList,
+    error,
+    isLoading,
+  } = useQuery('chatList', fetchChatList, {
+    onError: (error) => {
+      console.log('Error fetching chat list:', error);
+    },
+  });
   useEffect(() => {
     dispatch(initializeWebSocket());
   }, [dispatch]);
