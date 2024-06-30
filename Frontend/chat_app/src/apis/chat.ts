@@ -1,10 +1,10 @@
+import api from '@/apis/axiosInstance';
 import { RootState } from '@/redux/store';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 export const fetchChatHistory = async ({ pageParam = 0, queryKey }: { pageParam?: number; queryKey: any }) => {
   const [roomId, timeLine] = queryKey;
-  const { data } = await axios.get(`${import.meta.env.VITE_SPRING_URL}/chat-room/chat/${roomId}`, {
+  const { data } = await api.get(`/chat-room/chat/${roomId}`, {
     params: {
       page: pageParam,
       timeLine,
@@ -16,9 +16,7 @@ export const fetchChatHistory = async ({ pageParam = 0, queryKey }: { pageParam?
 };
 
 export const fetchChatList = async () => {
-  const { id, accessToken } = useSelector((state: RootState) => state.user);
-  const response = await axios.get(`${import.meta.env.VITE_SPRING_URL}/chat-room?userId=${id}`, {
-    headers: { Authorization: accessToken },
-  });
+  const { id } = useSelector((state: RootState) => state.user);
+  const response = await api.get(`/chat-room?userId=${id}`);
   return response;
 };
