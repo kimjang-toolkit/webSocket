@@ -30,4 +30,8 @@ public class ChatRoomCustomerRelationship {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="chat_room_id")
     private ChatRoom chatRoom;
+
+    public void unsubscribeRoom() {
+        roomExitTime = LocalDateTime.now();
+    }
 }

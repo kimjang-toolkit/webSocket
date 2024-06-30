@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.room.service;
 
+import kimjang.toolkit.solsol.room.dto.LeaveRoomDto;
 import kimjang.toolkit.solsol.user.User;
 import kimjang.toolkit.solsol.user.UserRepository;
 import kimjang.toolkit.solsol.user.dto.UserDto;
@@ -13,12 +14,14 @@ import kimjang.toolkit.solsol.room.repository.ChatRoomCustormerRelationshipRepos
 import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 import static kimjang.toolkit.solsol.room.service.CreateRoomName.withParticipationsName;
 
@@ -111,5 +114,25 @@ public class ChatRoomService {
     public List<ChatRoomDto> getChatRooms(Long userId) {
         return chatRoomRepository.findChatRoomsByUserId(userId);
 //        List<LastChatDto> lastChatDtos = chatRepository.findLastChatsByUserId(userId);
+    }
+
+    /**
+     * 자신의 JWT 인증 토큰으로 다른 사람이 채팅방을 나가게 하지 못하도록 막기
+     * @param leaveRoomDto
+     * @return
+     */
+    @Transactional
+    @PreAuthorize("# leaveRoomDto.leaveUser.email == authentication.principal.username")
+    public LeaveRoomDto leaveRoom(LeaveRoomDto leaveRoomDto) {
+        System.out.println(leaveRoomDto.getLeaveUser().getEmail()+"은 인증된 사람이다!!");
+        LeaveRoomDto dto = null;
+        ChatRoom chatRoom = chatRoomRepository.findById(leaveRoomDto.getRoomId()).orElseThrow(() -> {
+            throw new IllegalStateException("나가고자 하는 방이 없어요. 고객님이 들어간 방을 찾아주세요.");
+        });
+        // room에 memberCnt 1개 줄이기
+        chatRoom.leaveUser();
+        // user에 맞는 ChatRoomCustomerRelationship delete 하기
+        relationshipRepository.deleteByChatRoom_IdAndUser_Email(leaveRoomDto.getRoomId(), leaveRoomDto.getLeaveUser().getEmail());
+        return dto;
     }
 }
