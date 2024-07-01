@@ -35,14 +35,9 @@ public class UserController {
 
     }
 
-    @RequestMapping("/user")
-    public UserDto getUserDetailsAfterLogin(Authentication authentication) {
+    @GetMapping("/user")
+    public UserProfileDto getUserDetailsAfterLogin(Authentication authentication) {
         System.out.println(authentication.getName()+"님의 유저 정보 불러오기");
-        return userService.findByEmail(authentication.getName());
-    }
-
-    @RequestMapping("/user/profile")
-    public UserProfileDto getUserProfile(Authentication authentication){
         return userService.findUserProfileByEmail(authentication.getName());
     }
 }
