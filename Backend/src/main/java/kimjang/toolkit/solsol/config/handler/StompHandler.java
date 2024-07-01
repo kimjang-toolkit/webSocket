@@ -38,7 +38,7 @@ public class StompHandler implements ChannelInterceptor {
 //        System.out.println("토큰 " + token);
         // STOMP 메서드가 CONNECT인 경우
         if (StompCommand.CONNECT.equals(accessor.getCommand()) && token != null) {
-//            System.out.println("토큰 유효성 검사 시작!");
+            System.out.println("토큰 유효성 검사 시작!");
             jwtAuthenticationProvider.isValid(token);
         }
         if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) && destination != null) {
