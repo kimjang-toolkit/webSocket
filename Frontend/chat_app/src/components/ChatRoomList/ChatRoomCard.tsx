@@ -14,8 +14,9 @@ const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
   imgUrl,
   roomId,
   roomName,
-  memberCnt,
+  lastContent,
   lastChatTime,
+  memberCnt,
   unreadCnt,
 }) => {
   return (
@@ -27,7 +28,7 @@ const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
           <TimeStamp>now</TimeStamp>
         </InfoWrapper>
         <InfoWrapper>
-          <LastContent>{LastContent}</LastContent>
+          <LastContent>{lastContent}</LastContent>
           <BadgeCount>{unreadCnt}</BadgeCount>
         </InfoWrapper>
       </InfoContainer>
