@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
@@ -49,5 +50,7 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
             " WHERE ccr.user.id = :userId AND cm.chatRoom.id = :roomId )" + // 사용자가 채팅 방을 나간 시간 이전에 생성된 채팅들
             " ORDER BY cm.createDate ASC ") // 최신 순서로 채팅 정렬
     Slice<SendChatMessageDto> findPastChats(@Param("roomId") Long roomId, @Param("userId") Long userId, Pageable pageable);
+
+    List<ChatMessage> findByChatRoom_Id(Long roomId);
 
 }
