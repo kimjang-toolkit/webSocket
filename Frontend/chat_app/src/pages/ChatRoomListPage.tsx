@@ -31,7 +31,7 @@ const ChatRoomListPage = () => {
     queryFn: ({ queryKey }) => fetchChatList(queryKey[1] as number),
     enabled: !!user.id, // user.id가 있을 때만 쿼리를 활성화
   });
-
+  console.log('chatList', chatList);
   useEffect(() => {
     //실시간으로 변하는 채팅방리스트 업데이트 웹소켓
     if (user.id && user.accessToken) {
@@ -55,7 +55,7 @@ const ChatRoomListPage = () => {
       <Main $marginTop="0px">
         {chatList?.map((chat: ChatRoomCardProps) => (
           <ChatRoomCard
-            key={chat.roomId}
+            key={`${chat.roomId}asdf`}
             imgUrl="src/assets/images/맹구.jpg"
             roomName={chat.roomName}
             roomId={chat.roomId}
@@ -68,7 +68,7 @@ const ChatRoomListPage = () => {
       </Main>
       <NewChatButton />
       <Navbar />
-      <SelectParticipants />
+      {/* <SelectParticipants /> */}
     </ChatListContainer>
   );
 };
