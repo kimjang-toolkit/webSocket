@@ -14,12 +14,14 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query';
 import { fetchChatList } from '@/apis/chat';
+import { useNavigate } from 'react-router-dom';
 
 const mockProfile = {
   imgUrl: 'src/assets/images/맹구.jpg',
 };
 const ChatRoomListPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
 
   const {
@@ -38,6 +40,9 @@ const ChatRoomListPage = () => {
       dispatch(initializeWebSocket({ userId: user.id, accessToken: user.accessToken }));
     }
   }, [dispatch, user]);
+  const handleChatRoomClick = (roomId: number) => {
+    navigate(`/chat/${roomId}`);
+  };
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -63,6 +68,7 @@ const ChatRoomListPage = () => {
             lastChatTime={chat.lastChatTime}
             memberCnt={chat.memberCnt}
             unreadCnt={3}
+            onClick={()=> handleChatRoomClick(chat.roomId)}
           />
         ))}
       </Main>

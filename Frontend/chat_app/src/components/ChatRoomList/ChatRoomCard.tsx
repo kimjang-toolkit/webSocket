@@ -8,6 +8,7 @@ export interface ChatRoomCardProps {
   lastChatTime: string;
   lastContent: string;
   unreadCnt: number;
+  onClick?: () => void;
 }
 
 const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
@@ -18,9 +19,10 @@ const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
   lastChatTime,
   memberCnt,
   unreadCnt,
+  onClick,
 }) => {
   return (
-    <MainContainer>
+    <CardContainer onClick={onClick}>
       <ProfileImg src={imgUrl} />
       <InfoContainer>
         <InfoWrapper>
@@ -32,18 +34,22 @@ const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
           <BadgeCount>{unreadCnt}</BadgeCount>
         </InfoWrapper>
       </InfoContainer>
-    </MainContainer>
+    </CardContainer>
   );
 };
 
 export default ChatRoomCard;
 
-const MainContainer = styled.div`
+const CardContainer = styled.div`
   display: flex;
   width: 100%;
   height: 56px;
   gap: 12px;
+  padding: 4px 6px 4px 4px;
   margin: 2px 0;
+  &:hover {
+    background: #e9e9e9c1;
+  }
 `;
 const ProfileImg = styled.img`
   border-radius: 16px;
