@@ -1,12 +1,11 @@
-package kimjang.toolkit.solsol.security;
+package kimjang.toolkit.solsol.config;
 
-import kimjang.toolkit.solsol.security.filter.*;
+import kimjang.toolkit.solsol.config.filter.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -69,7 +68,7 @@ public class SecurityConfig {
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
 //                .csrf(AbstractHttpConfigurer::disable)
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register", "/gs-guide-websocket/**")
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register", "/login","/gs-guide-websocket/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAt(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)

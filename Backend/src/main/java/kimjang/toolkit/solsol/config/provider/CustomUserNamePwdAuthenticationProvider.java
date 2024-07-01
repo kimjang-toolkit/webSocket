@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.security.provider;
+package kimjang.toolkit.solsol.config.provider;
 
 import kimjang.toolkit.solsol.user.Authority;
 import kimjang.toolkit.solsol.user.User;

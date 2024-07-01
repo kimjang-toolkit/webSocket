@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.security.container;
+package kimjang.toolkit.solsol.config.container;
 
 public interface SocketSessionContainer {
     Long getSubscribeUri(String session);

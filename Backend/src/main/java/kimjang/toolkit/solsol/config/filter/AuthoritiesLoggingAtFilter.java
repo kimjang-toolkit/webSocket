@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.security.filter;
+package kimjang.toolkit.solsol.config.filter;
 
 import jakarta.servlet.*;
 

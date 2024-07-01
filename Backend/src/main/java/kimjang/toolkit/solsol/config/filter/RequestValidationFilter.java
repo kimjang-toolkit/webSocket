@@ -1,9 +1,8 @@
-package kimjang.toolkit.solsol.security.filter;
+package kimjang.toolkit.solsol.config.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kimjang.toolkit.solsol.security.jwt.SecurityConstants;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.util.StringUtils;
 

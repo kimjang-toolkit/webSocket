@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.security.filter;
+package kimjang.toolkit.solsol.config.filter;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -6,7 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kimjang.toolkit.solsol.security.jwt.SecurityConstants;
+import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
