@@ -10,10 +10,12 @@ import kimjang.toolkit.solsol.message.repository.ChatRepository;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatService {
@@ -32,16 +34,17 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public PastChatsDto getPastChats(ReqPastChatsDto reqPastChatsDto, String timeLine) {
+        log.info(reqPastChatsDto.toString());
         if(timeLine.equals("recent")){
             Slice<SendChatMessageDto> pastChats =
                     chatRepository.findRecentChats(reqPastChatsDto.getRoomId(),
-                            reqPastChatsDto.getRoomExitTime(),
+                            reqPastChatsDto.getUserId(),
                             reqPastChatsDto.getPage());
             return PastChatsDto.of(reqPastChatsDto, pastChats);
         } else{
             Slice<SendChatMessageDto> pastChats =
                     chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
-                            reqPastChatsDto.getRoomExitTime(),
+                            reqPastChatsDto.getUserId(),
                             reqPastChatsDto.getPage());
             return PastChatsDto.of(reqPastChatsDto, pastChats);
         }
