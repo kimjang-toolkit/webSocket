@@ -3,8 +3,7 @@
 ### How to use
 
 빌드 파일 실행
-`sudo java -jar -Dserver.port=80 Backend/target/solsol-0.1.1.jar`
-`sudo nohup java -Dserver.port=80 -jar webSocket/Backend/target/solsol-0.1.1.jar &`
+`sudo nohup java -Dserver.port=80 -jar Backend/target/solsol-0.1.1.jar &`
 Simple chatting room 연결 [localhost:8080](http://localhost:8080) 
 Swagger-ui 연결 : `http://{server host}/swagger-ui/index.html`
 
