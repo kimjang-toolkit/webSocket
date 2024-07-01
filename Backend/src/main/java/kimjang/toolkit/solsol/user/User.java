@@ -41,6 +41,9 @@ public class User {
     @Column(name = "create_dt")
     private LocalDateTime createDate;
 
+    @Column(name = "img_url")
+    private String imgUrl;
+
 
     public static User of(CreateUserDto dto, String hashPwd){
         User user =  User.builder()
