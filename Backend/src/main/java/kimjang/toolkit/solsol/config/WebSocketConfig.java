@@ -1,9 +1,8 @@
 
-package kimjang.toolkit.solsol.security;
+package kimjang.toolkit.solsol.config;
 
-import kimjang.toolkit.solsol.security.handler.LoggingHandshakeInterceptor;
-import kimjang.toolkit.solsol.security.handler.LoggingWebSocketHandlerDecoratorFactory;
-import kimjang.toolkit.solsol.security.handler.StompHandler;
+import kimjang.toolkit.solsol.config.handler.LoggingHandshakeInterceptor;
+import kimjang.toolkit.solsol.config.handler.LoggingWebSocketHandlerDecoratorFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
