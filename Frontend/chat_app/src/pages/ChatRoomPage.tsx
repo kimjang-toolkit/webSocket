@@ -8,26 +8,17 @@ import { chatFormat } from '@/types/types';
 import { ParsedDateTime } from '@/utils/parseDateTime';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLoaderData } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
-export async function chatLoader({ params }: any) {
-  const { data, error, isLoading, fetchNextPage, hasNextPage } = await useChatHistory({
-    roomId: params.chat_roomID,
-    timeLine: 'past',
-  });
-  return {data, error, isLoading, fetchNextPage, hasNextPage}
-}
 
 function ChatRoomPage() {
   const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
   const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
-
-  // const { data, error, isLoading, fetchNextPage, hasNextPage } = useChatHistory({
-  //   roomId: 303,
-  //   timeLine: 'past',
-  // });
-  const {data, error, isLoading, fetchNextPage, hasNextPage}: any = useLoaderData();
+  const params = useParams();
+  const { data, error, isLoading, fetchNextPage, hasNextPage } = useChatHistory({
+    roomId: params.roomId ?? '',
+    timeLine: 'past',
+  });
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -48,7 +39,7 @@ function ChatRoomPage() {
     if (client && isConnected) {
       try {
         client.onConnect = () => {
-          const subscription = client.subscribe(`/sub/chat/303`, (message) => {
+          const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
             const newChat = JSON.parse(message.body);
             setLiveChats((prev) => {
               const chat = {

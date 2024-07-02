@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchChatHistory } from '@/apis/chat';
 
 interface ChatHistoryParams {
-  roomId: number;
+  roomId: string;
   timeLine: string;
 }
 

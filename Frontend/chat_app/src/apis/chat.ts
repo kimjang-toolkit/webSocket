@@ -13,8 +13,8 @@ export const fetchChatHistory = async ({ pageParam = 0, queryKey }: { pageParam?
   return data;
 };
 
-export const fetchChatList = async (userId: number | null) => {
-  if (userId === null) throw new Error("User ID is null");
+export const fetchChatList = async (userId: string | null) => {
+  if (userId === null) throw new Error('User ID is null');
   const response = await api.get(`/chat-room?userId=${userId}`);
   return response.data;
 };

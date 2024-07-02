@@ -49,6 +49,7 @@ const CardContainer = styled.div`
   margin: 2px 0;
   &:hover {
     background: #e9e9e9c1;
+    cursor: pointer;
   }
 `;
 const ProfileImg = styled.img`

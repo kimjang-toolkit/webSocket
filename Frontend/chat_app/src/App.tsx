@@ -5,14 +5,14 @@ import ChatRoomPage from '@/pages/ChatRoomPage';
 import ChatRoomListPage from '@/pages/ChatRoomListPage';
 import LoginPage from '@/pages/LoginPage';
 
-import { chatLoader } from '@/pages/ChatRoomPage';
+
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <ChatRoomListPage />,
   },
-  { path: '/chat/:chat_roomID', element: <ChatRoomPage />, loader: chatLoader },
+  { path: '/chat/:roomId', element: <ChatRoomPage /> },
   { path: '/login', element: <LoginPage /> },
 ]);
 function App() {
