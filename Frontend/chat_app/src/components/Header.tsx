@@ -1,15 +1,17 @@
 import styled from 'styled-components';
 import BackArrowIcon from '@assets/icons/backArrow.svg';
+import { useNavigate } from 'react-router-dom';
 interface HeaderProps {
   title: string;
   isBackArrow: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({ isBackArrow, title }) => {
+  const navigate = useNavigate();
   return (
     <HeaderContainer>
       {isBackArrow && (
-        <BackButton>
+        <BackButton onClick={() => navigate(-1)}>
           <BackArrowIcon />
         </BackButton>
       )}
