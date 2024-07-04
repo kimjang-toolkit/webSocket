@@ -6,6 +6,7 @@ import kimjang.toolkit.solsol.config.container.SocketSessionContainer;
 import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
 import kimjang.toolkit.solsol.config.provider.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -18,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class StompHandler implements ChannelInterceptor {
@@ -26,6 +28,7 @@ public class StompHandler implements ChannelInterceptor {
     private final SocketSessionContainer sessionContainer;
     // 정규식 패턴을 컴파일하여 재사용
     private static final Pattern CHAT_ROOM_PATTERN = Pattern.compile("^\\s*/sub/chat/(\\d+)\\s*$");
+    private static final Pattern NOTIFICATION_PATTERN = Pattern.compile("^\\s*/notification/room/(\\d+)\\s*$");
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
@@ -38,18 +41,21 @@ public class StompHandler implements ChannelInterceptor {
 //        System.out.println("토큰 " + token);
         // STOMP 메서드가 CONNECT인 경우
         if (StompCommand.CONNECT.equals(accessor.getCommand()) && token != null) {
-            System.out.println("토큰 유효성 검사 시작!");
+            log.info("토큰 유효성 검사 시작!");
             jwtAuthenticationProvider.isValid(token);
         }
         if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) && destination != null) {
             try {
-                Matcher matcher = CHAT_ROOM_PATTERN.matcher(destination);
+                Matcher matcher = CHAT_ROOM_PATTERN.matcher(destination); // 현재 요청이 채팅방 구독인지 확인
                 if (matcher.matches()) {
                     Long roomId = Long.valueOf(matcher.group(1));
-                    System.out.println("subscribe roomId : " + roomId);
-                    jwtAuthenticationProvider.isValid(token);
+                    log.info("subscribe roomId : " + roomId);
                     sessionContainer.subscribe(sessionId, roomId); // 세션에 구독 채팅방 키 저장
-                } else {
+                } else if(NOTIFICATION_PATTERN.matcher(destination).matches()){
+                    Long userId = Long.valueOf(matcher.group(1));
+                    log.info("subscribe notification userId : " + userId);
+                }
+                else {
                     System.out.println("Invalid destination format: " + destination);
                 }
             } catch (IllegalStateException | BadCredentialsException e) {
