@@ -19,19 +19,20 @@ jobs :
         run: mvn install -DskipTests
 
       - name: Copy Jar file
+        working-directory: ./Backend
         run: |
-          JAR_FILE=$(ls ./Backend/target | grep 'jar$' | head -n 1)
+          JAR_FILE=$(ls ./target | grep 'jar$' | head -n 1)
           if [ -z "$JAR_FILE" ]; then
             echo "No JAR file found."
             exit 1
           else
-            cp ./Backend/target/$JAR_FILE /app.jar
-            echo "Copied $JAR_FILE to /app.jar"
+            cp ./target/$JAR_FILE ./app.jar
+            echo "Copied $JAR_FILE to ./app.jar"
           fi
 
       - name: Zip Files
         working-directory: ./Backend
-        run: zip -r ./ChatSpringApp.zip /app.jar ./scripts/scripts/* ./appspec.yml
+        run: zip -r ./ChatSpringApp.zip ./app.jar ./scripts/scripts/* ./appspec.yml
 
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
