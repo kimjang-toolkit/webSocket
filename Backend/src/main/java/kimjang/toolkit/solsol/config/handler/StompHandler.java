@@ -28,7 +28,7 @@ public class StompHandler implements ChannelInterceptor {
     private final SocketSessionContainer sessionContainer;
     // 정규식 패턴을 컴파일하여 재사용
     private static final Pattern CHAT_ROOM_PATTERN = Pattern.compile("^\\s*/sub/chat/(\\d+)\\s*$");
-    private static final Pattern NOTIFICATION_PATTERN = Pattern.compile("^\\s*/notification/room/(\\d+)\\s*$");
+//    private static final Pattern NOTIFICATION_PATTERN = Pattern.compile("^\\s*/notification/room/(\\d+)\\s*$");
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
@@ -51,15 +51,16 @@ public class StompHandler implements ChannelInterceptor {
                     Long roomId = Long.valueOf(matcher.group(1));
                     log.info("subscribe roomId : " + roomId);
                     sessionContainer.subscribe(sessionId, roomId); // 세션에 구독 채팅방 키 저장
-                } else if(NOTIFICATION_PATTERN.matcher(destination).matches()){
-                    Long userId = Long.valueOf(matcher.group(1));
-                    log.info("subscribe notification userId : " + userId);
                 }
+//                } else if(NOTIFICATION_PATTERN.matcher(destination).matches()){
+//                    Long userId = Long.valueOf(matcher.group(1));
+//                    log.info("subscribe notification userId : " + userId);
+//                }
                 else {
-                    System.out.println("Invalid destination format: " + destination);
+                    log.info("Not sub/chat destination : " + destination);
                 }
             } catch (IllegalStateException | BadCredentialsException e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage(),e);
                 throw e;
             }
         }
