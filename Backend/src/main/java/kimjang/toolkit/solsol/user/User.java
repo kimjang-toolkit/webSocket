@@ -53,6 +53,7 @@ public class User {
                 .mobileNumber(dto.getMobileNumber())
                 .createDate(LocalDateTime.now())
                 .authorities(new HashSet<>())
+                .imgUrl(dto.getImgUrl())
                 .build();
         user.authorities.add(Authority.of(user));
         return user;
