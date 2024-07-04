@@ -18,6 +18,15 @@ jobs :
         working-directory: ./Backend
         run: mvn install -DskipTests
 
+      - name: Check if JAR exists
+        working-directory: ./Backend
+        run: |
+          if [ -f ./target/solsol*.jar ]; then
+            echo "JAR file exists."
+          else
+            echo "JAR file does not exist."
+            exit 1
+          fi
       - name: Copy Jar
         working-directory: ./Backend
         run: cp ./target/solsol*.jar ./app.jar
