@@ -25,12 +25,13 @@ jobs :
             echo "No JAR file found."
             exit 1
           else
-            cp ./Backend/target/$JAR_FILE ./app.jar
-            echo "Copied $JAR_FILE to ./app.jar"
+            cp ./Backend/target/$JAR_FILE /app.jar
+            echo "Copied $JAR_FILE to /app.jar"
           fi
 
       - name: Zip Files
-        run: zip -jr ./ChatSpringApp.zip ./app.jar ./Backend/scripts/* ./Backend/appspec.yml
+        working-directory: ./Backend
+        run: zip -r ./ChatSpringApp.zip /app.jar ./scripts/scripts/* ./appspec.yml
 
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -40,6 +41,7 @@ jobs :
           aws-region: ap-northeast-2
 
       - name: Upload Jar Compose to S3
+        working-directory: ./Backend
         run: |
           aws s3 ls |
           aws s3 cp ./ChatSpringApp.zip s3://jar-deploy-sol-kimjang
