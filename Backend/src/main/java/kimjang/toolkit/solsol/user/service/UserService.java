@@ -5,6 +5,7 @@ import kimjang.toolkit.solsol.user.User;
 import kimjang.toolkit.solsol.user.UserRepository;
 import kimjang.toolkit.solsol.user.dto.CreateUserDto;
 import kimjang.toolkit.solsol.user.dto.UserDto;
+import kimjang.toolkit.solsol.user.dto.UserProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,8 +29,16 @@ public class UserService {
         return UserDto.toDto(savedUser);
     }
 
+    public boolean checkUniqueEmail(String email){
+        return userRepository.existsByEmail(email);
+    }
+
     public UserDto findByEmail(String email){
         User user = userRepository.findByEmail(email).orElseThrow();
         return UserDto.toDto(user);
+    }
+
+    public UserProfileDto findUserProfileByEmail(String email){
+        return userRepository.findProfileByEmail(email);
     }
 }
