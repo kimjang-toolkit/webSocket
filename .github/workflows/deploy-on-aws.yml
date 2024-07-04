@@ -20,7 +20,7 @@ jobs :
 
       - name: Copy Jar
         working-directory: ./Backend
-        run: cp ./target/solsol**.jar ./app.jar
+        run: cp ./target/solsol*.jar ./app.jar
 
       - name: Zip Files
         working-directory: ./Backend
