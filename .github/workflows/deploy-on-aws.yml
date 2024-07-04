@@ -30,7 +30,7 @@ jobs :
           fi
 
       - name: Zip Files
-        run: zip -r ./ChatSpringApp.zip ./app.jar ./Backend/scripts/* ./Backend/appspec.yml
+        run: zip -jr ./ChatSpringApp.zip ./app.jar ./Backend/scripts/* ./Backend/appspec.yml
 
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
