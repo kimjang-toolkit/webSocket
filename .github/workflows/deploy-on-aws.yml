@@ -18,8 +18,16 @@ jobs :
         working-directory: ./Backend
         run: mvn install -DskipTests
 
-      - name: Copy Jar
-        run: cp ./target/solsol*.jar ./app.jar
+      - name: Copy Jar file
+        run: |
+          JAR_FILE=$(ls ./Backend/target | grep 'jar$' | head -n 1)
+          if [ -z "$JAR_FILE" ]; then
+            echo "No JAR file found."
+            exit 1
+          else
+            cp $JAR_FILE ./app.jar
+            echo "Copied $JAR_FILE to ./app.jar"
+          fi
 
       - name: Zip Files
         run: zip -r ChatSpringApp.zip ./app.jar ./scripts/* ./appspec.yml
