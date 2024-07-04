@@ -4,6 +4,10 @@ files:
   - source: /
     destination: /var/www/jar
 hooks:
+  BeforeInstall:
+    - location: scripts/debug.sh
+      timeout: 300
+      runas: root
   ApplicationStop:
     - location: scripts/stop_server.sh
       timeout: 300
