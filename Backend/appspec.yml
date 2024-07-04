@@ -1,14 +1,14 @@
 version: 0.0
 os: linux
 files:
-  - source: /app.jar
+  - source: /
     destination: /var/www/jar/
 hooks:
   ApplicationStart:
-    - location: /start_server.sh
+    - location: start_server.sh
       timeout: 300
       runas: root
   ApplicationStop:
-    - location: /stop_server.sh
+    - location: stop_server.sh
       timeout: 300
       runas: root
