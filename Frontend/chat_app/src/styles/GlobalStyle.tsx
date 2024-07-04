@@ -37,7 +37,11 @@ time, mark, audio, video {
   font: inherit;
   vertical-align: baseline;
 }
+
 body,html {
+  max-width:400px;
+  margin:0 auto;
+
   font-family: "Helvetica", "Arial", sans-serif;
   line-height: 1.4;
   text-rendering: optimizeLegibility;
