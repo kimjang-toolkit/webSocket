@@ -37,7 +37,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
                     .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     .issuedAt(new Date())
                     // 만료시간, ms 단위, 만료 시간을 넘어선 토큰이 들어오면 만료됐다고 예외가 발생한다.
-                    .expiration(new Date((new Date()).getTime() + 3000000))
+                    .expiration(new Date((new Date()).getTime() + 300000000))
                     // 디지털 서명 작성
                     .signWith(key).compact();
             response.setHeader(SecurityConstants.JWT_HEADER, jwt);

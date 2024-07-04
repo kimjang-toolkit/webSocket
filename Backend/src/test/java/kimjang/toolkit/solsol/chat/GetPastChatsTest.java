@@ -22,7 +22,6 @@ public class GetPastChatsTest {
     public void GET_Pase_Chat(){
         ReqPastChatsDto req = ReqPastChatsDto.builder()
                 .roomId(1L)
-                .roomExitTime(LocalDateTime.of(2023, 12, 12,12,12,12))
                 .page(PageRequest.of(0, 100))
                 .build();
         String timeLine = "recent";
