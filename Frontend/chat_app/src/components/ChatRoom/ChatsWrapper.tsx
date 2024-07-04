@@ -10,10 +10,10 @@ interface chatRoomProps {
   data: any;
 }
 
-function ChatRoom({ chatDatas, loadMoreRef, data }: chatRoomProps) {
+function ChatWrapper({ chatDatas, loadMoreRef, data }: chatRoomProps) {
   const user = useSelector((state: RootState) => state.user);
   return (
-    <ChatsContainer>
+    <Wrapper>
       <div ref={loadMoreRef} />
       {data.pages.map((page) =>
         page.pastChats.map((chat, index) => {
@@ -39,13 +39,13 @@ function ChatRoom({ chatDatas, loadMoreRef, data }: chatRoomProps) {
           />
         );
       })}
-    </ChatsContainer>
+    </Wrapper>
   );
 }
 
-export default ChatRoom;
+export default ChatWrapper;
 
-const ChatsContainer = styled.main`
+const Wrapper = styled.main`
   display: flex;
   flex-direction: column;
   background: white;

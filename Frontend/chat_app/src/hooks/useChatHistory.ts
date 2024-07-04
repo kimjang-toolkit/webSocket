@@ -9,7 +9,7 @@ interface ChatHistoryParams {
 
 export const useChatHistory = ({ roomId, userId, timeLine }: ChatHistoryParams) => {
   return useInfiniteQuery({
-    queryKey: [roomId, userId,timeLine],
+    queryKey: [roomId, userId, timeLine],
     queryFn: fetchChatHistory,
     getNextPageParam: (lastPage, pages) => {
       return lastPage.hasNext ? pages.length : undefined;

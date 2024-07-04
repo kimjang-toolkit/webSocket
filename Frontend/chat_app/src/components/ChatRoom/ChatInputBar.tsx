@@ -1,50 +1,28 @@
 import styled from 'styled-components';
 import AddFileButton from '@assets/icons/addFileButton.svg';
 import SendButton from '@assets/icons/sendButton.svg';
-import { useEffect, useState } from 'react';
-import { RootState } from '@/redux/store';
-import { useSelector } from 'react-redux';
-import { MessageFormat } from '@/types/types';
+import { useState } from 'react';
+
 // import useDebounce from '@/hooks/useDebounce';
 
-function ChatInputBar() {
+interface ChatInputBarProps {
+  onKeyDown: (message: string) => void;
+}
+
+function ChatInputBar({ onKeyDown }: ChatInputBarProps) {
   const [message, setMessage] = useState('');
-  const { client } = useSelector((state: RootState) => state.webSocket);
   // const debouncedMessage = useDebounce(message, 300);
-  const user = useSelector((state: RootState) => state.user);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
   };
 
-  const handleSendMessage = () => {
-    if (client) {
-      const messageFormat: MessageFormat = {
-        roomId: 303,
-        content: message,
-        sender: {
-          id: user.id ?? 0,
-          name: user.name ?? 'undefined',
-        },
-      };
-      const publishMessageBody = JSON.stringify(messageFormat);
-
-      client.publish({
-        destination: '/pub/chat/303',
-        body: publishMessageBody,
-        headers: {
-          'content-type': 'application/json',
-        },
-      });
-    }
-  };
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
-      handleSendMessage();
+      onKeyDown(message);
       setMessage('');
     }
   };
-  useEffect(() => {}, []);
   return (
     <ChatInputContainer>
       <AddFileButton />

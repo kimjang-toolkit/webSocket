@@ -1,5 +1,5 @@
 import ChatInputBar from '@/components/ChatRoom/ChatInputBar';
-import ChatRoom from '@/components/ChatRoom/ChatRoom';
+import ChatsWrapper from '@/components/ChatRoom/ChatsWrapper';
 import Header from '@/components/Header';
 import { useChatHistory } from '@/hooks/useChatHistory';
 import { RootState } from '@/redux/store';
@@ -9,6 +9,8 @@ import { ParsedDateTime } from '@/utils/parseDateTime';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { MessageFormat } from '@/types/types';
+
 import styled from 'styled-components';
 
 function ChatRoomPage() {
@@ -18,7 +20,7 @@ function ChatRoomPage() {
   const user = useSelector((state: RootState) => state.user);
   const { data, error, isLoading, fetchNextPage, hasNextPage } = useChatHistory({
     roomId: params.roomId ?? '',
-    userId: user.id,
+    userId: user.id ?? 0,
     timeLine: 'past',
   });
 
@@ -39,26 +41,26 @@ function ChatRoomPage() {
   }, [fetchNextPage, hasNextPage]);
   useEffect(() => {
     if (client && isConnected) {
+      if (client.connected) {
+        console.log('conneected?');
+      }
       try {
-        client.onConnect = () => {
-          const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
-            const newChat = JSON.parse(message.body);
-            setLiveChats((prev) => {
-              const chat = {
-                ...newChat,
-                createDate: {
-                  ...ParsedDateTime(newChat.createDate),
-                },
-              };
-              return [...prev, chat];
-            });
+        const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
+          const newChat = JSON.parse(message.body);
+          setLiveChats((prev) => {
+            const chat = {
+              ...newChat,
+              createDate: {
+                ...ParsedDateTime(newChat.createDate),
+              },
+            };
+            return [...prev, chat];
           });
-          return () => {
-            if (subscription) {
-              subscription.unsubscribe();
-            }
-          };
-        };
+        });
+        if (subscription) {
+          console.log('?');
+          // subscription.unsubscribe();
+        }
       } catch (error) {
         console.error('Error subscribing to topic:', error);
       }
@@ -67,16 +69,38 @@ function ChatRoomPage() {
     }
   }, [params.roomId]);
 
+  const handleSendMessage = ({ message }: { message: string }) => {
+    if (client) {
+      const messageFormat: MessageFormat = {
+        roomId: Number(params.roomId) ,
+        content: message,
+        sender: {
+          id: user.id ?? 0,
+          name: user.name ?? 'undefined',
+        },
+      };
+      const publishMessageBody = JSON.stringify(messageFormat);
+
+      client.publish({
+        destination: '/pub/chat/303',
+        body: publishMessageBody,
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+    }
+  };
+
   if (isLoading) return <p>Loading,.,</p>;
   if (error) return <p>Error loading chat history</p>;
   return (
     <ChatRoomContainer>
       <Header title="채팅방" isBackArrow />
       <Main $marginTop="12px">
-        <ChatRoom chatDatas={liveChats} loadMoreRef={loadMoreRef} data={data} />
+        <ChatsWrapper chatDatas={liveChats} loadMoreRef={loadMoreRef} data={data} />
       </Main>
       <Footer>
-        <ChatInputBar />
+        <ChatInputBar onKeyDown={handleSendMessage} />
       </Footer>
     </ChatRoomContainer>
   );
