@@ -30,7 +30,7 @@ jobs :
           fi
 
       - name: Zip Files
-        run: zip -r ChatSpringApp.zip ./app.jar ./scripts/* ./appspec.yml
+        run: zip -r ./ChatSpringApp.zip ./app.jar ./scripts/* ./appspec.yml
 
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -42,4 +42,4 @@ jobs :
       - name: Upload Jar Compose to S3
         run: |
           aws s3 ls |
-          aws s3 cp ./Backend/ChatSpringApp.zip s3://jar-deploy-sol-kimjang
+          aws s3 cp ./ChatSpringApp.zip s3://jar-deploy-sol-kimjang
