@@ -25,7 +25,7 @@ jobs :
             echo "No JAR file found."
             exit 1
           else
-            cp $JAR_FILE ./app.jar
+            cp ./Backend/target/$JAR_FILE ./app.jar
             echo "Copied $JAR_FILE to ./app.jar"
           fi
 
