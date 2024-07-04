@@ -12,7 +12,6 @@ interface chatRoomProps {
 
 function ChatRoom({ chatDatas, loadMoreRef, data }: chatRoomProps) {
   const user = useSelector((state: RootState) => state.user);
-  console.log('data', data.pages);
   return (
     <ChatsContainer>
       <div ref={loadMoreRef} />

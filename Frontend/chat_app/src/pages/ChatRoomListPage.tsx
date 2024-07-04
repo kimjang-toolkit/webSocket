@@ -33,13 +33,17 @@ const ChatRoomListPage = () => {
     queryFn: ({ queryKey }) => fetchChatList(queryKey[1] as number),
     enabled: !!user.id, // user.id가 있을 때만 쿼리를 활성화
   });
-  console.log('chatList', chatList);
+
   useEffect(() => {
     //실시간으로 변하는 채팅방리스트 업데이트 웹소켓
     if (user.id && user.accessToken) {
       dispatch(initializeWebSocket({ userId: user.id, accessToken: user.accessToken }));
     }
-  }, [dispatch, user]);
+    return () => {
+      console.log('unmouited');
+    };
+  }, []);
+
   const handleChatRoomClick = (roomId: number) => {
     navigate(`/chat/${roomId}`);
   };
@@ -68,7 +72,7 @@ const ChatRoomListPage = () => {
             lastChatTime={chat.lastChatTime}
             memberCnt={chat.memberCnt}
             unreadCnt={3}
-            onClick={()=> handleChatRoomClick(chat.roomId)}
+            onClick={() => handleChatRoomClick(chat.roomId)}
           />
         ))}
       </Main>

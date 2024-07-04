@@ -15,8 +15,10 @@ function ChatRoomPage() {
   const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
   const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
   const params = useParams();
+  const user = useSelector((state: RootState) => state.user);
   const { data, error, isLoading, fetchNextPage, hasNextPage } = useChatHistory({
     roomId: params.roomId ?? '',
+    userId: user.id,
     timeLine: 'past',
   });
 
@@ -63,7 +65,7 @@ function ChatRoomPage() {
     } else {
       console.warn('Client is not connected or client is null.');
     }
-  }, [client, isConnected]);
+  }, [params.roomId]);
 
   if (isLoading) return <p>Loading,.,</p>;
   if (error) return <p>Error loading chat history</p>;
