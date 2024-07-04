@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * WebSocket 프로토콜은 Security가 헤더 값을 인식하지 못하기 때문에 넘어간다.
  */
+@Slf4j
 public class JWTValidatorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -48,6 +50,7 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (Exception e) {
                 // 토큰의 문제가 생길 경우 예외처리
+                log.error(e.getMessage(), e);
                 throw new BadCredentialsException("Invalid Token received!");
             }
         }
