@@ -31,8 +31,6 @@ public class UserController {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-
     }
 
     @GetMapping("/user")
