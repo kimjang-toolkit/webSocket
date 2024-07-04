@@ -58,7 +58,7 @@ function ChatRoomPage() {
           });
         });
         if (subscription) {
-          console.log('?');
+          console.log('subscribed');
           // subscription.unsubscribe();
         }
       } catch (error) {
@@ -69,10 +69,10 @@ function ChatRoomPage() {
     }
   }, [params.roomId]);
 
-  const handleSendMessage = ({ message }: { message: string }) => {
+  const handleSendMessage = (message: string) => {
     if (client) {
       const messageFormat: MessageFormat = {
-        roomId: Number(params.roomId) ,
+        roomId: Number(params.roomId),
         content: message,
         sender: {
           id: user.id ?? 0,
@@ -86,6 +86,7 @@ function ChatRoomPage() {
         body: publishMessageBody,
         headers: {
           'content-type': 'application/json',
+          Authorization: user.accessToken ?? '',
         },
       });
     }
