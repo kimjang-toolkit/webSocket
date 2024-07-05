@@ -33,7 +33,7 @@ jobs :
       - name: Zip Files
         working-directory: ./Backend
         run: zip -r ./springApp.zip ./app.jar ./scripts/*.sh ./appspec.yml
-
+        #    springApp 안에 app.jar, appspce.yml, /scripts/sh 파일들
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
