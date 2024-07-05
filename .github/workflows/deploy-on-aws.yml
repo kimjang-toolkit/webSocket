@@ -2,7 +2,7 @@ name : Deploy Jar to AWS S3
 on :
   push:
     branches:
-      - back-main
+      - main
 jobs :
   buildAndDeploy:
     runs-on: ubuntu-latest
