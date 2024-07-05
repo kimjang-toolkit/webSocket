@@ -15,7 +15,7 @@ API DOC : `http://{server host}/api-docs`
 
 ### What is WebSocket
 
-WebSocket은 클라이언트와 서버가 지속적으로 연결을 유지하면서 통신할 수 있는 저수준 프로토콜입니다.. <br/>
+WebSocket은 클라이언트와 서버가 지속적으로 연결을 유지하면서 통신할 수 있는 저수준 프로토콜입니다... <br/>
 매 통신 마다 3-way hand shack하는 HTTP와 달리 연결을 유지하며 낮은 지연 시간으로 양방향 통신을 지원합니다. <br/>
 간단한 메세지만 주고 받을 때는 WebSocket으로 충분하지만, 에러 처리나 로그인, 헬스 체크 같은 고수준 요구사항을 만족 못합니다.
 
