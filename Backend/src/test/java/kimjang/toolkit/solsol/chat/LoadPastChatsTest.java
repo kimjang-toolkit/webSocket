@@ -36,11 +36,23 @@ public class LoadPastChatsTest {
     }
 
     @Test
-    public void loadPastChats_test(){
+    public void loadRecentChats_test(){
         ReqPastChatsDto reqPastChatsDto = new ReqPastChatsDto(1L, 0, 100);
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 //        log.info("email : "+email);
         PastChatsDto pastChatsDto = chatService.getPastChats(reqPastChatsDto, "recent");
+
+        pastChatsDto.getPastChats().stream().forEach(chat -> {
+            log.info(chat.getContent());
+        });
+    }
+
+    @Test
+    public void loadPastChats_test(){
+        ReqPastChatsDto reqPastChatsDto = new ReqPastChatsDto(1L, 0, 100);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+//        log.info("email : "+email);
+        PastChatsDto pastChatsDto = chatService.getPastChats(reqPastChatsDto, "past");
 
         pastChatsDto.getPastChats().stream().forEach(chat -> {
             log.info(chat.getContent());
