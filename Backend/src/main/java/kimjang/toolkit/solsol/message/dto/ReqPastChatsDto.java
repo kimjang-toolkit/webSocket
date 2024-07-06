@@ -17,9 +17,8 @@ public class ReqPastChatsDto {
     private Long roomId;
     private Long userId;
     private Pageable page;
-    public ReqPastChatsDto (Long roomId, Long userId, int page, int size){
+    public ReqPastChatsDto (Long roomId, int page, int size){
         this.roomId = roomId;
-        this.userId = userId;
         this.page = PageRequest.of(page, size);
     }
 

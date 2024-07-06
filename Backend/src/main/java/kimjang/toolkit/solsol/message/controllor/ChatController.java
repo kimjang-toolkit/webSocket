@@ -35,11 +35,10 @@ public class ChatController {
     @GetMapping("/chat-room/chat/{roomId}")
     public ResponseEntity<PastChatsDto> getChatLogs(@PathVariable Long roomId,
 //                                                    @RequestParam(defaultValue = "0001-01-01 00:00:00") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime roomExitTime,
-                                                    @RequestParam Long userId,
                                                     @RequestParam(defaultValue = "0") Integer page,
                                                     @RequestParam(defaultValue = "100") Integer size,
                                                     @RequestParam(defaultValue = "recent") String timeLine){
-        ReqPastChatsDto reqPastChatsDto = new ReqPastChatsDto(roomId, userId, page, size);
+        ReqPastChatsDto reqPastChatsDto = new ReqPastChatsDto(roomId, page, size);
         PastChatsDto pastChatsDto = chatService.getPastChats(reqPastChatsDto, timeLine);
         return ResponseEntity.ok(pastChatsDto);
     }

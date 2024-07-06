@@ -12,8 +12,11 @@ import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Security;
 
 @Slf4j
 @Service
@@ -34,17 +37,20 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public PastChatsDto getPastChats(ReqPastChatsDto reqPastChatsDto, String timeLine) {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
         log.info(reqPastChatsDto.toString());
         if(timeLine.equals("recent")){
             Slice<SendChatMessageDto> pastChats =
                     chatRepository.findRecentChats(reqPastChatsDto.getRoomId(),
-                            reqPastChatsDto.getUserId(),
+                            email,
                             reqPastChatsDto.getPage());
             return PastChatsDto.of(reqPastChatsDto, pastChats);
         } else{
             Slice<SendChatMessageDto> pastChats =
                     chatRepository.findPastChats(reqPastChatsDto.getRoomId(),
-                            reqPastChatsDto.getUserId(),
+                            email,
                             reqPastChatsDto.getPage());
             return PastChatsDto.of(reqPastChatsDto, pastChats);
         }
