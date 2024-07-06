@@ -83,7 +83,6 @@ const ChatRoomListPage = () => {
         ))}
       </Main>
       <NewChatButton onClick={handleCreateChatRoom} />
-
       <Navbar />
     </ChatListContainer>
   );
