@@ -43,8 +43,8 @@ public class ChatRoomService {
     @Transactional
     public InviteChatRoomDto createChatRoom(CreateChatRoomDto createChatRoomDto) {
         String creator = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<User> users = fetchCustomers(createChatRoomDto.getParticipants()); // 채팅방 참여자들 불러오기
-        List<UserDto> userDtos = validateParticipants(users, createChatRoomDto);
+        List<User> users = fetchCustomers(createChatRoomDto.getParticipants(), creator); // 채팅방 참여자들 불러오기
+        List<UserDto> userDtos = toDtoParticipants(users);
 
         ChatRoom createdRoom = createChatRoom(users.size());
         saveRelationships(createdRoom, users, createChatRoomDto, creator);
@@ -95,22 +95,19 @@ public class ChatRoomService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> fetchCustomers(List<Long> participants) {
+    public List<User> fetchCustomers(List<Long> participants, String creatorEmail) {
 //        List<Long> customerIds = participants.stream()
 //                .map(UserDto::getId)
 //                .toList();
+        User creator = userRepository.findByEmail(creatorEmail).get();
         List<User> users = userRepository.findByIdIn(participants);
         if (users.size() != participants.size()) {
             throw new RuntimeException("존재하지 않는 유저에게 채팅방을 초대했습니다.");
         }
+        users.add(creator);
         return users;
     }
-    private List<UserDto> validateParticipants(List<User> users, CreateChatRoomDto createChatRoomDto) {
-
-        // 아무도 초대하지 않으면 안된다.
-        if(users.size() != createChatRoomDto.getParticipants().size()){
-            throw new RuntimeException("존재하지 않는 유저에게 채팅방을 초대했습니다.");
-        }
+    private List<UserDto> toDtoParticipants(List<User> users) {
         return users.stream().map(UserDto::toDto).collect(Collectors.toList());
     }
 
