@@ -22,7 +22,7 @@ public class SwaggerConfiguration {
                         .version("1.0").contact(new Contact().name("Solsol - Kimjang").email( "oohsol@naver.com").url("kimjang-chat"))
                         .license(new License().name("License of API")
                                 .url("API license URL")));
-    }ㅈ
+    }
     private SecurityScheme createJWTAuthScheme() {
         return new SecurityScheme()
                 .type(SecurityScheme.Type.APIKEY)
