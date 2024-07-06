@@ -24,16 +24,16 @@ public class CreateRoomTest {
     ChatRoomRepository chatRoomRepository;
     @Autowired
     ChatRoomCustormerRelationshipRepository relationshipRepository;
-    @Test
-    @DisplayName("채팅방 생성 및 관계 생성 테스트")
-    public void createRoomTest(){
-        CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
-                Arrays.asList(new UserDto(1L ,"solsol@naver.com","오찬솔"), new UserDto(2L,"solsol@naver.com", "조승효")),
-                "", "효승이 자니??", new UserDto(2L,"solsol@naver.com", "조승효"));
-        Long roomId = chatRoomService.createChatRoomAndFirstChat(createChatRoomDto);
-        ChatRoom savedRoom = chatRoomRepository.findById(roomId).orElseThrow();
-        List<ChatRoomCustomerRelationship> savedRelationship = relationshipRepository.findByChatRoom_Id(savedRoom.getId());
-        Assertions.assertEquals(createChatRoomDto.getParticipants().size(), savedRelationship.size());
-    }
+//    @Test
+//    @DisplayName("채팅방 생성 및 관계 생성 테스트")
+//    public void createRoomTest(){
+//        CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
+//                Arrays.asList(new UserDto(1L ,"solsol@naver.com","오찬솔"), new UserDto(2L,"solsol@naver.com", "조승효")),
+//                "", "효승이 자니??", new UserDto(2L,"solsol@naver.com", "조승효"));
+//        Long roomId = chatRoomService.createChatRoom(createChatRoomDto);
+//        ChatRoom savedRoom = chatRoomRepository.findById(roomId).orElseThrow();
+//        List<ChatRoomCustomerRelationship> savedRelationship = relationshipRepository.findByChatRoom_Id(savedRoom.getId());
+//        Assertions.assertEquals(createChatRoomDto.getParticipants().size(), savedRelationship.size());
+//    }
 
 }

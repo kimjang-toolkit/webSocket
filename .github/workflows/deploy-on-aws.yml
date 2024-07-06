@@ -32,13 +32,13 @@ jobs :
             echo "No JAR file found."
             exit 1
           else
-            cp ./target/$JAR_FILE ./app.jar
-            echo "Copied $JAR_FILE to ./app.jar"
+            cp ./target/$JAR_FILE ./$JAR_FILE
+            echo "Copied $JAR_FILE to ./$JAR_FILE"
           fi
 
       - name: Zip Files
         working-directory: ./Backend
-        run: zip -r ./springApp.zip ./app.jar ./scripts/*.sh ./appspec.yml
+        run: zip -r ./springApp.zip ./$JAR_FILE ./scripts/*.sh ./appspec.yml
         #    springApp 안에 app.jar, appspce.yml, /scripts/sh 파일들
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1

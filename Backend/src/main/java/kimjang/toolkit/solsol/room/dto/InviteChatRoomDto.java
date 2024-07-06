@@ -2,17 +2,19 @@ package kimjang.toolkit.solsol.room.dto;
 
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateChatRoomDto {
-    private List<Long> participants;
+public class InviteChatRoomDto {
+    private List<UserDto> participants;
     private String roomName;
-//    private String firstChat;
-//    private String creator;
+    private Long roomId;
+    private String creator;
 }
