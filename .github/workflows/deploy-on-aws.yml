@@ -2,7 +2,7 @@ name : Deploy Jar to AWS S3
 on :
   push:
     branches:
-      - back-main
+      - main
 jobs :
   buildAndDeploy:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs :
 
       - name: Zip Files
         working-directory: ./Backend
-        run: zip -r ./ChatSpringApp.zip ./app.jar ./scripts/*.sh ./appspec.yml
+        run: zip -r ./springApp.zip ./app.jar ./scripts/*.sh ./appspec.yml
 
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -45,4 +45,4 @@ jobs :
         working-directory: ./Backend
         run: |
           aws s3 ls |
-          aws s3 cp ./ChatSpringApp.zip s3://jar-deploy-sol-kimjang
+          aws s3 cp ./springApp.zip s3://jar-deploy-sol-kimjang
