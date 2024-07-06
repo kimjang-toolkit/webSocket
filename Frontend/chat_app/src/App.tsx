@@ -4,6 +4,7 @@ import ChatRoomPage from '@/pages/ChatRoomPage';
 
 import ChatRoomListPage from '@/pages/ChatRoomListPage';
 import LoginPage from '@/pages/LoginPage';
+import Modal from '@/components/Modal/Modal';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
+      <Modal />
       <RouterProvider router={router} />
     </>
   );

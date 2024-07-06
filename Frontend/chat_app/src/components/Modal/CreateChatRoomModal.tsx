@@ -24,8 +24,8 @@ function CreateChatRoomModal() {
       <SubHeading $margin="0px 0px">채팅방 이름</SubHeading>
       <Input ref={roomNameRef} />
       <Menu>
-        <Button onClick={handleCancle} />
-        <Button onClick={handleSubmit} />
+        <Button onClick={handleCancle}>취소</Button>
+        <Button onClick={handleSubmit}>확인</Button>
       </Menu>
     </ModalContent>
   );

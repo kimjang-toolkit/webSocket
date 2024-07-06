@@ -1,26 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+type modalType = 'CREATE_CHAT_ROOM' | null;
 interface ModalState {
   isOpen: boolean;
-  content: React.ReactNode | null;
+  type: modalType;
 }
 
 const initialState: ModalState = {
   isOpen: false,
-  content: null,
+  type: null,
 };
 
 const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    openModal: (state, action: PayloadAction<{ content: React.ReactNode }>) => {
+    openModal: (state, action: PayloadAction<{ type: modalType }>) => {
       state.isOpen = true;
-      state.content = action.payload.content;
+      state.type = action.payload.type;
     },
     closeModal: (state) => {
       state.isOpen = false;
-      state.content = null;
+      state.type = null;
     },
   },
 });

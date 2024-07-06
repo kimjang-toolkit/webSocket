@@ -15,7 +15,6 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchChatList } from '@/apis/chat';
 import { useNavigate } from 'react-router-dom';
 import { openModal } from '@/redux/modalSlice';
-import CreateChatRoomModal from '@/components/Modal/CreateChatRoomModal';
 
 const mockProfile = {
   imgUrl: 'src/assets/images/맹구.jpg',
@@ -51,7 +50,7 @@ const ChatRoomListPage = () => {
   const handleCreateChatRoom = () => {
     dispatch(
       openModal({
-        content: <CreateChatRoomModal />,
+        type: 'CREATE_CHAT_ROOM',
       }),
     );
   };
