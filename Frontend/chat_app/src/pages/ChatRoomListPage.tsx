@@ -7,14 +7,14 @@ import { RootState } from '@/redux/store';
 import { Main, SubHeading } from '@/styles/Common';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import SelectParticipants from '@/components/SelectParticipants';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { initializeWebSocket } from '@/redux/webSocketSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query';
 import { fetchChatList } from '@/apis/chat';
 import { useNavigate } from 'react-router-dom';
+import Modal from '@/components/Modal';
 
 const mockProfile = {
   imgUrl: 'src/assets/images/맹구.jpg',
@@ -23,7 +23,7 @@ const ChatRoomListPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
-
+  const dialogRef = useRef();
   const {
     data: chatList,
     error,
@@ -40,7 +40,7 @@ const ChatRoomListPage = () => {
       dispatch(initializeWebSocket({ userId: user.id, accessToken: user.accessToken }));
     }
     return () => {
-      console.log('unmouited');
+      // console.log('unmouited');
     };
   }, []);
 
@@ -48,6 +48,7 @@ const ChatRoomListPage = () => {
     navigate(`/chat/${roomId}`);
   };
 
+  const handleCreateChatRoom = () => {};
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -58,6 +59,13 @@ const ChatRoomListPage = () => {
 
   return (
     <ChatListContainer>
+      <Modal
+        ref={dialogRef}
+        title="초대할 ID"
+        onClickConfirm={() => {
+          dialogRef.current.open();
+        }}
+      />
       <Header title="채팅방 리스트" isBackArrow={false} />
       <ProfileBox imgUrl={mockProfile.imgUrl} userId={user.id} userName={user.name} />
       <SubHeading $margin="0px 0px 8px 0px">Chats</SubHeading>
@@ -76,9 +84,9 @@ const ChatRoomListPage = () => {
           />
         ))}
       </Main>
-      <NewChatButton />
+      <NewChatButton onClick={handleCreateChatRoom} />
+
       <Navbar />
-      {/* <SelectParticipants /> */}
     </ChatListContainer>
   );
 };

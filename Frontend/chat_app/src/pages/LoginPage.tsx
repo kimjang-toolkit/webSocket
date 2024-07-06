@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Main } from '@/styles/Common';
+import { Input, Main } from '@/styles/Common';
 import { authenticateUser } from '@/apis/authentication';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
@@ -69,12 +69,7 @@ const Form = styled.div`
   gap: 10px;
 `;
 
-const Input = styled.input`
-  padding: 10px;
-  font-size: var(--font-size-md);
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
+
 
 const Button = styled.button<{ secondary?: boolean }>`
   padding: 10px;
