@@ -18,3 +18,13 @@ export const fetchChatList = async (userId: number | null) => {
   const response = await api.get(`/chat-room?userId=${userId}`);
   return response.data;
 };
+
+export const createChatRoom = async ({ participants, roomName }: { participants: number[]; roomName: string }) => {
+  if (participants.length === 0) throw new Error('No particpants');
+  const response = await api.post(`/chat-room`, {
+    participants,
+    roomName,
+  });
+  if (response.status == 200) return true;
+  else return false;
+};

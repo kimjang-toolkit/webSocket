@@ -5,8 +5,6 @@ import ChatRoomPage from '@/pages/ChatRoomPage';
 import ChatRoomListPage from '@/pages/ChatRoomListPage';
 import LoginPage from '@/pages/LoginPage';
 
-
-
 const router = createBrowserRouter([
   {
     path: '/',
