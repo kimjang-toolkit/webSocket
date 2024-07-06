@@ -83,7 +83,7 @@ public class ChatRoomService {
                 .map(customer -> ChatRoomCustomerRelationship.builder()
                         .chatRoom(chatRoom)
                         .user(customer)
-                        .roomName(withParticipationsName(createChatRoomDto, creator, customer.getId()))
+                        .roomName(createChatRoomDto.getRoomName())
                         .build())
                 .toList();
         try{
