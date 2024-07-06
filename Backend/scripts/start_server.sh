@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "빌드 버전 2.0.0" >> /home/ec2-user/server/deploy.log
+echo "빌드 버전 2.0.1" >> /home/ec2-user/server/deploy.log
 
 BUILD_JAR=$(ls /home/ec2-user/server/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
