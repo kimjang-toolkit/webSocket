@@ -15,6 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchChatList } from '@/apis/chat';
 import { useNavigate } from 'react-router-dom';
 import { openModal } from '@/redux/modalSlice';
+import Modal from '@/components/Modal/Modal';
 
 const mockProfile = {
   imgUrl: 'src/assets/images/맹구.jpg',
@@ -64,6 +65,7 @@ const ChatRoomListPage = () => {
 
   return (
     <ChatListContainer>
+      <Modal />
       <Header title="채팅방 리스트" isBackArrow={false} />
       <ProfileBox imgUrl={mockProfile.imgUrl} userId={user.id} userName={user.name} />
       <SubHeading $margin="0px 0px 8px 0px">Chats</SubHeading>

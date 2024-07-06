@@ -25,6 +25,6 @@ export const createChatRoom = async ({ participants, roomName }: { participants:
     participants,
     roomName,
   });
-  if (response.status == 200) return true;
+  if (response.status == 200) return response.data;
   else return false;
 };

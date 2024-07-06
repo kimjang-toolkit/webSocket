@@ -3,19 +3,23 @@ import { closeModal } from '@/redux/modalSlice';
 import { Button, Input, SubHeading } from '@/styles/Common';
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 function CreateChatRoomModal() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const IDRef = useRef<HTMLInputElement>(null);
   const roomNameRef = useRef<HTMLInputElement>(null);
   const handleCancle = () => {
     dispatch(closeModal());
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const participants = [Number(IDRef.current?.value)];
     const roomName = roomNameRef.current?.value ?? 'UnNamed채팅방';
-    const res = createChatRoom({ participants, roomName });
+    const res = await createChatRoom({ participants, roomName });
+    navigate(`/chat/${res.roomId}`);
+    console.log('res', res.roomId);
   };
   return (
     <ModalContent>
