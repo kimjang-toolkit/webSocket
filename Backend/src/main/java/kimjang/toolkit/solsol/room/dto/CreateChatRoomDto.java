@@ -11,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateChatRoomDto {
-    private List<UserDto> participants;
+    private List<Long> participants;
     private String roomName;
-    private String firstChat;
-    private UserDto maker;
+//    private String firstChat;
+//    private String creator;
 }

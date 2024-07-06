@@ -23,7 +23,7 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
      * 이후에 발생한 모든 채팅 불러오기
      *
      * @param roomId
-     * @param userId
+     * @param email
      * @param pageable : size(100)개 씩 채팅 전달
      * @return
      * @Param roomExitTime : 사용자가 최근 방에서 나간 시간
@@ -34,10 +34,15 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
             " FROM ChatMessage cm " + // 채팅
             " join User u ON u.id = cm.user.id " + // 유저
             " WHERE cm.createDate > (" +
-            " SELECT MAX(ccr.roomExitTime) FROM ChatRoomCustomerRelationship ccr " +
-            " WHERE ccr.user.id = :userId AND cm.chatRoom.id = :roomId )" + // 사용자가 채팅 방을 나간 시간 이후에 생성된 채팅들
+            " SELECT " +
+            "   MAX(CASE WHEN ccr.roomExitTime IS NULL " +
+            "         THEN '0001-01-01 00:00:00' " +
+            "         ELSE ccr.roomExitTime " +
+            "     END) " +
+            "FROM ChatRoomCustomerRelationship ccr " +
+            " WHERE ccr.user.email = :email AND cm.chatRoom.id = :roomId )" + // 사용자가 채팅 방을 나간 시간 이후에 생성된 채팅들
             " ORDER BY cm.createDate ASC ") // 오래된 순서로 채팅 정렬
-    Slice<SendChatMessageDto> findRecentChats(@Param("roomId") Long roomId, @Param("userId") Long userId, Pageable pageable);
+    Slice<SendChatMessageDto> findRecentChats(@Param("roomId") Long roomId, @Param("email") String email, Pageable pageable);
 
     // 유저가 속한 채팅방에 가장 최근 채팅만 쿼리
     @Query(value="SELECT " +
@@ -46,11 +51,15 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
             " FROM ChatMessage cm " + // 채팅
             " join User u ON u.id = cm.user.id " + // 유저
             " WHERE cm.createDate <= (" +
-            " SELECT MAX(ccr.roomExitTime) FROM ChatRoomCustomerRelationship ccr " +
-            " WHERE ccr.user.id = :userId AND cm.chatRoom.id = :roomId )" + // 사용자가 채팅 방을 나간 시간 이전에 생성된 채팅들
+            " SELECT " +
+            "   MAX(CASE WHEN ccr.roomExitTime IS NULL " +
+            "         THEN '0001-01-01 00:00:00' " +
+            "         ELSE ccr.roomExitTime " +
+            "     END) " +
+            " FROM ChatRoomCustomerRelationship ccr " +
+            " WHERE ccr.user.email = :email AND cm.chatRoom.id = :roomId )" + // 사용자가 채팅 방을 나간 시간 이전에 생성된 채팅들
             " ORDER BY cm.createDate ASC ") // 최신 순서로 채팅 정렬
-    Slice<SendChatMessageDto> findPastChats(@Param("roomId") Long roomId, @Param("userId") Long userId, Pageable pageable);
+    Slice<SendChatMessageDto> findPastChats(@Param("roomId") Long roomId, @Param("email") String email, Pageable pageable);
 
     List<ChatMessage> findByChatRoom_Id(Long roomId);
-
 }

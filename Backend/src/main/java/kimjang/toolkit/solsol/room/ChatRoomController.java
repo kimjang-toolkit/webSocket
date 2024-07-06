@@ -1,9 +1,7 @@
 package kimjang.toolkit.solsol.room;
 
-import kimjang.toolkit.solsol.room.dto.ChatRoomDto;
-import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
+import kimjang.toolkit.solsol.room.dto.*;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
-import kimjang.toolkit.solsol.room.dto.LeaveRoomDto;
 import kimjang.toolkit.solsol.room.service.ChatRoomService;
 import kimjang.toolkit.solsol.room.service.ChatRoomStompService;
 import kimjang.toolkit.solsol.message.service.ChatService;
@@ -15,9 +13,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
 
@@ -48,16 +44,15 @@ public class ChatRoomController {
     */
    @PostMapping("/chat-room")
    @SendTo("/notification/room/{user-id}") // /notification/room/chat 을 구독하면 SendMessageDto를 받음
-   public ResponseEntity<String> createChatRoom(@RequestBody CreateChatRoomDto dto){
+   public ResponseEntity<InviteChatRoomDto> createChatRoom(@RequestBody CreateChatRoomDto dto){
       try{
-         Long roomId = chatRoomService.createChatRoomAndFirstChat(dto);
-         DeferredResult<ResponseEntity<String>> deferredResult = new DeferredResult<>();
-         chatRoomStompService.inviteParticipates(dto,roomId);
-         return ResponseEntity.ok("Chat room created and notifications sent");
+         InviteChatRoomDto inviteChatRoomDto = chatRoomService.createChatRoom(dto);
+         chatRoomStompService.inviteParticipates(inviteChatRoomDto);
+         return ResponseEntity.ok(inviteChatRoomDto);
       }
       catch(RuntimeException e){
          log.error(e.getMessage());
-         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러 발생!");
+         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
       }
    }
 

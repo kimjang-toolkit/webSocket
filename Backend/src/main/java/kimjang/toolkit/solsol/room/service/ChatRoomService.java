@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.room.service;
 
+import kimjang.toolkit.solsol.room.dto.InviteChatRoomDto;
 import kimjang.toolkit.solsol.room.dto.LeaveRoomDto;
 import kimjang.toolkit.solsol.user.User;
 import kimjang.toolkit.solsol.user.UserRepository;
@@ -15,13 +16,14 @@ import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static kimjang.toolkit.solsol.room.service.CreateRoomName.withParticipationsName;
 
@@ -39,14 +41,19 @@ public class ChatRoomService {
 
 
     @Transactional
-    public Long createChatRoomAndFirstChat(CreateChatRoomDto createChatRoomDto) {
-        List<User> users = fetchCustomers(createChatRoomDto.getParticipants()); // 채팅방 참여자들 불러오기
-        User maker = validateParticipants(users, createChatRoomDto);
+    public InviteChatRoomDto createChatRoom(CreateChatRoomDto createChatRoomDto) {
+        String creator = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<User> users = fetchCustomers(createChatRoomDto.getParticipants(), creator); // 채팅방 참여자들 불러오기
+        List<UserDto> userDtos = toDtoParticipants(users);
 
         ChatRoom createdRoom = createChatRoom(users.size());
-        saveRelationships(createdRoom, users, createChatRoomDto);
-        saveFirstChat(createChatRoomDto.getFirstChat(), maker, createdRoom);
-        return createdRoom.getId();
+        saveRelationships(createdRoom, users, createChatRoomDto, creator);
+        return InviteChatRoomDto.builder()
+                .roomId(createdRoom.getId())
+                .creator(creator)
+                .participants(userDtos)
+                .roomName(createChatRoomDto.getRoomName())
+                .build();
     }
 
     @Transactional
@@ -71,12 +78,12 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public void saveRelationships(ChatRoom chatRoom, List<User> users, CreateChatRoomDto createChatRoomDto) {
+    public void saveRelationships(ChatRoom chatRoom, List<User> users, CreateChatRoomDto createChatRoomDto, String creator) {
         List<ChatRoomCustomerRelationship> relationships = users.stream()
                 .map(customer -> ChatRoomCustomerRelationship.builder()
                         .chatRoom(chatRoom)
                         .user(customer)
-                        .roomName(withParticipationsName(createChatRoomDto, customer.getId()))
+                        .roomName(withParticipationsName(createChatRoomDto, creator, customer.getId()))
                         .build())
                 .toList();
         try{
@@ -88,26 +95,20 @@ public class ChatRoomService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> fetchCustomers(List<UserDto> participants) {
-        List<Long> customerIds = participants.stream()
-                .map(UserDto::getId)
-                .toList();
-
-        List<User> users = userRepository.findByIdIn(customerIds);
+    public List<User> fetchCustomers(List<Long> participants, String creatorEmail) {
+//        List<Long> customerIds = participants.stream()
+//                .map(UserDto::getId)
+//                .toList();
+        User creator = userRepository.findByEmail(creatorEmail).get();
+        List<User> users = userRepository.findByIdIn(participants);
         if (users.size() != participants.size()) {
             throw new RuntimeException("존재하지 않는 유저에게 채팅방을 초대했습니다.");
         }
+        users.add(creator);
         return users;
     }
-    private User validateParticipants(List<User> users, CreateChatRoomDto createChatRoomDto) {
-        Long makerId = createChatRoomDto.getMaker().getId();
-        User maker= users.stream().filter(c -> c.getId().equals(makerId)).reduce((a, b) -> {
-            throw new IllegalStateException("Multiple elements: " + a + ", " + b);
-        }).orElseThrow();
-        if(users.size() != createChatRoomDto.getParticipants().size()){
-            throw new RuntimeException("존재하지 않는 유저에게 채팅방을 초대했습니다.");
-        }
-        return maker;
+    private List<UserDto> toDtoParticipants(List<User> users) {
+        return users.stream().map(UserDto::toDto).collect(Collectors.toList());
     }
 
 

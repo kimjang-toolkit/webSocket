@@ -2,7 +2,13 @@ name : Deploy Jar to AWS S3
 on :
   push:
     branches:
-      - main
+      - back-secon
+env:
+  S3_BUCKET_NAME: jar-deploy-sol-kimjang
+  AWS_REGION: ap-northeast-2
+  CODEDEPLOY_NAME: kimjang-deploy-app
+  CODEDEPLOY_GROUP: kimjang-sol-deploy-group
+  OBJECT_KEY: springApp
 jobs :
   buildAndDeploy:
     runs-on: ubuntu-latest
@@ -26,14 +32,14 @@ jobs :
             echo "No JAR file found."
             exit 1
           else
-            cp ./target/$JAR_FILE ./app.jar
-            echo "Copied $JAR_FILE to ./app.jar"
+            cp ./target/$JAR_FILE ./$JAR_FILE
+            echo "Copied $JAR_FILE to ./$JAR_FILE"
           fi
 
       - name: Zip Files
         working-directory: ./Backend
-        run: zip -r ./springApp.zip ./app.jar ./scripts/*.sh ./appspec.yml
-
+        run: zip -r ./springApp.zip ./$JAR_FILE ./scripts/*.sh ./appspec.yml
+        #    springApp 안에 app.jar, appspce.yml, /scripts/sh 파일들
       - name: Set AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -45,4 +51,11 @@ jobs :
         working-directory: ./Backend
         run: |
           aws s3 ls |
-          aws s3 cp ./springApp.zip s3://jar-deploy-sol-kimjang
+          aws s3 cp ./$OBJECT_KEY.zip s3://$S3_BUCKET_NAME
+
+      - name: Code Deploy
+        run: |
+          aws deploy create-deployment --application-name $CODEDEPLOY_NAME \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name $CODEDEPLOY_GROUP \
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$OBJECT_KEY.zip

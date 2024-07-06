@@ -2,9 +2,11 @@ package kimjang.toolkit.solsol.room.service;
 
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.room.dto.CreateRoomReqDto;
+import kimjang.toolkit.solsol.room.dto.InviteChatRoomDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import static kimjang.toolkit.solsol.room.service.CreateRoomName.withParticipationsName;
@@ -16,16 +18,17 @@ public class ChatRoomStompService {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    public void inviteParticipates(CreateChatRoomDto createChatRoomDto, Long roomId) {
-
-        createChatRoomDto.getParticipants()
-                .parallelStream().forEach(customerDto -> {
+    public void inviteParticipates(InviteChatRoomDto inviteChatRoomDto) {
+        String creatorEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        inviteChatRoomDto.getParticipants()
+                .parallelStream()
+                .forEach(customerDto -> {
+                    // 각 참여자에게 채팅방 초대 메세지 전달
                     CreateRoomReqDto createRoomReqDto = CreateRoomReqDto.builder()
-                            .roomId(roomId)
-                            .roomName(withParticipationsName(createChatRoomDto, customerDto.getId()))
-                            .firstChat(createChatRoomDto.getFirstChat())
+                            .roomId(inviteChatRoomDto.getRoomId())
+                            .roomName(inviteChatRoomDto.getRoomName())
                             .user(customerDto)
-                            .maker(createChatRoomDto.getMaker())
+                            .creator(creatorEmail)
                             .build();
                     messagingTemplate.convertAndSend("/notification/room/" + customerDto.getId(), // 각 고객에게 채팅방 생성을 알림
                             createRoomReqDto);
