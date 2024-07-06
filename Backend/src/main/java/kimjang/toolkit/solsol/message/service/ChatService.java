@@ -40,7 +40,7 @@ public class ChatService {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        log.info(reqPastChatsDto.toString());
+        log.info(reqPastChatsDto.toString()+" email : "+email);
         if(timeLine.equals("recent")){
             Slice<SendChatMessageDto> pastChats =
                     chatRepository.findRecentChats(reqPastChatsDto.getRoomId(),
