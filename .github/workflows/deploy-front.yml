@@ -1,0 +1,57 @@
+name: Deploy front to S3
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: use node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.9
+
+      # 노드 모듈 캐싱. package-lock.json 파일 변경 시 캐시를 무효화하고 다시 생성 
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ./Frontend/chat_app/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('Frontend/chat_app/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      #의존성 설치
+      - name: install dependency
+        working-directory: ./Frontend/chat_app
+        run: npm ci
+
+      - name: build project
+        working-directory: ./Frontend/chat_app
+        run: npm run build
+
+      # 보안성을 높이기 위해 aws 자격증명을 설정함. -> AWS CLI명령어와 AWS 리소스 접근을 위한 인증.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{secrets.S3_ACCESS_SECREAT_KEY}}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: s3 deploy
+        env:
+        BUCKET_NAME: ${{ secrets.AWS_FRONT_BUCKET}}
+        working-directory: ./Frontend/chat_app
+        run: run: |
+            aws s3 sync ./build s3://$BUCKET_NAME 
+
+      # 모든 경로 무효화
+      - name: CloudFront Invalidation
+      env:
+        CLOUD_FRONT_ID: ${{ secrets.AWS_CDN_ID}}
+      run: |
+        aws cloudfront create-invalidation \
+          --distribution-id $CLOUD_FRONT_ID --paths "/*"
