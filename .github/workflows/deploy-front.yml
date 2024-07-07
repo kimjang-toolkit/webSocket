@@ -54,7 +54,7 @@ jobs:
         env:
           BUCKET_NAME: ${{ secrets.AWS_FRONT_BUCKET}}
         run: |
-          aws s3 sync ./Frontend/chat-app/dist s3://$BUCKET_NAME
+          aws s3 sync ./Frontend/chat_app/dist s3://$BUCKET_NAME
 
       # 모든 경로 무효화
       - name: CloudFront Invalidation
