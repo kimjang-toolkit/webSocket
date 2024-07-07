@@ -28,7 +28,6 @@ jobs:
         working-directory: ./Frontend/chat_app
         run: npm ci
 
- 
       #타입스크립트 에러 무시
       - name: Run TypeScript
         working-directory: ./Frontend/chat_app
@@ -55,7 +54,7 @@ jobs:
         env:
           BUCKET_NAME: ${{ secrets.AWS_FRONT_BUCKET}}
         run: |
-          aws s3 sync ./Frontend/chat-app/build s3://$BUCKET_NAME
+          aws s3 sync ./Frontend/chat-app/dist s3://$BUCKET_NAME
 
       # 모든 경로 무효화
       - name: CloudFront Invalidation
