@@ -13,11 +13,8 @@ export interface ChatRoomCardProps {
 
 const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
   imgUrl,
-  roomId,
   roomName,
   lastContent,
-  lastChatTime,
-  memberCnt,
   unreadCnt,
   onClick,
 }) => {
