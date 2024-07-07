@@ -79,7 +79,7 @@ const ChatRoomListPage = () => {
             lastContent={chat.lastContent}
             lastChatTime={chat.lastChatTime}
             memberCnt={chat.memberCnt}
-            unreadCnt={3}
+            unreadCnt={chat.unreadCnt}
             onClick={() => handleChatRoomClick(chat.roomId)}
           />
         ))}

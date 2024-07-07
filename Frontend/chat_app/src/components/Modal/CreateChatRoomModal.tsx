@@ -19,7 +19,7 @@ function CreateChatRoomModal() {
     const roomName = roomNameRef.current?.value ?? 'UnNamed채팅방';
     const res = await createChatRoom({ participants, roomName });
     navigate(`/chat/${res.roomId}`);
-    console.log('res', res.roomId);
+    dispatch(closeModal());
   };
   return (
     <ModalContent>
