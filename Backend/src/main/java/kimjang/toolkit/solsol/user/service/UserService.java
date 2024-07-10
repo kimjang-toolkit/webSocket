@@ -40,6 +40,6 @@ public class UserService {
     }
 
     public List<UserProfileDto> findFriendsByEmail(String name) {
-        return userRepository.findFriendsEmail(name);
+        return userRepository.findFriendsByEmail(name);
     }
 }

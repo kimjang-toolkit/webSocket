@@ -23,5 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT new kimjang.toolkit.solsol.user.dto.UserProfileDto(" +
             " u.id,  u.email, u.name, u.imgUrl " +
             " ) FROM User u")
-    List<UserProfileDto> findFriendsEmail(String name);
+    List<UserProfileDto> findFriendsByEmail(String name);
 }
