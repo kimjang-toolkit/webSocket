@@ -2,22 +2,24 @@ import ChatInputBar from '@/components/ChatRoom/ChatInputBar';
 import ChatsWrapper from '@/components/ChatRoom/ChatsWrapper';
 import Header from '@/components/Header';
 import { useChatHistory } from '@/hooks/useChatHistory';
-import { RootState } from '@/redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import { Main } from '@/styles/Common';
 import { chatFormat } from '@/types/types';
 import { ParsedDateTime } from '@/utils/parseDateTime';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MessageFormat } from '@/types/types';
 
 import styled from 'styled-components';
+import { addSubscription, removeSubscription } from '@/redux/webSocketSlice';
 
 function ChatRoomPage() {
   const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
   const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
   const params = useParams();
   const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch<AppDispatch>();
   const { data, error, isLoading, fetchNextPage, hasNextPage } = useChatHistory({
     roomId: params.roomId ?? '',
     userId: user.id ?? 0,
@@ -40,34 +42,19 @@ function ChatRoomPage() {
     }
   }, [fetchNextPage, hasNextPage]);
   useEffect(() => {
-    if (client && isConnected) {
-      try {
-        client.onConnect = () => {
-          console.log('onconnected');
-          const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
-            const newChat = JSON.parse(message.body);
-            setLiveChats((prev) => {
-              const chat = {
-                ...newChat,
-                createDate: {
-                  ...ParsedDateTime(newChat.createDate),
-                },
-              };
-              return [...prev, chat];
-            });
-          });
-          if (subscription) {
-            console.log('subscribed');
-            // subscription.unsubscribe();
-          }
-        };
-      } catch (error) {
-        console.error('Error subscribing to topic:', error);
-      }
-    } else {
-      console.warn('Client is not connected or client is null.');
+    if (client && isConnected && params.roomId) {
+      const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
+        const newChat = JSON.parse(message.body);
+        setLiveChats((prev) => [...prev, newChat]);
+      });
+
+      dispatch(addSubscription({ roomId: params.roomId, subscription }));
+
+      return () => {
+        dispatch(removeSubscription({ roomId: params.roomId! }));
+      };
     }
-  }, [params.roomId]);
+  }, [client, isConnected, params.roomId, dispatch]);
 
   const handleSendMessage = (message: string) => {
     if (client) {
