@@ -41,26 +41,26 @@ function ChatRoomPage() {
   }, [fetchNextPage, hasNextPage]);
   useEffect(() => {
     if (client && isConnected) {
-      if (client.connected) {
-        console.log('conneected?');
-      }
       try {
-        const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
-          const newChat = JSON.parse(message.body);
-          setLiveChats((prev) => {
-            const chat = {
-              ...newChat,
-              createDate: {
-                ...ParsedDateTime(newChat.createDate),
-              },
-            };
-            return [...prev, chat];
+        client.onConnect = () => {
+          console.log('onconnected');
+          const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
+            const newChat = JSON.parse(message.body);
+            setLiveChats((prev) => {
+              const chat = {
+                ...newChat,
+                createDate: {
+                  ...ParsedDateTime(newChat.createDate),
+                },
+              };
+              return [...prev, chat];
+            });
           });
-        });
-        if (subscription) {
-          console.log('subscribed');
-          // subscription.unsubscribe();
-        }
+          if (subscription) {
+            console.log('subscribed');
+            // subscription.unsubscribe();
+          }
+        };
       } catch (error) {
         console.error('Error subscribing to topic:', error);
       }

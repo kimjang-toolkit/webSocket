@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import webSocketReducer from '@/redux/webSocketSlice';
 import usersReducer from '@/redux/userSlice';
+import modalReducer from '@/redux/modalSlice';
 
 const store = configureStore({
-  reducer: { webSocket: webSocketReducer, user: usersReducer },
+  reducer: { webSocket: webSocketReducer, user: usersReducer, modal: modalReducer },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

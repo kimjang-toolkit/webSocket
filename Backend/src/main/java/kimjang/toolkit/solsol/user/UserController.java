@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -37,5 +39,10 @@ public class UserController {
     public UserProfileDto getUserDetailsAfterLogin(Authentication authentication) {
         System.out.println(authentication.getName()+"님의 유저 정보 불러오기");
         return userService.findUserProfileByEmail(authentication.getName());
+    }
+
+    @GetMapping("/friends")
+    public List<UserProfileDto> getUserFriends(Authentication authentication){
+        return userService.findFriendsByEmail(authentication.getName());
     }
 }
