@@ -38,8 +38,4 @@ public class UserService {
     public UserProfileDto findUserProfileByEmail(String email){
         return userRepository.findProfileByEmail(email);
     }
-
-    public List<UserProfileDto> findFriendsByEmail(String name) {
-        return userRepository.findFriendsByEmail(name);
-    }
 }
