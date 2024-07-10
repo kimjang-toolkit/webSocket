@@ -19,4 +19,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     UserProfileDto findProfileByEmail(@Param("email") String email);
 
     Boolean existsByEmail(String email);
+
+    @Query(value = "SELECT new kimjang.toolkit.solsol.user.dto.UserProfileDto(" +
+            " u.id,  u.email, u.name, u.imgUrl " +
+            " ) FROM User u")
+    List<UserProfileDto> findFriendsEmail(String name);
 }
