@@ -68,7 +68,7 @@ public class SecurityConfig {
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
 //                .csrf(AbstractHttpConfigurer::disable)
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register", "/login","/gs")
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register","/user/*" ,"/login","/gs")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAt(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)

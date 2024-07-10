@@ -1,8 +1,10 @@
 package kimjang.toolkit.solsol.user;
 
+import kimjang.toolkit.solsol.user.dto.AddFriendsDto;
 import kimjang.toolkit.solsol.user.dto.CreateUserDto;
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.user.dto.UserProfileDto;
+import kimjang.toolkit.solsol.user.service.FriendService;
 import kimjang.toolkit.solsol.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final FriendService friendService;
     @PostMapping("/register")
     public ResponseEntity<UserDto> registerUser(@RequestBody CreateUserDto createUserDto) {
         UserDto userDto = userService.registerUser(createUserDto);
@@ -41,8 +44,14 @@ public class UserController {
         return userService.findUserProfileByEmail(authentication.getName());
     }
 
-    @GetMapping("/friends")
+    @GetMapping("/user/friends")
     public List<UserProfileDto> getUserFriends(Authentication authentication){
-        return userService.findFriendsByEmail(authentication.getName());
+        return friendService.getFriends(authentication.getName());
+    }
+
+    @PostMapping("/user/friends")
+    public String addFriend(Authentication authentication, @RequestBody AddFriendsDto addFriendsDto){
+        friendService.addFriend(authentication.getName(), addFriendsDto);
+        return "성공적으로 친구추가 했습니다.";
     }
 }

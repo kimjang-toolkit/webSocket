@@ -111,7 +111,6 @@ public class ChatRoomService {
         return users.stream().map(UserDto::toDto).collect(Collectors.toList());
     }
 
-
     public List<ChatRoomDto> getChatRooms(Long userId) {
         return chatRoomRepository.findChatRoomsByUserId(userId);
 //        List<LastChatDto> lastChatDtos = chatRepository.findLastChatsByUserId(userId);
