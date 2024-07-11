@@ -1,5 +1,6 @@
-package kimjang.toolkit.solsol.user;
+package kimjang.toolkit.solsol.user.reposiotry;
 
+import kimjang.toolkit.solsol.user.User;
 import kimjang.toolkit.solsol.user.dto.UserProfileDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,11 +20,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     UserProfileDto findProfileByEmail(@Param("email") String email);
 
     Boolean existsByEmail(String email);
-
-    @Query(value = "SELECT new kimjang.toolkit.solsol.user.dto.UserProfileDto(" +
-            " f.id,  f.email, f.name, f.imgUrl " +
-            " ) FROM User u " +
-            " JOIN FETCH u.friends f " +
-            " WHERE u.email = :email")
-    List<UserProfileDto> findFriendsByEmail(@Param("email") String email);
 }

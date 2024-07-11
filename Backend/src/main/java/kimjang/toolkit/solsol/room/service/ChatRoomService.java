@@ -3,7 +3,7 @@ package kimjang.toolkit.solsol.room.service;
 import kimjang.toolkit.solsol.room.dto.InviteChatRoomDto;
 import kimjang.toolkit.solsol.room.dto.LeaveRoomDto;
 import kimjang.toolkit.solsol.user.User;
-import kimjang.toolkit.solsol.user.UserRepository;
+import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.repository.ChatRepository;
@@ -24,8 +24,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static kimjang.toolkit.solsol.room.service.CreateRoomName.withParticipationsName;
 
 @Slf4j
 @Service

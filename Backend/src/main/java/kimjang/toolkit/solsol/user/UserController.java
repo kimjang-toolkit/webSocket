@@ -54,4 +54,10 @@ public class UserController {
         friendService.addFriend(authentication.getName(), addFriendsDto);
         return "성공적으로 친구추가 했습니다.";
     }
+
+    @DeleteMapping("/user/friends")
+    public String deleteFriends(Authentication authentication, @RequestBody AddFriendsDto addFriendsDto){
+        friendService.removeFriend(authentication.getName(), addFriendsDto);
+        return "성공적으로 친구를 제거했습니다.";
+    }
 }

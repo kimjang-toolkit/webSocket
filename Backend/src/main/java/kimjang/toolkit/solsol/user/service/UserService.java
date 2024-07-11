@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.user.service;
 
 import kimjang.toolkit.solsol.user.User;
-import kimjang.toolkit.solsol.user.UserRepository;
+import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import kimjang.toolkit.solsol.user.dto.CreateUserDto;
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.user.dto.UserProfileDto;
@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

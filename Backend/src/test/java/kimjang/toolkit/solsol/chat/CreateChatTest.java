@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import kimjang.toolkit.solsol.SolsolApplication;
 import kimjang.toolkit.solsol.user.User;
-import kimjang.toolkit.solsol.user.UserRepository;
+import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;

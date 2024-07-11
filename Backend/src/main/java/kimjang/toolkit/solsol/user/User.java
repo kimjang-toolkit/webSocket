@@ -44,14 +44,9 @@ public class User {
 
     @Column(name = "img_url")
     private String imgUrl;
-
-    @ManyToMany
-    @JoinTable(
-            name = "friends",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "friend_id")
-    )
-    private Set<User> friends = new HashSet<>();
+//
+//    @OneToMany(mappedBy = "user",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Set<Friend> friends = new HashSet<>();
 
     public static User of(CreateUserDto dto, String hashPwd){
         User user =  User.builder()
@@ -67,16 +62,16 @@ public class User {
         return user;
     }
 
-    public void addFriend(List<User> friend) {
-        friends.addAll(friend);
-    }
-
-    public void removeFriend(Long friendId) {
-        for(User friend : friends){
-            if(friend.getId().equals(friendId)){
-                friends.remove(friend);
-            }
-        }
-        throw new RuntimeException("친구가 아닌 사람입니다.");
-    }
+//    public void addFriend(List<Friend> friend) {
+//        friends.addAll(friend);
+//    }
+//
+//    public void removeFriend(Long subUserId) {
+//        for(Friend friend : friends){
+//            if(friend.getSubUser().getId().equals(subUserId)){
+//                friends.remove(friend);
+//            }
+//        }
+//        throw new RuntimeException("친구가 아닌 사람입니다.");
+//    }
 }

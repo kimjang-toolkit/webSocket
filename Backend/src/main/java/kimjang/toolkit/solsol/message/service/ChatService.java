@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.message.service;
 
 import kimjang.toolkit.solsol.user.User;
-import kimjang.toolkit.solsol.user.UserRepository;
+import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.PastChatsDto;
 import kimjang.toolkit.solsol.message.dto.ReqPastChatsDto;
@@ -15,8 +15,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.security.Security;
 
 @Slf4j
 @Service
