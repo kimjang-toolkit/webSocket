@@ -84,10 +84,6 @@ public class SecurityConfig {
                         .requestMatchers("/user").authenticated()
                         .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
-//                // Resource server로 동작하기 위해 jwt 컨버터를 세팅
-//                .oauth2ResourceServer(server ->
-//                        server.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(converter)));
-        // 이제 Spring 앱이 resource server 역할을 하기 때문에 로그인 기능을 제외한다.
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
 
