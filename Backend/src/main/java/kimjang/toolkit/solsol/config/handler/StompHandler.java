@@ -37,11 +37,11 @@ public class StompHandler implements ChannelInterceptor {
 //        System.out.println("목적지 : " + destination);
 //        System.out.println("토큰 " + token);
         // STOMP 메서드가 CONNECT인 경우
-        if (StompCommand.CONNECT.equals(accessor.getCommand()) && token != null) {
-            System.out.println("토큰 유효성 검사 시작!");
-            jwtAuthenticationProvider.isValid(token);
-        }
-        if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) && destination != null) {
+//        if (StompCommand.CONNECT.equals(accessor.getCommand()) && token != null) {
+//            System.out.println("토큰 유효성 검사 시작!");
+//            jwtAuthenticationProvider.isValid(token);
+//        }
+//        if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) && destination != null) {
 //            try {
 //                Matcher matcher = CHAT_ROOM_PATTERN.matcher(destination);
 //                if (matcher.matches()) {
@@ -56,25 +56,25 @@ public class StompHandler implements ChannelInterceptor {
 //                System.out.println(e.getMessage());
 //                throw e;
 //            }
-        }
-
-        // 채팅방 구독 해제하는 경우
-        if(StompCommand.UNSUBSCRIBE.equals(accessor.getCommand())){
-//            System.out.println("message:" + message);
-//            System.out.println("헤더 : " + message.getHeaders());
-//            System.out.println("요청 메서드 : " + accessor.getCommand());
-            try{
-                String email = jwtAuthenticationProvider.isValid(token);
-                Long roomId = sessionContainer.unsubscribe(sessionId);
-
-                subscribeService.updateUnsubscribeTime(email, roomId);
-
-            } catch (IllegalStateException e){
-                System.out.println(e.getMessage());
-                throw e;
-            }
-
-        }
+//        }
+//
+//        // 채팅방 구독 해제하는 경우
+//        if(StompCommand.UNSUBSCRIBE.equals(accessor.getCommand())){
+////            System.out.println("message:" + message);
+////            System.out.println("헤더 : " + message.getHeaders());
+////            System.out.println("요청 메서드 : " + accessor.getCommand());
+//            try{
+//                String email = jwtAuthenticationProvider.isValid(token);
+//                Long roomId = sessionContainer.unsubscribe(sessionId);
+//
+//                subscribeService.updateUnsubscribeTime(email, roomId);
+//
+//            } catch (IllegalStateException e){
+//                System.out.println(e.getMessage());
+//                throw e;
+//            }
+//
+//        }
         return message;
     }
 
