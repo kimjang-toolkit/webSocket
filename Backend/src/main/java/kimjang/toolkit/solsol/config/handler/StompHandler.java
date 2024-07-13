@@ -42,20 +42,20 @@ public class StompHandler implements ChannelInterceptor {
             jwtAuthenticationProvider.isValid(token);
         }
         if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) && destination != null) {
-            try {
-                Matcher matcher = CHAT_ROOM_PATTERN.matcher(destination);
-                if (matcher.matches()) {
-                    Long roomId = Long.valueOf(matcher.group(1));
-                    System.out.println("subscribe roomId : " + roomId);
-                    jwtAuthenticationProvider.isValid(token);
-                    sessionContainer.subscribe(sessionId, roomId); // 세션에 구독 채팅방 키 저장
-                } else {
-                    System.out.println("Invalid destination format: " + destination);
-                }
-            } catch (IllegalStateException | BadCredentialsException e) {
-                System.out.println(e.getMessage());
-                throw e;
-            }
+//            try {
+//                Matcher matcher = CHAT_ROOM_PATTERN.matcher(destination);
+//                if (matcher.matches()) {
+//                    Long roomId = Long.valueOf(matcher.group(1));
+//                    System.out.println("subscribe roomId : " + roomId);
+//                    jwtAuthenticationProvider.isValid(token);
+//                    sessionContainer.subscribe(sessionId, roomId); // 세션에 구독 채팅방 키 저장
+//                } else {
+//                    System.out.println("Invalid destination format: " + destination);
+//                }
+//            } catch (IllegalStateException | BadCredentialsException e) {
+//                System.out.println(e.getMessage());
+//                throw e;
+//            }
         }
 
         // 채팅방 구독 해제하는 경우
