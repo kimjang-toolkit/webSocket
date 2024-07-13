@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class ChatRoomCustomerRelationship {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; // 고객 - 방 연관관계 번호
 
     private String roomName;

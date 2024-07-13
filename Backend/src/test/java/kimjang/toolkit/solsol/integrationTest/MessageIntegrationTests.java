@@ -94,7 +94,7 @@ public class MessageIntegrationTests {
 			}
 		};
 
-		this.stompClient.connectAsync("ws://localhost:{port}/gs-guide-websocket", this.headers, handler, this.port);
+		this.stompClient.connectAsync("ws://localhost:{port}/gs", this.headers, handler, this.port);
 
 		if (latch.await(3, TimeUnit.SECONDS)) {
 			if (failure.get() != null) {

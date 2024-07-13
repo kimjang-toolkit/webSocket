@@ -34,8 +34,8 @@ public class StompHandler implements ChannelInterceptor {
         String destination = accessor.getDestination();
         String sessionId = accessor.getSessionId();
 
-//        System.out.println("목적지 : " + destination);
-//        System.out.println("토큰 " + token);
+        System.out.println("목적지 : " + destination);
+        System.out.println("토큰 " + token);
         // STOMP 메서드가 CONNECT인 경우
 //        if (StompCommand.CONNECT.equals(accessor.getCommand()) && token != null) {
 //            System.out.println("토큰 유효성 검사 시작!");

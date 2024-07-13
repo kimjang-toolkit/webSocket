@@ -24,13 +24,13 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
 
-    public void saveChat(SendChatMessageDto message) {
+    public ChatMessage saveChat(SendChatMessageDto message) {
         User user = userRepository.findById(message.getSender().getId())
                 .orElseThrow();
         ChatRoom room = chatRoomRepository.findById(message.getRoomId())
                 .orElseThrow();
         ChatMessage chatMessage = ChatMessage.toEntity(message, room, user);
-        chatRepository.save(chatMessage);
+        return chatRepository.save(chatMessage);
     }
 
     @Transactional(readOnly = true)
