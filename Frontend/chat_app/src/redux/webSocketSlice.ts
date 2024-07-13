@@ -1,23 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Client, StompSubscription } from '@stomp/stompjs';
+import { Client } from '@stomp/stompjs';
 
 interface webSocketState {
   client: Client | null;
   isConnected: boolean;
-  subscriptions: Record<string, StompSubscription>;
 }
 const initialState: webSocketState = {
   client: null,
   isConnected: false,
-  subscriptions: {},
 };
 
 export const initializeWebSocket = createAsyncThunk(
   'webSocket/initializeWebSocket',
-  async ({ userId, accessToken }: { userId: number; accessToken: string }, { dispatch }) => {
+  async ({ userId }: { userId: number }, { dispatch }) => {
     const client = new Client({
       brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs`,
-      connectHeaders: { Authorization: accessToken },
+      // connectHeaders: { Authorization: accessToken },
       debug: (str) => {
         console.log('bug', str);
       },
@@ -34,7 +32,7 @@ export const initializeWebSocket = createAsyncThunk(
     };
 
     client.activate();
-
+    console.log('client in inital', client);
     return client;
   },
 );
@@ -54,17 +52,6 @@ export const webSocketSlice = createSlice({
     setConnected: (state, action: PayloadAction<boolean>) => {
       state.isConnected = action.payload;
     },
-    addSubscription(state, action: PayloadAction<{ roomId: string; subscription: StompSubscription }>) {
-      const { roomId, subscription } = action.payload;
-      state.subscriptions[roomId] = subscription;
-    },
-    removeSubscription(state, action: PayloadAction<{ roomId: string }>) {
-      const { roomId } = action.payload;
-      if (state.subscriptions[roomId]) {
-        state.subscriptions[roomId].unsubscribe();
-        delete state.subscriptions[roomId];
-      }
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -82,6 +69,6 @@ export const webSocketSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setClient, setConnected, addSubscription, removeSubscription } = webSocketSlice.actions;
+export const { setClient, setConnected } = webSocketSlice.actions;
 
 export default webSocketSlice.reducer;

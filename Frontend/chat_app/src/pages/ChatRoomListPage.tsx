@@ -37,7 +37,7 @@ const ChatRoomListPage = () => {
   useEffect(() => {
     //실시간으로 변하는 채팅방리스트 업데이트 웹소켓
     if (user.id && user.accessToken) {
-      dispatch(initializeWebSocket({ userId: user.id, accessToken: user.accessToken }));
+      dispatch(initializeWebSocket({ userId: user.id }));
     }
     return () => {
       // console.log('unmouited');

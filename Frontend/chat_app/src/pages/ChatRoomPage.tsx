@@ -12,7 +12,6 @@ import { useParams } from 'react-router-dom';
 import { MessageFormat } from '@/types/types';
 
 import styled from 'styled-components';
-import { addSubscription, removeSubscription } from '@/redux/webSocketSlice';
 
 function ChatRoomPage() {
   const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
@@ -42,22 +41,22 @@ function ChatRoomPage() {
     }
   }, [fetchNextPage, hasNextPage]);
   useEffect(() => {
+    console.log();
     if (client && isConnected && params.roomId) {
       const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
         const newChat = JSON.parse(message.body);
         setLiveChats((prev) => [...prev, newChat]);
       });
 
-      dispatch(addSubscription({ roomId: params.roomId, subscription }));
-
       return () => {
-        dispatch(removeSubscription({ roomId: params.roomId! }));
+        subscription.unsubscribe();
       };
     }
   }, [client, isConnected, params.roomId, dispatch]);
 
   const handleSendMessage = (message: string) => {
     if (client) {
+      console.log('client 이쩌여', client);
       const messageFormat: MessageFormat = {
         roomId: Number(params.roomId),
         content: message,
@@ -67,13 +66,12 @@ function ChatRoomPage() {
         },
       };
       const publishMessageBody = JSON.stringify(messageFormat);
-
       client.publish({
-        destination: '/pub/chat/303',
+        destination: `/pub/chat/${params.roomId}`,
         body: publishMessageBody,
         headers: {
           'content-type': 'application/json',
-          Authorization: user.accessToken ?? '',
+          // Authorization: user.accessToken ?? '',
         },
       });
     }
