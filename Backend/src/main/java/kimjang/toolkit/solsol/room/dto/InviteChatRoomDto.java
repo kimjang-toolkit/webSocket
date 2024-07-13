@@ -17,4 +17,13 @@ public class InviteChatRoomDto {
     private String roomName;
     private Long roomId;
     private String creator;
+    @Override
+    public String toString() {
+        return "InviteChatRoomDto{" +
+                "participants=" + participants +
+                ", roomName='" + roomName + '\'' +
+                ", roomId=" + roomId +
+                ", creator='" + creator + '\'' +
+                '}';
+    }
 }

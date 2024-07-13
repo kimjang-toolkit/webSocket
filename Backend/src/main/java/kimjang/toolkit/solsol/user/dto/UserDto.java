@@ -21,4 +21,12 @@ public class UserDto {
     public static UserDto toDto(User user){
         return new UserDto(user.getId(), user.getEmail(), user.getName());
     }
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

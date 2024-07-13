@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -19,6 +21,10 @@ public class UserService {
     @Transactional
     public UserDto registerUser(CreateUserDto createUserDto){
         String hashPwd = passwordEncoder.encode(createUserDto.getPwd());
+        Optional<User> userOptional = userRepository.findByEmail(createUserDto.getEmail());
+        if(userOptional.isPresent()){
+            throw new RuntimeException("이미 존재하는 이메일입니다.");
+        }
         User user = User.of(createUserDto, hashPwd);
         User savedUser = userRepository.save(user);
         return UserDto.toDto(savedUser);
