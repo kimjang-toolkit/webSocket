@@ -41,7 +41,6 @@ function ChatRoomPage() {
     }
   }, [fetchNextPage, hasNextPage]);
   useEffect(() => {
-    console.log();
     if (client && isConnected && params.roomId) {
       const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
         const newChat = JSON.parse(message.body);
