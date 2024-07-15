@@ -11,3 +11,22 @@ export const getPresignedURL = async (userId: number) => {
     console.log(`status::${status}- ${text}`);
   }
 };
+
+export const putProfileImg = async (url: string, file: File) => {
+  try {
+    if (!url) {
+      throw new Error('Require presignedURl');
+    }
+    console.log('file', file);
+    console.log('url', url);
+    const response = await axios.put(url, file, {
+      headers: { 'Content-Type': file.type },
+    });
+    console.log(response);
+    return true;
+  } catch (error: any) {
+    const status = error.response.status;
+    const text = error.response.statusText;
+    console.log(`status::${status}- ${text}`);
+  }
+};

@@ -1,4 +1,4 @@
-import { getPresignedURL } from '@/apis/user';
+import { getPresignedURL, putProfileImg } from '@/apis/user';
 import { useRef } from 'react';
 import styled from 'styled-components';
 
@@ -18,7 +18,8 @@ function ProfileBox({ imgUrl, userName, userId }: ProfileProps) {
     const file = e?.target.files?.[0];
     if (file) {
       const presignedURL = await getPresignedURL(userId!);
-      console.log('presignedURL', presignedURL);
+      const res = await putProfileImg(presignedURL, file);
+      console.log(res);
     }
   };
   return (
