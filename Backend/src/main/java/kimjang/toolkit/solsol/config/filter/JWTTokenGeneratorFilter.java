@@ -40,6 +40,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
                     .expiration(new Date((new Date()).getTime() + 300000000))
                     // 디지털 서명 작성
                     .signWith(key).compact();
+
             response.setHeader(SecurityConstants.JWT_HEADER, jwt);
             System.out.println(authentication.getName()+"님 jwt 발급됐습니다.");
         }

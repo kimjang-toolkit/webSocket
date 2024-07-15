@@ -1,10 +1,14 @@
 package kimjang.toolkit.solsol.config;
 
 import kimjang.toolkit.solsol.config.filter.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -22,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
     /**
      * 커스텀 security filter chain
@@ -31,7 +36,7 @@ public class SecurityConfig {
      * @throws Exception
      */
 
-
+    private final AuthenticationManager authenticationManager;
 //    @Bean
 //    public JdbcUserDetailsManager userDetailService(DataSource dataSource){
 //        return new JdbcUserDetailsManager(dataSource);
@@ -74,8 +79,9 @@ public class SecurityConfig {
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
-                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
+                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager), BasicAuthenticationFilter.class)
+//                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
+//                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
                 .authorizeHttpRequests((requests) -> requests
                         // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
@@ -123,6 +129,19 @@ public class SecurityConfig {
         // 비밀번호를 일반 텍스트로 관리되기 때문에 프로덕션 환경에서는 위험하다.
         // BCrypt 알고리즘을 이용해서 비밀번호를 해싱하자
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Authentication 객체 관리하는 매니저
+     *
+     * @param authenticationConfiguration
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+
     }
 
 }

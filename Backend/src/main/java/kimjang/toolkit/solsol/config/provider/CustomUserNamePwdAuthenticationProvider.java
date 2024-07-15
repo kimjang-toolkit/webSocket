@@ -57,7 +57,6 @@ public class CustomUserNamePwdAuthenticationProvider implements AuthenticationPr
         }
     }
 
-
     private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Authority authority : authorities) {
