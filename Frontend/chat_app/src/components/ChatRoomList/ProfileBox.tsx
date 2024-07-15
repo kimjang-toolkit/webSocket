@@ -1,4 +1,5 @@
 import { getPresignedURL } from '@/apis/user';
+import { useRef } from 'react';
 import styled from 'styled-components';
 
 interface ProfileProps {
@@ -7,15 +8,31 @@ interface ProfileProps {
   userId: number | null;
 }
 function ProfileBox({ imgUrl, userName, userId }: ProfileProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const handleUpdateImg = async () => {
-    const presignedURL = await getPresignedURL(userId!);
-    console.log('presignedURL', presignedURL);
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e?.target.files?.[0];
+    if (file) {
+      const presignedURL = await getPresignedURL(userId!);
+      console.log('presignedURL', presignedURL);
+    }
   };
   return (
     <Container>
       <ProfileImgContainer onClick={handleUpdateImg}>
         <ProfileImg src={imgUrl} />
         <Overlay>
+          <input
+            ref={fileInputRef}
+            type="file"
+            style={{ display: 'none' }}
+            accept="image/*"
+            onChange={handleFileChange}
+          />
           <OverlayText>사진선택</OverlayText>
         </Overlay>
       </ProfileImgContainer>
