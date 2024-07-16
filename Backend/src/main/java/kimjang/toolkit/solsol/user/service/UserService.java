@@ -19,6 +19,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtIssuer jwtIssuer;
     @Transactional
     public UserDto registerUser(CreateUserDto createUserDto){
         String hashPwd = passwordEncoder.encode(createUserDto.getPwd());
@@ -49,14 +50,15 @@ public class UserService {
                 throw new BadCredentialsException("bad credential: using unmatched password");
             }
             log.info("email : "+loginDto.getEmail());
-//            String accessToken = getAccessToken(loginDto);
+            String accessToken = jwtIssuer.getAccessToken(user.getEmail(), user.getAuthorities());
+            String refreshToken = jwtIssuer.getRefreshToken(user.getEmail(), user.getAuthorities());
             return LoginSuccessDto.builder()
                     .id(user.getId())
                     .email(user.getEmail())
                     .name(user.getName())
                     .imgUrl(user.getImgUrl())
-                    .accessToken("5678")
-                    .refreshToken("1234")
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
                     .build();
         } catch (AuthenticationException e){
             throw new RuntimeException(e.getMessage(), e);
