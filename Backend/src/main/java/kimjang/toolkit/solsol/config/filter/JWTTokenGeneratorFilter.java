@@ -41,7 +41,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
                     // 디지털 서명 작성
                     .signWith(key).compact();
 
-            response.setHeader(SecurityConstants.JWT_HEADER, jwt);
+            response.setHeader(SecurityConstants.JWT_HEADER, SecurityConstants.BEARER_PREFIX+jwt);
             System.out.println(authentication.getName()+"님 jwt 발급됐습니다.");
         }
 

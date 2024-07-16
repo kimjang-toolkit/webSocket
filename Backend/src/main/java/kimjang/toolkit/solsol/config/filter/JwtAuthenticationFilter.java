@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 특정 헤더로 들어오는 JWT 토큰 값을 추출
         String jwt = request.getHeader(SecurityConstants.JWT_HEADER);
         System.out.println("jwt : "+jwt);
-        if(StringUtils.hasText(jwt)){
+        if(isValid(jwt)){
             try {
                 Authentication authentication = authenticationManager.authenticate(new JwtAuthenticateToken(jwt));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -46,5 +46,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isValid(String jwt) {
+        return StringUtils.hasText(jwt) && jwt.startsWith(SecurityConstants.BEARER_PREFIX);
     }
 }
