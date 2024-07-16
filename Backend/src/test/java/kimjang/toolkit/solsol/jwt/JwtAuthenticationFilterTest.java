@@ -1,9 +1,7 @@
 package kimjang.toolkit.solsol.jwt;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import kimjang.toolkit.solsol.config.filter.JwtAuthenticationFilter;
-import kimjang.toolkit.solsol.config.jwt.JwtAuthenticationToken;
+import kimjang.toolkit.solsol.config.jwt.JwtAuthenticateToken;
 import kimjang.toolkit.solsol.config.jwt.JwtInvalidException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -79,7 +77,7 @@ public class JwtAuthenticationFilterTest {
 
         // setup
         mockRequest.addHeader("Authorization", "Bearer valid_token");
-        JwtAuthenticationToken token = new JwtAuthenticationToken("valid_token");
+        JwtAuthenticateToken token = new JwtAuthenticateToken("valid_token");
 
         when(mockAuthenticationManager.authenticate(token)).thenReturn(null);
 
@@ -100,7 +98,7 @@ public class JwtAuthenticationFilterTest {
         utilities.when(SecurityContextHolder::getContext).thenReturn(securityContext);
 
         mockRequest.addHeader("Authorization", "Bearer valid_token");
-        JwtAuthenticationToken token = new JwtAuthenticationToken("valid_token");
+        JwtAuthenticateToken token = new JwtAuthenticateToken("valid_token");
 
         when(mockAuthenticationManager.authenticate(token)).thenThrow(new JwtInvalidException("time expired"));
 
@@ -119,8 +117,8 @@ public class JwtAuthenticationFilterTest {
     public void givenValidToken_whenDoFilterInternal_thenSecurityContextHasAuthentication() throws ServletException, IOException {
 
         mockRequest.addHeader("Authorization", "Bearer valid_token");
-        JwtAuthenticationToken token = new JwtAuthenticationToken("valid_token");
-        JwtAuthenticationToken authenticatedToken = new JwtAuthenticationToken(
+        JwtAuthenticateToken token = new JwtAuthenticateToken("valid_token");
+        JwtAuthenticateToken authenticatedToken = new JwtAuthenticateToken(
                 "Junhyunny",
                 "",
                 Collections.singletonList(

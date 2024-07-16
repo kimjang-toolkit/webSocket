@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-public class JwtAuthenticationToken extends AbstractAuthenticationToken {
+public class JwtAuthenticateToken extends AbstractAuthenticationToken {
 
     @Getter
     private String jsonWebToken;
@@ -14,13 +14,13 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     private Object credentials;
 
     // jwt 토큰 값만 일단 Authentication 객체로 생성, 인증 완료 상태는 아니다.
-    public JwtAuthenticationToken(String jsonWebToken) {
+    public JwtAuthenticateToken(String jsonWebToken) {
         super(null);
         this.jsonWebToken = jsonWebToken;
         this.setAuthenticated(false);
     }
 
-    public JwtAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    public JwtAuthenticateToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
@@ -33,7 +33,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
      * @param authorities the collection of <tt>GrantedAuthority</tt>s for the principal
      *                    represented by this authentication object.
      */
-    public JwtAuthenticationToken(Collection<? extends GrantedAuthority> authorities) {
+    public JwtAuthenticateToken(Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
     }
 

@@ -6,48 +6,50 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import kimjang.toolkit.solsol.config.jwt.JwtAuthenticationToken;
+import kimjang.toolkit.solsol.config.jwt.JwtAuthenticateToken;
 import kimjang.toolkit.solsol.config.jwt.JwtInvalidException;
 import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
-import kimjang.toolkit.solsol.user.Authority;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
- * WebSocket 헤더에서 JWT를 까고
+ * http 헤더에서 JWT를 까고 Authentication 객체를 생성 및 저장한다.
  */
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
+    /**
+     * JwtAuthenticationFilter에서 생성된 token을 받아 인증 진행
+     * @param authentication the authentication request object.
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        // jwt 복호화할 때 사용하는 key, 암호화할 때 사용한 key와 동일
         SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
-        Claims claims;
+
         try {
-            claims = Jwts.parser()
+            // jwt token 파싱
+            Claims claims; claims = Jwts.parser()
                     .verifyWith(key) // 서버가 저장하고 있는 키로 payload 암호 풀기
                     .build()
-                    .parseSignedClaims(((JwtAuthenticationToken) authentication).getJsonWebToken())
+                    .parseSignedClaims(((JwtAuthenticateToken) authentication).getJsonWebToken())
                     .getPayload();
+            log.info("subject : {}, authorities : {}",claims.getSubject(), getGrantedAuthorities(claims));
+            return new JwtAuthenticateToken(claims.get("email"), "", getGrantedAuthorities(claims));
         } catch (SignatureException signatureException) {
             throw new JwtInvalidException("signature key is different", signatureException);
         } catch (ExpiredJwtException expiredJwtException) {
@@ -57,15 +59,15 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         } catch (IllegalArgumentException illegalArgumentException) {
             throw new JwtInvalidException("using illegal argument like null", illegalArgumentException);
         }
-        return new JwtAuthenticationToken(claims.getSubject(), "", getGrantedAuthorities(claims));
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return JwtAuthenticationToken.class.isAssignableFrom(authentication);
+        return JwtAuthenticateToken.class.isAssignableFrom(authentication);
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(Claims claims) {
+        log.info("authorities : {}",claims.get("authorities"));
         return AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
     }
 

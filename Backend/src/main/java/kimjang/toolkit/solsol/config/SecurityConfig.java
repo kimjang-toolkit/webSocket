@@ -1,6 +1,7 @@
 package kimjang.toolkit.solsol.config;
 
 import kimjang.toolkit.solsol.config.filter.*;
+import kimjang.toolkit.solsol.config.provider.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -37,6 +39,16 @@ public class SecurityConfig {
      */
 
     private final AuthenticationManager authenticationManager;
+
+    private final  JwtAuthenticationProvider jwtAuthenticationProvider;
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
+        return authenticationManagerBuilder.build();
+    }
 //    @Bean
 //    public JdbcUserDetailsManager userDetailService(DataSource dataSource){
 //        return new JdbcUserDetailsManager(dataSource);

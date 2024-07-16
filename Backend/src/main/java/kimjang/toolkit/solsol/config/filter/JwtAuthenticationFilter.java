@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kimjang.toolkit.solsol.config.jwt.JwtAuthenticationToken;
+import kimjang.toolkit.solsol.config.jwt.JwtAuthenticateToken;
 import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +23,15 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AuthenticationManager authenticationManager;
 
+    /**
+     * JwtAuthenticateToken 값을 인증하도록 Provider에게 요청
+     * 인증이 성공하면 SecurityContextHolder에 저장.
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 특정 헤더로 들어오는 JWT 토큰 값을 추출
@@ -30,8 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(StringUtils.hasText(jwt)){
             try {
-                Authentication jwtAuthenticationToken = new JwtAuthenticationToken(jwt);
-                Authentication authentication = authenticationManager.authenticate(jwtAuthenticationToken);
+                Authentication authentication = authenticationManager.authenticate(new JwtAuthenticateToken(jwt));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (AuthenticationException authenticationException) {
                 SecurityContextHolder.clearContext();
