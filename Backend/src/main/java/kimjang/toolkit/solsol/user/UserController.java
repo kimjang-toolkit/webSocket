@@ -1,10 +1,7 @@
 package kimjang.toolkit.solsol.user;
 
 import jakarta.servlet.http.HttpServletResponse;
-import kimjang.toolkit.solsol.user.dto.AddFriendsDto;
-import kimjang.toolkit.solsol.user.dto.CreateUserDto;
-import kimjang.toolkit.solsol.user.dto.UserDto;
-import kimjang.toolkit.solsol.user.dto.UserProfileDto;
+import kimjang.toolkit.solsol.user.dto.*;
 import kimjang.toolkit.solsol.user.service.FriendService;
 import kimjang.toolkit.solsol.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -42,11 +39,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user")
-    public UserProfileDto getUserDetailsAfterLogin(Authentication authentication, HttpServletResponse response) {
-        System.out.println(authentication.getName()+"님의 유저 정보 불러오기");
+    @PostMapping("/login")
+    public LoginSuccessDto getUserDetailsAfterLogin(@RequestBody LoginDto loginDto,  HttpServletResponse response) {
         response.setHeader(JWT_REFRESH_HEADER, "abc");
-        return userService.userLoginAndSaveRefreshToken(authentication.getName());
+        return userService.userLoginAndSaveRefreshToken(loginDto);
     }
 
     @GetMapping("/user/friends")

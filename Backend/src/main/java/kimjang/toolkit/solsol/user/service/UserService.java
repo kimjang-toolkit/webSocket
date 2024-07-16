@@ -1,23 +1,24 @@
 package kimjang.toolkit.solsol.user.service;
 
 import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.dto.*;
 import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
-import kimjang.toolkit.solsol.user.dto.CreateUserDto;
-import kimjang.toolkit.solsol.user.dto.UserDto;
-import kimjang.toolkit.solsol.user.dto.UserProfileDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.naming.AuthenticationException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     @Transactional
     public UserDto registerUser(CreateUserDto createUserDto){
         String hashPwd = passwordEncoder.encode(createUserDto.getPwd());
@@ -39,7 +40,27 @@ public class UserService {
         return UserDto.toDto(user);
     }
 
-    public UserProfileDto userLoginAndSaveRefreshToken(String email){
-        return userRepository.findProfileByEmail(email);
+    public LoginSuccessDto userLoginAndSaveRefreshToken(LoginDto loginDto){
+        try{
+            User user = userRepository.findByEmail(loginDto.getEmail())
+                    .orElseThrow(() -> new AuthenticationException("존재하지 않는 아이디입니다."));
+            if (!passwordEncoder.matches(loginDto.getPwd(), user.getPwd())) {
+                log.error("bad credentials : {}",loginDto.getPwd());
+                throw new BadCredentialsException("bad credential: using unmatched password");
+            }
+            log.info("email : "+loginDto.getEmail());
+//            String accessToken = getAccessToken(loginDto);
+            return LoginSuccessDto.builder()
+                    .id(user.getId())
+                    .email(user.getEmail())
+                    .name(user.getName())
+                    .imgUrl(user.getImgUrl())
+                    .accessToken("5678")
+                    .refreshToken("1234")
+                    .build();
+        } catch (AuthenticationException e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
+
     }
 }

@@ -94,17 +94,17 @@ public class SecurityConfig {
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(authenticationManagerBuilder.getOrBuild()), BasicAuthenticationFilter.class)
-                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
+//                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
 //                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
                 .authorizeHttpRequests((requests) -> requests
                         // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
                         .requestMatchers( HttpMethod.POST,"/chat-room**" ).hasRole("USER")
                         .requestMatchers( HttpMethod.GET,"/chat-room**" ).hasRole("USER")
-                        .requestMatchers(HttpMethod.GET,"/user").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/login**").permitAll()
                         .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs").permitAll()
+                        .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
-                .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
