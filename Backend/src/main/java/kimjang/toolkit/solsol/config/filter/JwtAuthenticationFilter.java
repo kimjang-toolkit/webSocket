@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import kimjang.toolkit.solsol.config.jwt.JwtAuthenticateToken;
 import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,6 +20,7 @@ import java.io.IOException;
 /**
  * Header 속 JWT 값을 Authentication 객체로 관리하는 필터
  */
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AuthenticationManager authenticationManager;
@@ -36,13 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 특정 헤더로 들어오는 JWT 토큰 값을 추출
         String jwt = request.getHeader(SecurityConstants.JWT_HEADER);
-        System.out.println("jwt : "+jwt);
         if(isValid(jwt)){
             try {
-                Authentication authentication = authenticationManager.authenticate(new JwtAuthenticateToken(jwt));
+                Authentication authentication = authenticationManager.authenticate(new JwtAuthenticateToken(jwt.substring(7)));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (AuthenticationException authenticationException) {
                 SecurityContextHolder.clearContext();
+                log.error(authenticationException.getMessage(), authenticationException);
             }
         }
         filterChain.doFilter(request, response);
