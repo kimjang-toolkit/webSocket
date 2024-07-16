@@ -39,12 +39,6 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    public LoginSuccessDto getUserDetailsAfterLogin(@RequestBody LoginDto loginDto,  HttpServletResponse response) {
-        response.setHeader(JWT_REFRESH_HEADER, "abc");
-        return userService.userLoginAndSaveRefreshToken(loginDto);
-    }
-
     @GetMapping("/user/friends")
     public List<UserProfileDto> getUserFriends(Authentication authentication){
         return friendService.getFriends(authentication.getName());
@@ -60,5 +54,15 @@ public class UserController {
     public String deleteFriends(Authentication authentication, @RequestBody AddFriendsDto addFriendsDto){
         friendService.removeFriend(authentication.getName(), addFriendsDto);
         return "성공적으로 친구를 제거했습니다.";
+    }
+
+    @PostMapping("/login")
+    public LoginSuccessDto getUserDetailsAfterLogin(@RequestBody LoginDto loginDto) {
+        return userService.userLoginAndSaveRefreshToken(loginDto);
+    }
+
+    @PostMapping("/refresh-token")
+    public LoginSuccessDto getAccessTokenByRefreshToken(@RequestBody RefreshDto refreshDto){
+        return userService.getAccessToken(refreshDto);
     }
 }

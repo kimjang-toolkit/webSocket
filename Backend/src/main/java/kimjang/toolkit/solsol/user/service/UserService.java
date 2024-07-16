@@ -63,6 +63,9 @@ public class UserService {
         } catch (AuthenticationException e){
             throw new RuntimeException(e.getMessage(), e);
         }
+    }
 
+    public LoginSuccessDto getAccessToken(RefreshDto refreshDto) {
+        return jwtIssuer.getAccessTokenByRefreshToken(refreshDto);
     }
 }

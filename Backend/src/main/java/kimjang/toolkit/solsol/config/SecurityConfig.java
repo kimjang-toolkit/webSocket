@@ -87,7 +87,7 @@ public class SecurityConfig {
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
 //                .csrf(AbstractHttpConfigurer::disable)
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register","/user/*" ,"/login","/gs")
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register","/user/*" ,"/login","/gs", "/refresh-token")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAt(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
@@ -101,7 +101,7 @@ public class SecurityConfig {
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
                         .requestMatchers( HttpMethod.POST,"/chat-room**" ).hasRole("USER")
                         .requestMatchers( HttpMethod.GET,"/chat-room**" ).hasRole("USER")
-                        .requestMatchers(HttpMethod.POST,"/login**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/login**","/refresh-token**").permitAll()
                         .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs").permitAll()
                         .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
