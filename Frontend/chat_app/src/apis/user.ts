@@ -17,10 +17,10 @@ export const putProfileImg = async (url: string, file: File) => {
     if (!url) {
       throw new Error('Require presignedURl');
     }
-    console.log('file', file);
-    console.log('url', url);
     const response = await axios.put(url, file, {
-      headers: { 'Content-Type': file.type },
+      headers: {
+        'Content-Type': file.type,
+      },
     });
     console.log(response);
     return true;

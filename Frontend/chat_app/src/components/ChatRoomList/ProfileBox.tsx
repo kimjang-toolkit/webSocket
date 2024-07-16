@@ -1,5 +1,5 @@
 import { getPresignedURL, putProfileImg } from '@/apis/user';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 interface ProfileProps {
@@ -9,6 +9,7 @@ interface ProfileProps {
 }
 function ProfileBox({ imgUrl, userName, userId }: ProfileProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fileUrl, setFileUrl] = useState<string>(imgUrl);
   const handleUpdateImg = async () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -17,6 +18,8 @@ function ProfileBox({ imgUrl, userName, userId }: ProfileProps) {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e?.target.files?.[0];
     if (file) {
+      const newFileUrl = URL.createObjectURL(file);
+      setFileUrl(newFileUrl);
       const presignedURL = await getPresignedURL(userId!);
       const res = await putProfileImg(presignedURL, file);
       console.log(res);
@@ -25,7 +28,7 @@ function ProfileBox({ imgUrl, userName, userId }: ProfileProps) {
   return (
     <Container>
       <ProfileImgContainer onClick={handleUpdateImg}>
-        <ProfileImg src={imgUrl} />
+        <ProfileImg src={fileUrl} />
         <Overlay>
           <input
             ref={fileInputRef}
