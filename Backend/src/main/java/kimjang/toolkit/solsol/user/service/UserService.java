@@ -39,7 +39,7 @@ public class UserService {
         return UserDto.toDto(user);
     }
 
-    public UserProfileDto findUserProfileByEmail(String email){
+    public UserProfileDto userLoginAndSaveRefreshToken(String email){
         return userRepository.findProfileByEmail(email);
     }
 }

@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.user;
 
+import jakarta.servlet.http.HttpServletResponse;
 import kimjang.toolkit.solsol.user.dto.AddFriendsDto;
 import kimjang.toolkit.solsol.user.dto.CreateUserDto;
 import kimjang.toolkit.solsol.user.dto.UserDto;
@@ -13,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
+
+import static kimjang.toolkit.solsol.config.jwt.SecurityConstants.JWT_REFRESH_HEADER;
 
 @Slf4j
 @RestController
@@ -39,9 +43,10 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public UserProfileDto getUserDetailsAfterLogin(Authentication authentication) {
+    public UserProfileDto getUserDetailsAfterLogin(Authentication authentication, HttpServletResponse response) {
         System.out.println(authentication.getName()+"님의 유저 정보 불러오기");
-        return userService.findUserProfileByEmail(authentication.getName());
+        response.setHeader(JWT_REFRESH_HEADER, "abc");
+        return userService.userLoginAndSaveRefreshToken(authentication.getName());
     }
 
     @GetMapping("/user/friends")

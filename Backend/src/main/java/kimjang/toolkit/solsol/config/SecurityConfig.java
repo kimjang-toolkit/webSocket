@@ -28,8 +28,22 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig {
+
+
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    public SecurityConfig(
+            AuthenticationManagerBuilder authenticationManagerBuilder,
+            JwtAuthenticationProvider jwtAuthenticationProvider
+    ) {
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
+    }
+
+//    @Bean
+//    public JdbcUserDetailsManager userDetailService(DataSource dataSource){
+//        return new JdbcUserDetailsManager(dataSource);
+//    }
     /**
      * 커스텀 security filter chain
      *
@@ -37,24 +51,12 @@ public class SecurityConfig {
      * @return
      * @throws Exception
      */
-
-    private final AuthenticationManager authenticationManager;
-
-    private final  JwtAuthenticationProvider jwtAuthenticationProvider;
-
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
-        return authenticationManagerBuilder.build();
-    }
-//    @Bean
-//    public JdbcUserDetailsManager userDetailService(DataSource dataSource){
-//        return new JdbcUserDetailsManager(dataSource);
-//    }
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+//        AuthenticationManagerBuilder authenticationManagerBuilder =
+//                http.getSharedObject(AuthenticationManagerBuilder.class);
+//        authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
+//        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
         // CSRF 토큰을 이용해서 원하는 브라우저에서만 요청할 수 있도록, CSRF 공격 방지
         // CSRF 토큰 값을 사용하는 헤더는 왜 CORS 설정을 하지 않았냐면, 프레임워크에서 csrf 헤더를 조작하기 때문이다.
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
@@ -91,15 +93,15 @@ public class SecurityConfig {
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager), BasicAuthenticationFilter.class)
-//                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
+                .addFilterBefore(new JwtAuthenticationFilter(authenticationManagerBuilder.getOrBuild()), BasicAuthenticationFilter.class)
+                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
 //                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
                 .authorizeHttpRequests((requests) -> requests
                         // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
                         .requestMatchers( HttpMethod.POST,"/chat-room**" ).hasRole("USER")
                         .requestMatchers( HttpMethod.GET,"/chat-room**" ).hasRole("USER")
-                        .requestMatchers("/user").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/user").permitAll()
                         .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
                 .formLogin(Customizer.withDefaults())
@@ -143,17 +145,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * Authentication 객체 관리하는 매니저
-     *
-     * @param authenticationConfiguration
-     * @return
-     * @throws Exception
-     */
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
 
-    }
+
 
 }

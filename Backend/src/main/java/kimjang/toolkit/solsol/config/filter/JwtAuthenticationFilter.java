@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 특정 헤더로 들어오는 JWT 토큰 값을 추출
         String jwt = request.getHeader(SecurityConstants.JWT_HEADER);
-
+        System.out.println("jwt : "+jwt);
         if(StringUtils.hasText(jwt)){
             try {
                 Authentication authentication = authenticationManager.authenticate(new JwtAuthenticateToken(jwt));
