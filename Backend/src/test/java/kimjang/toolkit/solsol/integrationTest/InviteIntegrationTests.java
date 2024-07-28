@@ -3,12 +3,20 @@ package kimjang.toolkit.solsol.integrationTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kimjang.toolkit.solsol.user.dto.UserDto;
+import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
+import kimjang.toolkit.solsol.room.ChatRoomController;
+import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
+import kimjang.toolkit.solsol.room.dto.CreateRoomReqDto;
+import kimjang.toolkit.solsol.room.dto.InviteChatRoomDto;
+import kimjang.toolkit.solsol.room.service.ChatRoomService;
+import kimjang.toolkit.solsol.user.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +29,7 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -30,10 +39,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MessageIntegrationTests {
+public class InviteIntegrationTests {
 
 	@LocalServerPort
 	private int port;
+
+	@Autowired
+	private ChatRoomController chatRoomController;
 
 	private WebSocketStompClient stompClient;
 
@@ -52,10 +64,6 @@ public class MessageIntegrationTests {
 		converter.setObjectMapper(objectMapper);
 
 		this.stompClient.setMessageConverter(converter);
-		// 인증 객체 저장
-		Authentication auth = new UsernamePasswordAuthenticationToken("solsol@naver.com", null,
-				List.of(new SimpleGrantedAuthority("USER")));
-		SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 
 	@Test
@@ -64,27 +72,27 @@ public class MessageIntegrationTests {
 		final CountDownLatch latch = new CountDownLatch(1);
 		final AtomicReference<Throwable> failure = new AtomicReference<>();
 
-		SendChatMessageDto testMessage = SendChatMessageDto.builder().roomId(1L)
-				.content("호식이 두마리 치킨 크크크 치킨은 회애!")
-				.sender(new UserDto(1L,"solsol@naver.com", "효승이"))
-				.build();
+		CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
+				Arrays.asList(2L), "통합 테스트");
 
 		StompSessionHandler handler = new TestSessionHandler(failure) {
 
 			@Override
 			public void afterConnected(final StompSession session, StompHeaders connectedHeaders) {
-				session.subscribe("/sub/chat/1", new StompFrameHandler() {
+				System.out.println("연결 시도!");
+				session.subscribe("/notification/room/1", new StompFrameHandler() { // 2번 유저의 알림 구독
 					@Override
 					public Type getPayloadType(StompHeaders headers) {
-						return SendChatMessageDto.class; // 응답 객체의 클래스
+						return CreateRoomReqDto.class; // 응답 객체의 클래스
 					}
 
 					@Override
 					public void handleFrame(StompHeaders headers, Object payload) {
-						SendChatMessageDto messageDto = (SendChatMessageDto) payload;
+						System.out.println("연결 완료! 응답 대기!"+headers);
+						CreateRoomReqDto messageDto = (CreateRoomReqDto) payload;
 						try {
-							System.out.println("응답 : "+messageDto.getContent());
-							assertEquals(testMessage.getContent(), messageDto.getContent());
+							System.out.println("응답 : "+messageDto.getRoomName());
+							assertEquals(createChatRoomDto.getRoomName(), messageDto.getRoomName());
 						} catch (Throwable t) {
 							failure.set(t);
 						} finally {
@@ -94,8 +102,15 @@ public class MessageIntegrationTests {
 					}
 				});
 				try {
-					System.out.println("SEND : Spring");
-					session.send("/pub/chat/1", testMessage);
+					// 보낸 메세지 저장
+					// 인증 객체 저장
+					System.out.println("인증 객체 저장");
+					Authentication auth = new UsernamePasswordAuthenticationToken("solsol@naver.com", null,
+							List.of(new SimpleGrantedAuthority("USER")));
+					SecurityContextHolder.getContext().setAuthentication(auth);
+					System.out.println("채팅방 생성 시작!");
+					ResponseEntity<InviteChatRoomDto> chatMessage = chatRoomController.createChatRoom(createChatRoomDto);
+					System.out.println("채팅방 생성 완료! "+chatMessage.getBody().getRoomName());
 				} catch (Throwable t) {
 					failure.set(t);
 					latch.countDown();
@@ -105,7 +120,7 @@ public class MessageIntegrationTests {
 
 		this.stompClient.connectAsync("ws://localhost:{port}/gs", this.headers, handler, this.port);
 
-		if (latch.await(3, TimeUnit.SECONDS)) {
+		if (latch.await(10, TimeUnit.SECONDS)) {
 			if (failure.get() != null) {
 				throw new AssertionError("", failure.get());
 			}

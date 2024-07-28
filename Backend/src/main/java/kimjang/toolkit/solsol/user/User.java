@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -43,7 +44,9 @@ public class User {
 
     @Column(name = "img_url")
     private String imgUrl;
-
+//
+//    @OneToMany(mappedBy = "user",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Set<Friend> friends = new HashSet<>();
 
     public static User of(CreateUserDto dto, String hashPwd){
         User user =  User.builder()
@@ -58,4 +61,17 @@ public class User {
         user.authorities.add(Authority.of(user));
         return user;
     }
+
+//    public void addFriend(List<Friend> friend) {
+//        friends.addAll(friend);
+//    }
+//
+//    public void removeFriend(Long subUserId) {
+//        for(Friend friend : friends){
+//            if(friend.getSubUser().getId().equals(subUserId)){
+//                friends.remove(friend);
+//            }
+//        }
+//        throw new RuntimeException("친구가 아닌 사람입니다.");
+//    }
 }

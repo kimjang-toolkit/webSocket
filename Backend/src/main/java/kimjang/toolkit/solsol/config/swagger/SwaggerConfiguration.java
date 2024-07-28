@@ -8,6 +8,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,7 +26,7 @@ public class SwaggerConfiguration {
     }
     private SecurityScheme createJWTAuthScheme() {
         return new SecurityScheme()
-                .type(SecurityScheme.Type.APIKEY)
+                .type(SecurityScheme.Type.HTTP)
                 .scheme("bearer")
                 .in(SecurityScheme.In.HEADER)
                 .bearerFormat("JWT")

@@ -2,7 +2,7 @@ package kimjang.toolkit.solsol.config.provider;
 
 import kimjang.toolkit.solsol.user.Authority;
 import kimjang.toolkit.solsol.user.User;
-import kimjang.toolkit.solsol.user.UserRepository;
+import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -56,7 +56,6 @@ public class CustomUserNamePwdAuthenticationProvider implements AuthenticationPr
             throw new BadCredentialsException("No user registered with this details!");
         }
     }
-
 
     private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

@@ -1,10 +1,16 @@
 package kimjang.toolkit.solsol.config;
 
 import kimjang.toolkit.solsol.config.filter.*;
+import kimjang.toolkit.solsol.config.provider.JwtAuthenticationProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -23,6 +29,21 @@ import java.util.Collections;
 
 @Configuration
 public class SecurityConfig {
+
+
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    public SecurityConfig(
+            AuthenticationManagerBuilder authenticationManagerBuilder,
+            JwtAuthenticationProvider jwtAuthenticationProvider
+    ) {
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
+    }
+
+//    @Bean
+//    public JdbcUserDetailsManager userDetailService(DataSource dataSource){
+//        return new JdbcUserDetailsManager(dataSource);
+//    }
     /**
      * 커스텀 security filter chain
      *
@@ -30,14 +51,12 @@ public class SecurityConfig {
      * @return
      * @throws Exception
      */
-
-
-//    @Bean
-//    public JdbcUserDetailsManager userDetailService(DataSource dataSource){
-//        return new JdbcUserDetailsManager(dataSource);
-//    }
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+//        AuthenticationManagerBuilder authenticationManagerBuilder =
+//                http.getSharedObject(AuthenticationManagerBuilder.class);
+//        authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
+//        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
         // CSRF 토큰을 이용해서 원하는 브라우저에서만 요청할 수 있도록, CSRF 공격 방지
         // CSRF 토큰 값을 사용하는 헤더는 왜 CORS 설정을 하지 않았냐면, 프레임워크에서 csrf 헤더를 조작하기 때문이다.
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
@@ -68,27 +87,24 @@ public class SecurityConfig {
 //                // withHttpOnlyFalse은 App UI의 javascript가 쿠키를 읽을 수 있도록 하는 설정 // postman을 동작시키기 위함
 //                // csrf가 세션 스토리지에 저장하게됨
 //                .csrf(AbstractHttpConfigurer::disable)
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register", "/login","/gs")
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/chat-room/**","/register","/user/*" ,"/login","/gs", "/refresh-token")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAt(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthorityLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
-                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
+                .addFilterBefore(new JwtAuthenticationFilter(authenticationManagerBuilder.getOrBuild()), BasicAuthenticationFilter.class)
+//                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 생성은 정상적인 인증 후 진행함/
+//                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class) // JWT 토큰 유효성 검사는 인증 전에 진행한다.
                 .authorizeHttpRequests((requests) -> requests
                         // uri를 접근하기 위해 유저에게 권한이 있는지 체크 = 인가
                         // 역할에 ROLE_ 접두사를 붙일 필요 없음. security가 자동으로 붙여서 검색함.
                         .requestMatchers( HttpMethod.POST,"/chat-room**" ).hasRole("USER")
                         .requestMatchers( HttpMethod.GET,"/chat-room**" ).hasRole("USER")
-                        .requestMatchers("/user").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/login**","/refresh-token**").permitAll()
                         .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs").permitAll()
+                        .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
-//                // Resource server로 동작하기 위해 jwt 컨버터를 세팅
-//                .oauth2ResourceServer(server ->
-//                        server.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(converter)));
-        // 이제 Spring 앱이 resource server 역할을 하기 때문에 로그인 기능을 제외한다.
-                .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
@@ -128,5 +144,8 @@ public class SecurityConfig {
         // BCrypt 알고리즘을 이용해서 비밀번호를 해싱하자
         return new BCryptPasswordEncoder();
     }
+
+
+
 
 }

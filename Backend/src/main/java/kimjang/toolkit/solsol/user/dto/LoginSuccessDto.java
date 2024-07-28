@@ -2,15 +2,16 @@ package kimjang.toolkit.solsol.user.dto;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import kimjang.toolkit.solsol.user.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class LoginSuccessDto {
 
     private Long id;
     private String email;
@@ -18,15 +19,9 @@ public class UserDto {
     @Pattern(regexp = "^[/\\,'₩`{}|\"#\\$%^&*()]+$", message = "Name contains invalid characters.")
     @Size(max = 10, message = "Name must be less than 10 characters.")
     private String name;
-    public static UserDto toDto(User user){
-        return new UserDto(user.getId(), user.getEmail(), user.getName());
-    }
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
+
+    private String imgUrl;
+
+    private String accessToken;
+    private String refreshToken;
 }

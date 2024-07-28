@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.message.service;
 
 import kimjang.toolkit.solsol.user.User;
-import kimjang.toolkit.solsol.user.UserRepository;
+import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.PastChatsDto;
 import kimjang.toolkit.solsol.message.dto.ReqPastChatsDto;
@@ -16,8 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Security;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,13 +24,13 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
 
-    public void saveChat(SendChatMessageDto message) {
+    public ChatMessage saveChat(SendChatMessageDto message) {
         User user = userRepository.findById(message.getSender().getId())
                 .orElseThrow();
         ChatRoom room = chatRoomRepository.findById(message.getRoomId())
                 .orElseThrow();
         ChatMessage chatMessage = ChatMessage.toEntity(message, room, user);
-        chatRepository.save(chatMessage);
+        return chatRepository.save(chatMessage);
     }
 
     @Transactional(readOnly = true)

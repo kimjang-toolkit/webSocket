@@ -1,8 +1,8 @@
 package kimjang.toolkit.solsol.user;
 
-import kimjang.toolkit.solsol.user.dto.CreateUserDto;
-import kimjang.toolkit.solsol.user.dto.UserDto;
-import kimjang.toolkit.solsol.user.dto.UserProfileDto;
+import jakarta.servlet.http.HttpServletResponse;
+import kimjang.toolkit.solsol.user.dto.*;
+import kimjang.toolkit.solsol.user.service.FriendService;
 import kimjang.toolkit.solsol.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
+import java.util.List;
+
+import static kimjang.toolkit.solsol.config.jwt.SecurityConstants.JWT_REFRESH_HEADER;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final FriendService friendService;
     @PostMapping("/register")
     public ResponseEntity<UserDto> registerUser(@RequestBody CreateUserDto createUserDto) {
         UserDto userDto = userService.registerUser(createUserDto);
@@ -33,9 +39,30 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user")
-    public UserProfileDto getUserDetailsAfterLogin(Authentication authentication) {
-        System.out.println(authentication.getName()+"님의 유저 정보 불러오기");
-        return userService.findUserProfileByEmail(authentication.getName());
+    @GetMapping("/user/friends")
+    public List<UserProfileDto> getUserFriends(Authentication authentication){
+        return friendService.getFriends(authentication.getName());
+    }
+
+    @PostMapping("/user/friends")
+    public String addFriend(Authentication authentication, @RequestBody AddFriendsDto addFriendsDto){
+        friendService.addFriend(authentication.getName(), addFriendsDto);
+        return "성공적으로 친구추가 했습니다.";
+    }
+
+    @DeleteMapping("/user/friends")
+    public String deleteFriends(Authentication authentication, @RequestBody AddFriendsDto addFriendsDto){
+        friendService.removeFriend(authentication.getName(), addFriendsDto);
+        return "성공적으로 친구를 제거했습니다.";
+    }
+
+    @PostMapping("/login")
+    public LoginSuccessDto getUserDetailsAfterLogin(@RequestBody LoginDto loginDto) {
+        return userService.userLoginAndSaveRefreshToken(loginDto);
+    }
+
+    @PostMapping("/refresh-token")
+    public LoginSuccessDto getAccessTokenByRefreshToken(@RequestBody RefreshDto refreshDto){
+        return userService.getAccessToken(refreshDto);
     }
 }

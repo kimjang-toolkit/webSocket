@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.room;
 
+import kimjang.toolkit.solsol.room.dto.InviteChatRoomDto;
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
@@ -12,6 +13,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,16 +31,17 @@ public class CreateRoomTest {
     ChatRoomRepository chatRoomRepository;
     @Autowired
     ChatRoomCustormerRelationshipRepository relationshipRepository;
-//    @Test
-//    @DisplayName("채팅방 생성 및 관계 생성 테스트")
-//    public void createRoomTest(){
-//        CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
-//                Arrays.asList(new UserDto(1L ,"solsol@naver.com","오찬솔"), new UserDto(2L,"solsol@naver.com", "조승효")),
-//                "", "효승이 자니??", new UserDto(2L,"solsol@naver.com", "조승효"));
-//        Long roomId = chatRoomService.createChatRoom(createChatRoomDto);
-//        ChatRoom savedRoom = chatRoomRepository.findById(roomId).orElseThrow();
-//        List<ChatRoomCustomerRelationship> savedRelationship = relationshipRepository.findByChatRoom_Id(savedRoom.getId());
-//        Assertions.assertEquals(createChatRoomDto.getParticipants().size(), savedRelationship.size());
-//    }
+    @Test
+    @DisplayName("채팅방 생성 및 관계 생성 테스트")
+    public void createRoomTest(){
+
+        Authentication auth = new UsernamePasswordAuthenticationToken("solsol@naver.com", null,
+                List.of(new SimpleGrantedAuthority("USER")));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        CreateChatRoomDto createChatRoomDto = new CreateChatRoomDto(
+                Arrays.asList(1L,2L,3L), "새로운 채팅방 생성 테스트");
+        InviteChatRoomDto inviteChatRoomDto = chatRoomService.createChatRoom(createChatRoomDto);
+        Assertions.assertEquals(inviteChatRoomDto.getRoomName(), createChatRoomDto.getRoomName());
+    }
 
 }
