@@ -18,7 +18,7 @@ function LoginPage() {
     if (response) {
       const { id, name, imgUrl, accessToken, refreshToken } = response;
       Cookies.set('refreshToken', refreshToken, { expires: 14 });
-      dispatch(setUser({ id, name, accessToken }));
+      dispatch(setUser({ id, name, accessToken, profileImg: imgUrl }));
       navigate('/', { replace: true });
       setUserEmail('');
       setPassword('');
