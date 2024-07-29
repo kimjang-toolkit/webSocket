@@ -14,7 +14,7 @@ api.interceptors.request.use(
     const { accessToken } = state.user;
 
     if (accessToken) {
-      config.headers['Authorization'] = `${accessToken}`;
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
     return config;
   },
@@ -28,7 +28,7 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-     // 요청이 실패했을 때 실행될 로직
+    // 요청이 실패했을 때 실행될 로직
     if (error.response) {
       // 요청이 전송되었고 서버가 2xx 외의 상태 코드로 응답한 경우
       switch (error.response.status) {
@@ -53,5 +53,5 @@ api.interceptors.response.use(
     }
     //오류 처리 후 throw하여 호출한 곳에서 처리할 수 있게 함.
     return Promise.reject(error);
-  }
+  },
 );
