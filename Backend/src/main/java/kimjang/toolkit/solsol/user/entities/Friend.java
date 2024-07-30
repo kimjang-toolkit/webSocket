@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.user;
+package kimjang.toolkit.solsol.user.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

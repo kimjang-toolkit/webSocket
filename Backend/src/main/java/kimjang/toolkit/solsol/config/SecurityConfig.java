@@ -3,6 +3,7 @@ package kimjang.toolkit.solsol.config;
 import kimjang.toolkit.solsol.config.filter.*;
 import kimjang.toolkit.solsol.config.provider.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -32,12 +34,16 @@ public class SecurityConfig {
 
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final AuthenticationEntryPoint authEntryPoint;
     public SecurityConfig(
             AuthenticationManagerBuilder authenticationManagerBuilder,
-            JwtAuthenticationProvider jwtAuthenticationProvider
+            JwtAuthenticationProvider jwtAuthenticationProvider,
+            @Qualifier("delegatedAuthenticationEntryPoint")
+            AuthenticationEntryPoint authEntryPoint
     ) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
+        this.authEntryPoint = authEntryPoint;
     }
 
 //    @Bean
@@ -105,7 +111,9 @@ public class SecurityConfig {
                         .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs").permitAll()
                         .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults())
+                // 예외가 발생하면 예외를 담아 controller로 전달하기
+                .exceptionHandling(handler -> handler.authenticationEntryPoint(authEntryPoint));
 
         return http.build();
     }

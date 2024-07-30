@@ -1,18 +1,10 @@
 package kimjang.toolkit.solsol.chat;
 
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import kimjang.toolkit.solsol.SolsolApplication;
-import kimjang.toolkit.solsol.user.User;
-import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
-import kimjang.toolkit.solsol.message.repository.ChatRepository;
-import kimjang.toolkit.solsol.room.entity.ChatRoom;
-import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
-import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import kimjang.toolkit.solsol.message.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -22,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @SpringBootTest(classes = SolsolApplication.class)

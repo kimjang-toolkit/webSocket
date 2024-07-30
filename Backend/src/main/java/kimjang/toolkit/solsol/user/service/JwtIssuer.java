@@ -6,16 +6,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import kimjang.toolkit.solsol.config.jwt.JwtAuthenticateToken;
 import kimjang.toolkit.solsol.config.jwt.JwtInvalidException;
 import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
-import kimjang.toolkit.solsol.user.Authority;
+import kimjang.toolkit.solsol.user.entities.Authority;
 import kimjang.toolkit.solsol.user.dto.LoginSuccessDto;
 import kimjang.toolkit.solsol.user.dto.RefreshDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -24,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Slf4j

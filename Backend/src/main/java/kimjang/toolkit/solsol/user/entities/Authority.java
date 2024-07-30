@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.user;
+package kimjang.toolkit.solsol.user.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.parameters.P;
 
 @Entity
 @Getter

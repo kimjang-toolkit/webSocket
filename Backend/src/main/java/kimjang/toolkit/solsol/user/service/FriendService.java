@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.user.service;
 
-import kimjang.toolkit.solsol.user.Friend;
-import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.entities.Friend;
+import kimjang.toolkit.solsol.user.entities.User;
 import kimjang.toolkit.solsol.user.reposiotry.FriendRepository;
 import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import kimjang.toolkit.solsol.user.dto.AddFriendsDto;

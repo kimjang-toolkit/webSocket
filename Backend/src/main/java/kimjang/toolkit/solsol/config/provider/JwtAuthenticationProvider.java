@@ -58,6 +58,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             throw new JwtInvalidException("malformed token", malformedJwtException);
         } catch (IllegalArgumentException illegalArgumentException) {
             throw new JwtInvalidException("using illegal argument like null", illegalArgumentException);
+        } catch (RuntimeException e){
+            throw new RuntimeException(e);
         }
     }
 

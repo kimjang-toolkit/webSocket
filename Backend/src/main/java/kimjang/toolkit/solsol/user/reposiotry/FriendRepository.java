@@ -1,7 +1,6 @@
 package kimjang.toolkit.solsol.user.reposiotry;
 
-import kimjang.toolkit.solsol.user.Friend;
-import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.entities.Friend;
 import kimjang.toolkit.solsol.user.dto.UserProfileDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
