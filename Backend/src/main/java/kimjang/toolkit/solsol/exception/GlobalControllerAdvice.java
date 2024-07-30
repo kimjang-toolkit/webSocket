@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -33,6 +34,14 @@ public class GlobalControllerAdvice {
     // 생산된 예외를 처리하여 응답하기ㄴ
     @ExceptionHandler({ AuthenticationException.class })
     public ResponseEntity<?> handleAuthenticationException(Exception exception) {
+        log.error(exception.getMessage(), exception);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(exception.getMessage());
+    }
+
+    // InsufficientAuthenticationException
+    @ExceptionHandler({ InsufficientAuthenticationException.class })
+    public ResponseEntity<?> handleAuthenticationException(InsufficientAuthenticationException exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(exception.getMessage());
