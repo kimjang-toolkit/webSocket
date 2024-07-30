@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kimjang.toolkit.solsol.config.jwt.JwtAuthenticateToken;
+import kimjang.toolkit.solsol.config.jwt.JwtInvalidException;
 import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
 import kimjang.toolkit.solsol.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +44,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 Authentication authentication = authenticationManager.authenticate(new JwtAuthenticateToken(jwt.substring(7)));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (AuthenticationException authenticationException) {
+            } catch (AuthenticationException jwtInvalidException) {
                 SecurityContextHolder.clearContext();
-                log.error(authenticationException.getMessage(), authenticationException);
-                throw new UnauthorizedException("인증되지 않은 요청이에요. 로그인해주세요.", authenticationException);
+                log.error(jwtInvalidException.getMessage(), jwtInvalidException);
+                // 예외를 담아서 controller로 보내기
+                request.setAttribute("인증되지 않은 요청이에요. 로그인해주세요.", jwtInvalidException);
+            } catch (RuntimeException e){
+                SecurityContextHolder.clearContext();
+                log.error(e.getMessage(), e);
+                request.setAttribute("예측하지 못한 에러가 발생했습니다. 다시 시도해주세요.", e);
             }
         }
         filterChain.doFilter(request, response);

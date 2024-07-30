@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.exception;
 
+import kimjang.toolkit.solsol.config.jwt.JwtInvalidException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,15 +23,16 @@ public class GlobalControllerAdvice {
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> exceptionHandler(BadCredentialsException exception){
-        log.error(exception.getMessage(), exception);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(exception.getMessage());
-    }
+//    @ExceptionHandler(BadCredentialsException.class)
+//    public ResponseEntity<?> exceptionHandler(BadCredentialsException exception){
+//        log.error(exception.getMessage(), exception);
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+//                .body(exception.getMessage());
+//    }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<?> exceptionHandler(AuthenticationException exception){
+    // 생산된 예외를 처리하여 응답하기ㄴ
+    @ExceptionHandler({ AuthenticationException.class })
+    public ResponseEntity<?> handleAuthenticationException(Exception exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(exception.getMessage());
