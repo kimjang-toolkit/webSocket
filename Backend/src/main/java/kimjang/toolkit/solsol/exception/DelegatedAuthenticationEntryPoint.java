@@ -22,6 +22,8 @@ public class DelegatedAuthenticationEntryPoint implements AuthenticationEntryPoi
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         // JwtAuthenticationFilter에서 request에 담아서 보내준 예외를 처리
-        resolver.resolveException(request, response, null, (Exception) request.getAttribute("exception"));
+        System.out.println(authException.getMessage()+" class : "+authException.getClass().getName());
+        resolver.resolveException(request, response, null, authException);
+//        resolver.resolveException(request, response, null, (Exception) request.getAttribute("exception"));
     }
 }
