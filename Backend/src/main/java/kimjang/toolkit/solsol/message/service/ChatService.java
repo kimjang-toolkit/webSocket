@@ -1,6 +1,6 @@
 package kimjang.toolkit.solsol.message.service;
 
-import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.entities.User;
 import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import kimjang.toolkit.solsol.message.ChatMessage;
 import kimjang.toolkit.solsol.message.dto.PastChatsDto;

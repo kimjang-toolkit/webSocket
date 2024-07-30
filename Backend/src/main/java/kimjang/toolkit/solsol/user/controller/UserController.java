@@ -1,4 +1,4 @@
-package kimjang.toolkit.solsol.user;
+package kimjang.toolkit.solsol.user.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import kimjang.toolkit.solsol.user.dto.*;
@@ -59,6 +59,12 @@ public class UserController {
     @PostMapping("/login")
     public LoginSuccessDto getUserDetailsAfterLogin(@RequestBody LoginDto loginDto) {
         return userService.userLoginAndSaveRefreshToken(loginDto);
+    }
+
+    @GetMapping("/user/profile")
+    public ResponseEntity<UserProfileDto> getUserDetail(){
+        UserProfileDto dto = userService.getUserDetail();
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/refresh-token")

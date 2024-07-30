@@ -2,7 +2,7 @@ package kimjang.toolkit.solsol.room.service;
 
 import kimjang.toolkit.solsol.room.dto.InviteChatRoomDto;
 import kimjang.toolkit.solsol.room.dto.LeaveRoomDto;
-import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.entities.User;
 import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import kimjang.toolkit.solsol.user.dto.UserDto;
 import kimjang.toolkit.solsol.message.ChatMessage;

@@ -1,11 +1,13 @@
 package kimjang.toolkit.solsol.user.service;
 
-import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.entities.User;
 import kimjang.toolkit.solsol.user.dto.*;
 import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,5 +69,11 @@ public class UserService {
 
     public LoginSuccessDto getAccessToken(RefreshDto refreshDto) {
         return jwtIssuer.getAccessTokenByRefreshToken(refreshDto);
+    }
+
+    public UserProfileDto getUserDetail() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        String userEmail = context.getAuthentication().getName();
+        return userRepository.findProfileByEmail(userEmail);
     }
 }

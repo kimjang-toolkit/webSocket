@@ -1,7 +1,5 @@
-package kimjang.toolkit.solsol.user;
+package kimjang.toolkit.solsol.user.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import kimjang.toolkit.solsol.user.dto.CreateUserDto;
 import lombok.AllArgsConstructor;
@@ -10,9 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity

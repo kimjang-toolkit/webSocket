@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.config.provider;
 
-import kimjang.toolkit.solsol.user.Authority;
-import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.entities.Authority;
+import kimjang.toolkit.solsol.user.entities.User;
 import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;

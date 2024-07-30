@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.message;
 
 import jakarta.persistence.*;
-import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.entities.User;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import lombok.*;
