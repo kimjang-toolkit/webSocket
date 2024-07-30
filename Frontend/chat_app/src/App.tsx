@@ -3,14 +3,23 @@ import GlobalStyle from '@styles/GlobalStyle';
 import ChatRoomPage from '@/pages/ChatRoomPage';
 import ChatRoomListPage from '@/pages/ChatRoomListPage';
 import LoginPage from '@/pages/LoginPage';
+import RootLayout from '@/pages/Root';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <ChatRoomListPage />,
+    element: <RootLayout />,
+    //errorElement: <ErrorPage/>,
+    id: 'root',
+    children: [
+      { index: true, element: <ChatRoomListPage /> },
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+      { path: 'chat/:roomId', element: <ChatRoomPage /> },
+    ],
   },
-  { path: '/chat/:roomId', element: <ChatRoomPage /> },
-  { path: '/login', element: <LoginPage /> },
 ]);
 
 function App() {

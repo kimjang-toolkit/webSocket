@@ -13,3 +13,15 @@ export const sendLoginRequest = async ({ email, password }: { email: string; pas
     console.log(`status::${status}- ${text}`);
   }
 };
+
+export const reissueAccessTokenRequest = async (refreshToken: string) => {
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_SPRING_URL}/refresh-token`, {
+      refreshToken,
+    });
+    return response.data; // 응답 데이터 반환
+  } catch (error) {
+    console.error('Failed to refresh access token:', error);
+    throw error;
+  }
+};
