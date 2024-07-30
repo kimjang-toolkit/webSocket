@@ -22,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * WebSocket 프로토콜은 Security가 헤더 값을 인식하지 못하기 때문에 넘어간다.
+ * not used
  */
 @Slf4j
 public class JWTValidatorFilter extends OncePerRequestFilter {

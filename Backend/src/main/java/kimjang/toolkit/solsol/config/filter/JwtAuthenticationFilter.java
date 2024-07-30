@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kimjang.toolkit.solsol.config.jwt.JwtAuthenticateToken;
 import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
+import kimjang.toolkit.solsol.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,6 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (AuthenticationException authenticationException) {
                 SecurityContextHolder.clearContext();
                 log.error(authenticationException.getMessage(), authenticationException);
+                throw new UnauthorizedException("인증되지 않은 요청이에요. 로그인해주세요.", authenticationException);
             }
         }
         filterChain.doFilter(request, response);

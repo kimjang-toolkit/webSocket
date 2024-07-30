@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+// not used
 public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
     private final Long ONE_SECONDS = 1000L;
     private final Long ONE_MINUTE = 60 * ONE_SECONDS;

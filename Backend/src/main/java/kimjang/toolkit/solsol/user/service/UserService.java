@@ -1,5 +1,6 @@
 package kimjang.toolkit.solsol.user.service;
 
+import kimjang.toolkit.solsol.exception.UnauthorizedException;
 import kimjang.toolkit.solsol.user.entities.User;
 import kimjang.toolkit.solsol.user.dto.*;
 import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
@@ -73,7 +74,11 @@ public class UserService {
 
     public UserProfileDto getUserDetail() {
         SecurityContext context = SecurityContextHolder.getContext();
+
         String userEmail = context.getAuthentication().getName();
+        if(userEmail.equals("anonymousUser")){
+            throw new UnauthorizedException("인가되지 않은 요청입니다.");
+        }
         return userRepository.findProfileByEmail(userEmail);
     }
 }
