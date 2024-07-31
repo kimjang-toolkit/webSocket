@@ -7,6 +7,7 @@ function RootLayout() {
   const submit = useSubmit();
 
   useEffect(() => {
+    console.log('useEffect running');
     if (token === 'EXPIRED') {
       submit(null, { action: '/logout', method: 'post' });
     }

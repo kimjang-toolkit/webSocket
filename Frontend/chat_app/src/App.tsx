@@ -4,6 +4,7 @@ import ChatRoomPage from '@/pages/ChatRoomPage';
 import ChatRoomListPage from '@/pages/ChatRoomListPage';
 import LoginPage from '@/pages/LoginPage';
 import RootLayout from '@/pages/Root';
+import { action as logoutAction } from '@/pages/Logout';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
         element: <LoginPage />,
       },
       { path: 'chat/:roomId', element: <ChatRoomPage /> },
+      {
+        path: 'logout',
+        action: logoutAction,
+      },
     ],
   },
 ]);
