@@ -12,9 +12,11 @@ interface chatRoomProps {
 
 function ChatWrapper({ chatDatas, loadMoreRef, data }: chatRoomProps) {
   const user = useSelector((state: RootState) => state.user);
+  console.log('chatDatas', chatDatas);
   return (
     <Wrapper>
       <div ref={loadMoreRef} />
+      {/* 이전 채팅 */}
       {data.pages.map((page: { pastChats: any[] }) =>
         page.pastChats.map((chat, index) => {
           const hour = String(chat.createDate?.hour).padStart(2, '0');
@@ -28,6 +30,7 @@ function ChatWrapper({ chatDatas, loadMoreRef, data }: chatRoomProps) {
           );
         }),
       )}
+      {/* 실시간 채팅 */}
       {chatDatas.map((chat, index) => {
         const hour = String(chat.createDate?.hour).padStart(2, '0');
         const minute = String(chat.createDate.min).padStart(2, '0');
