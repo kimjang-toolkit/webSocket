@@ -51,9 +51,9 @@ public class JwtIssuer {
     public IssuedTokens getAccessTokenByRefreshToken(RefreshDto refreshDto) {
         try {
             AuthorityInfo authorityInfo = getAuthorityInfo(refreshDto);
-            RefreshToken savedRefreshToken = refreshTokenCacheService.searchToken(authorityInfo.getEmail());
+            String savedRefreshToken = refreshTokenCacheService.searchToken(authorityInfo.getEmail());
             // 저장된 refresh token과 같은지 확인 같을 때 재발급 가능!
-            hashMatchingTokens(savedRefreshToken.getRefreshToken(), refreshDto.getRefreshToken());
+            hashMatchingTokens(savedRefreshToken, refreshDto.getRefreshToken());
 
             return getAccessTokenByAuthorityInfo(authorityInfo);
 
