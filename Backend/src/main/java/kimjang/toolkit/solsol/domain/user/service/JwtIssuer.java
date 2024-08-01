@@ -8,8 +8,8 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import kimjang.toolkit.solsol.config.jwt.JwtInvalidException;
 import kimjang.toolkit.solsol.config.jwt.SecurityConstants;
+import kimjang.toolkit.solsol.domain.cache.RefreshTokenCacheService;
 import kimjang.toolkit.solsol.domain.user.dto.IssuedTokens;
-import kimjang.toolkit.solsol.domain.user.dto.LoginSuccessDto;
 import kimjang.toolkit.solsol.domain.user.dto.RefreshDto;
 import kimjang.toolkit.solsol.domain.user.entities.Authority;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +32,14 @@ public class JwtIssuer {
     private final Long ONE_MINUTE = 60 * ONE_SECONDS;
     private final long accessExpireMin;
     private final long refreshExpireMin;
+    private final RefreshTokenCacheService refreshTokenCacheService;
+
     public JwtIssuer(@Value("${jwt.access-expire-min:10}") long accessExpireMin,
-            @Value("${jwt.refresh-expire-min:60}") long refreshExpireMin){
+            @Value("${jwt.refresh-expire-min:60}") long refreshExpireMin,
+                     RefreshTokenCacheService refreshTokenCacheService){
         this.accessExpireMin = accessExpireMin;
         this.refreshExpireMin = refreshExpireMin;
+        this.refreshTokenCacheService = refreshTokenCacheService;
     }
 
     private String getToken(String email, String authorities, Long expireTime) {
@@ -67,7 +71,7 @@ public class JwtIssuer {
         return getToken(email, authorities, refreshExpireMin*ONE_MINUTE);
     }
 
-    public LoginSuccessDto getAccessTokenByRefreshToken(RefreshDto refreshDto) {
+    public IssuedTokens getAccessTokenByRefreshToken(RefreshDto refreshDto) {
         try {
             Claims claims = Jwts.parser()
                     .verifyWith(key) // 서버가 저장하고 있는 키로 payload 암호 풀기
@@ -79,7 +83,7 @@ public class JwtIssuer {
 
             String accessToken = getAccessToken(email, authorities);
             String refreshToken = getRefreshToken(email, authorities);
-            return LoginSuccessDto.builder()
+            return IssuedTokens.builder()
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
                     .build();

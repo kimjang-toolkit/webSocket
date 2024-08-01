@@ -21,4 +21,8 @@ public class RefreshToken {
 
     @Column(name = "refresh_token")
     private String refreshToken;
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

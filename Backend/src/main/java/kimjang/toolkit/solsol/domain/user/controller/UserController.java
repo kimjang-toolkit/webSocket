@@ -2,7 +2,6 @@ package kimjang.toolkit.solsol.domain.user.controller;
 
 import kimjang.toolkit.solsol.domain.user.dto.*;
 import kimjang.toolkit.solsol.domain.user.service.FriendService;
-import kimjang.toolkit.solsol.user.dto.*;
 import kimjang.toolkit.solsol.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +64,7 @@ public class UserController {
     }
 
     @PostMapping("/refresh-token")
-    public LoginSuccessDto getAccessTokenByRefreshToken(@RequestBody RefreshDto refreshDto){
+    public IssuedTokens getAccessTokenByRefreshToken(@RequestBody RefreshDto refreshDto){
         return userService.getAccessToken(refreshDto);
     }
 }

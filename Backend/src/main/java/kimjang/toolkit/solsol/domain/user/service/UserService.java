@@ -4,7 +4,6 @@ import kimjang.toolkit.solsol.domain.cache.RefreshTokenCacheService;
 import kimjang.toolkit.solsol.domain.user.dto.*;
 import kimjang.toolkit.solsol.exception.UnauthorizedException;
 import kimjang.toolkit.solsol.domain.user.entities.User;
-import kimjang.toolkit.solsol.user.dto.*;
 import kimjang.toolkit.solsol.domain.user.reposiotry.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtIssuer jwtIssuer;
-    private final RefreshTokenCacheService refreshTokenCacheService;
 
     @Transactional
     public UserDto registerUser(CreateUserDto createUserDto){
@@ -82,7 +80,7 @@ public class UserService {
      * @param refreshDto
      * @return
      */
-    public LoginSuccessDto getAccessToken(RefreshDto refreshDto) {
+    public IssuedTokens getAccessToken(RefreshDto refreshDto) {
         /**
          * 캐시나 DB에 존재하는 refresh token인지 확인
          * - 없으면 401 에러
