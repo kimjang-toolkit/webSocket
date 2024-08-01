@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.domain.user.service;
 
-import kimjang.toolkit.solsol.domain.cache.RefreshTokenCacheService;
 import kimjang.toolkit.solsol.domain.user.dto.*;
+import kimjang.toolkit.solsol.domain.user.entities.Authority;
 import kimjang.toolkit.solsol.exception.UnauthorizedException;
 import kimjang.toolkit.solsol.domain.user.entities.User;
 import kimjang.toolkit.solsol.domain.user.reposiotry.UserRepository;
@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.AuthenticationException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -61,7 +63,13 @@ public class UserService {
                 throw new BadCredentialsException("bad credential: using unmatched password");
             }
             log.info("email : "+loginDto.getEmail());
-            IssuedTokens tokens = jwtIssuer.getAccessTokenByUserInfo(user.getEmail(), user.getAuthorities());
+            String authorities = populateAuthorities(user.getAuthorities());
+            AuthorityInfo authorityInfo = AuthorityInfo.builder().email(user.getEmail())
+                    .authorities(authorities).build();
+            // 새로운 tokens 재발급
+            IssuedTokens tokens = jwtIssuer.getAccessTokenByAuthorityInfo(authorityInfo);
+            // 재발급한 tokens Cache와 DB에 저장
+            jwtIssuer.saveIssuedToken(user.getEmail(), tokens.getRefreshToken());
             return LoginSuccessDto.builder()
                     .id(user.getId())
                     .email(user.getEmail())
@@ -99,5 +107,13 @@ public class UserService {
             throw new UnauthorizedException("인가되지 않은 요청입니다.");
         }
         return userRepository.findProfileByEmail(userEmail);
+    }
+
+    private String populateAuthorities(Set<Authority> collection) {
+        Set<String> authoritiesSet = new HashSet<>();
+        for (Authority authority : collection) {
+            authoritiesSet.add(authority.getName());
+        }
+        return String.join(",", authoritiesSet);
     }
 }

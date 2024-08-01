@@ -10,7 +10,7 @@ import java.util.List;
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
 
-    @Query("SELECT new kimjang.toolkit.solsol.room.dto.ChatRoomDto( " +
+    @Query("SELECT new kimjang.toolkit.solsol.domain.room.dto.ChatRoomDto( " +
             " cr.id, ccr.roomName, cr.memberCnt, ccr.roomExitTime, " +
             " (SELECT cm.content FROM ChatMessage cm WHERE cm.chatRoom.id = cr.id AND " + // 채팅 내용 가져오기
             "   cm.createDate =(SELECT MAX(ccm.createDate) FROM ChatMessage ccm WHERE ccm.chatRoom.id = cm.chatRoom.id)) " + // 채팅방에서 가장 최근 채팅 날짜

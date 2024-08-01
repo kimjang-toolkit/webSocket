@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select u from User u join FETCH u.authorities a WHERE u.email = :email")
     Optional<User> findByEmail(@Param("email") String email);
 
-    @Query(value = "select new kimjang.toolkit.solsol.user.dto.UserProfileDto(" +
+    @Query(value = "select new kimjang.toolkit.solsol.domain.user.dto.UserProfileDto(" +
             " u.id,  u.email, u.name, u.imgUrl ) from User u WHERE u.email = :email")
     UserProfileDto findProfileByEmail(@Param("email") String email);
 

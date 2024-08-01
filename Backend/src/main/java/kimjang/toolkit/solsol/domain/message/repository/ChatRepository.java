@@ -28,7 +28,7 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
      * @Param roomExitTime : 사용자가 최근 방에서 나간 시간
      */
     @Query(value="SELECT " +
-            " new kimjang.toolkit.solsol.message.dto.SendChatMessageDto(" +
+            " new kimjang.toolkit.solsol.domain.message.dto.SendChatMessageDto(" +
             " :roomId, cm.content, cm.createDate, u.id, u.email, u.name )" + // 채팅 내용
             " FROM ChatMessage cm " + // 채팅
             " join User u ON u.id = cm.user.id " + // 유저
@@ -45,7 +45,7 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
 
     // 유저가 속한 채팅방에 가장 최근 채팅만 쿼리
     @Query(value="SELECT " +
-            " new kimjang.toolkit.solsol.message.dto.SendChatMessageDto(" +
+            " new kimjang.toolkit.solsol.domain.message.dto.SendChatMessageDto(" +
             " :roomId, cm.content, cm.createDate, u.id, u.email, u.name )" + // 채팅 내용
             " FROM ChatMessage cm " + // 채팅
             " join User u ON u.id = cm.user.id " + // 유저

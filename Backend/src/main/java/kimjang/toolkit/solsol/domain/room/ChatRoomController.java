@@ -4,7 +4,6 @@ import kimjang.toolkit.solsol.domain.room.dto.ChatRoomDto;
 import kimjang.toolkit.solsol.domain.room.dto.CreateChatRoomDto;
 import kimjang.toolkit.solsol.domain.room.dto.InviteChatRoomDto;
 import kimjang.toolkit.solsol.domain.room.dto.LeaveRoomDto;
-import kimjang.toolkit.solsol.room.dto.*;
 import kimjang.toolkit.solsol.domain.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.domain.room.service.ChatRoomService;
 import kimjang.toolkit.solsol.domain.room.service.ChatRoomStompService;
