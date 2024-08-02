@@ -2,6 +2,7 @@ package kimjang.toolkit.solsol.domain.cache;
 
 import kimjang.toolkit.solsol.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,9 @@ public class RefreshTokenCacheService {
             return refreshTokenRepository.save(newToken).getRefreshToken();
         }
     }
+
+    @CacheEvict(value = "refresh", key = "#email")
+    public void deleteCache(String email){}
 
     /**
      * 재발급 용도로 저장된 token 검색
