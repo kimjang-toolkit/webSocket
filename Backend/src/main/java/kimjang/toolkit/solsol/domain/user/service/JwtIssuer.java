@@ -86,7 +86,7 @@ public class JwtIssuer {
     private void hashMatchingTokens(String refreshToken, String savedRefreshToken){
         // hash match check
         if(!tokenHasher.matches(refreshToken, savedRefreshToken)){
-            throw new UnauthorizedException("refresh token is not match");
+            throw new UnauthorizedException("refresh token is already used");
         }
         log.info("존재하는 token과 같은 token을 가지고 있습니다.");
     }
