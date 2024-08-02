@@ -36,6 +36,8 @@ public class ReIssueTokenTest {
     @Autowired
     private JwtIssuer jwtIssuer;
 
+    @Autowired
+    private PasswordEncoder bCryptPasswordEncoder;
 
     private IssuedTokens issuedTokens;
     private final String email = "solsol@gmail.com";
@@ -92,6 +94,19 @@ public class ReIssueTokenTest {
         // 새로운 refresh token 가져오고, 해싱된 토큰 비교. 다른 값을 해싱했기 때문에 match하지 말아야한다.
         Assertions.assertFalse(tokenHasher.matches(test2, hashed));
     }
+
+//    @Test
+//    public void when_string_then_not_match_bCrypt(){
+//        // 토큰 생성
+//        String test1 = jwtIssuer.getRefreshToken(authorityInfo1);
+//        log.info("test1 : {}",test1);
+//        String test2 = jwtIssuer.getRefreshToken(authorityInfo2);;
+//        log.info("test2 : {}",test2);
+//
+//        String hashed = bCryptPasswordEncoder.encode(test1);
+//        // 새로운 refresh token 가져오고, 해싱된 토큰 비교. 다른 값을 해싱했기 때문에 match하지 말아야한다.
+//        Assertions.assertFalse(bCryptPasswordEncoder.matches(test2, hashed));
+//    }
 
 
     @Test
