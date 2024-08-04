@@ -1,5 +1,8 @@
+import { reissueAccessTokenRequest } from '@/apis/authentication';
 import store from '@/redux/store';
+import { setToken } from '@/redux/userSlice';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_SPRING_URL}`,
@@ -14,7 +17,7 @@ api.interceptors.request.use(
     const { accessToken } = state.user;
 
     if (accessToken) {
-      config.headers['Authorization'] = `${accessToken}`;
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
     return config;
   },
@@ -27,14 +30,33 @@ api.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
-     // 요청이 실패했을 때 실행될 로직
+  async (error) => {
+    // 요청이 실패했을 때 실행될 로직
+    const originalRequest = error.config;
     if (error.response) {
       // 요청이 전송되었고 서버가 2xx 외의 상태 코드로 응답한 경우
       switch (error.response.status) {
         case 401:
-          // 인증 오류 처리
-          console.error('Unauthorized access - possibly invalid token');
+          if (!originalRequest._retry) {
+            originalRequest._retry = true;
+          }
+          try {
+            const token = Cookies.get('refreshToken');
+            if (!token) throw new Error('no refreshToken!');
+            const { accessToken, refreshToken } = await reissueAccessTokenRequest(token);
+            store.dispatch(setToken(accessToken));
+            Cookies.set('refreshToken', refreshToken);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+
+            return api(originalRequest);
+          } catch (refreshError) {
+            console.error('Token refresh failed:', refreshError);
+            Cookies.set('refreshToken', 'EXPIRED'); // 리프레시 토큰 삭제
+
+            return Promise.reject(refreshError);
+          }
+
           break;
         case 404:
           // 요청한 리소스를 찾을 수 없음
@@ -53,5 +75,5 @@ api.interceptors.response.use(
     }
     //오류 처리 후 throw하여 호출한 곳에서 처리할 수 있게 함.
     return Promise.reject(error);
-  }
+  },
 );

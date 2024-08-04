@@ -33,7 +33,7 @@ public class StompHandler implements ChannelInterceptor {
         String token = accessor.getFirstNativeHeader(SecurityConstants.JWT_HEADER);
         String destination = accessor.getDestination();
         String sessionId = accessor.getSessionId();
-
+        System.out.println("커맨드 : "+accessor.getCommand());
         System.out.println("목적지 : " + destination+" 세션 id : "+sessionId);
         System.out.println("토큰 " + token);
         // STOMP 메서드가 CONNECT인 경우
