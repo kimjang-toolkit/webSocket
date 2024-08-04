@@ -17,7 +17,7 @@ export const initializeWebSocket = createAsyncThunk(
       brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs`,
       // connectHeaders: { Authorization: accessToken },
       debug: (str) => {
-        console.log('bug', str);
+        // console.log('bug', str);
       },
       reconnectDelay: 0,
       heartbeatIncoming: 1000,

@@ -7,8 +7,6 @@ import { RootState } from '@/redux/store';
 import { Main, SubHeading } from '@/styles/Common';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { useEffect } from 'react';
-import { initializeWebSocket } from '@/redux/webSocketSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useQuery } from '@tanstack/react-query';
@@ -33,16 +31,6 @@ const ChatRoomListPage = () => {
     queryFn: ({ queryKey }) => fetchChatList(queryKey[1] as number),
     enabled: !!user.id, // user.id가 있을 때만 쿼리를 활성화
   });
-
-  useEffect(() => {
-    //실시간으로 변하는 채팅방리스트 업데이트 웹소켓
-    if (user.id && user.accessToken) {
-      dispatch(initializeWebSocket({ userId: user.id }));
-    }
-    return () => {
-      // console.log('unmouited');
-    };
-  }, []);
 
   const handleChatRoomClick = (roomId: number) => {
     navigate(`/chat/${roomId}`);

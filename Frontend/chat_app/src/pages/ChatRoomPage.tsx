@@ -41,6 +41,7 @@ function ChatRoomPage() {
     }
   }, [fetchNextPage, hasNextPage]);
   useEffect(() => {
+    console.log('useEffect in chatRoomPage');
     if (client && isConnected && params.roomId) {
       const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
         const newChat = JSON.parse(message.body);
@@ -48,10 +49,11 @@ function ChatRoomPage() {
       });
 
       return () => {
+        console.log('unsubscript in chatroom page');
         subscription.unsubscribe();
       };
     }
-  }, [client, isConnected, params.roomId, dispatch]);
+  }, [client, isConnected, params.roomId]);
 
   const handleSendMessage = (message: string) => {
     if (client) {
