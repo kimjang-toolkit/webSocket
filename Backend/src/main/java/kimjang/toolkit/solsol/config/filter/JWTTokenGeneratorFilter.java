@@ -20,8 +20,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+// not used
 public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
-
+    private final Long ONE_SECONDS = 1000L;
+    private final Long ONE_MINUTE = 60 * ONE_SECONDS;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -37,10 +39,11 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
                     .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     .issuedAt(new Date())
                     // 만료시간, ms 단위, 만료 시간을 넘어선 토큰이 들어오면 만료됐다고 예외가 발생한다.
-                    .expiration(new Date((new Date()).getTime() + 300000000))
+                    .expiration(new Date((new Date()).getTime() + ONE_MINUTE*60))
                     // 디지털 서명 작성
                     .signWith(key).compact();
-            response.setHeader(SecurityConstants.JWT_HEADER, jwt);
+
+            response.setHeader(SecurityConstants.JWT_HEADER, SecurityConstants.BEARER_PREFIX+jwt);
             System.out.println(authentication.getName()+"님 jwt 발급됐습니다.");
         }
 

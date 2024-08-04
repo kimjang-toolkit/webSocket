@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.message;
 
 import jakarta.persistence.*;
-import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.entities.User;
 import kimjang.toolkit.solsol.message.dto.SendChatMessageDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import lombok.*;
@@ -19,7 +19,7 @@ import java.time.ZoneId;
 @AllArgsConstructor
 public class ChatMessage {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "message_id") // 컬럼의 이름을 바꿀 수 있다.
     private Long id;
     @JoinColumn(name = "chat_room")

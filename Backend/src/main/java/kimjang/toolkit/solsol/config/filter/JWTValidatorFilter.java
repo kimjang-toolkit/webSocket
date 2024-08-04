@@ -22,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * WebSocket 프로토콜은 Security가 헤더 값을 인식하지 못하기 때문에 넘어간다.
+ * not used
  */
 @Slf4j
 public class JWTValidatorFilter extends OncePerRequestFilter {
@@ -35,7 +36,7 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
                         SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
                 // 토큰의 서명을 통해 유효성을 검사
                 Claims claims = Jwts.parser()
-                        .verifyWith(key) // 서버가 저장하고 있는 키로 payload 해싱
+                        .verifyWith(key) // 서버가 저장하고 있는 키로 payload 암호 풀기
                         .build()
                         .parseSignedClaims(jwt)
                         .getPayload();
@@ -45,7 +46,7 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
                 // payload를 바탕으로 인증 객체를 생성
                 Authentication auth = new UsernamePasswordAuthenticationToken(email, null,
                         AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
-                System.out.println(email+"님 인증 됐습니다.");
+                log.info("{}님 인증 됐습니다.",email);
                 // 인증 객체를 contextHolder에 저장하기
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (Exception e) {
