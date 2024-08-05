@@ -50,7 +50,6 @@ const ChatRoomListPage = () => {
   if (error) {
     return <p>Error loading chat list</p>;
   }
-
   return (
     <ChatListContainer>
       <Modal />
@@ -58,15 +57,13 @@ const ChatRoomListPage = () => {
       <ProfileBox imgUrl={mockProfile.imgUrl} userId={user.id} userName={user.name} />
       <SubHeading $margin="0px 0px 8px 0px">Chats</SubHeading>
       <Main $marginTop="0px">
-        {chatList?.map((chat: ChatRoomCardProps) => (
+        {chatList?.map((chat: any) => (
           <ChatRoomCard
             key={`${chat.roomId}asdf`}
             imgUrl="src/assets/images/맹구.jpg"
             roomName={chat.roomName}
-            roomId={chat.roomId}
             lastContent={chat.lastContent}
-            lastChatTime={chat.lastChatTime}
-            memberCnt={chat.memberCnt}
+            lastChatTime="2024-08-05T12:12:43.830Z"
             unreadCnt={chat.unreadCnt}
             onClick={() => handleChatRoomClick(chat.roomId)}
           />

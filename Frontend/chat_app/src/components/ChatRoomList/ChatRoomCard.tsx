@@ -1,10 +1,10 @@
+import { formatDateTime } from '@/utils/formatDateTime';
 import styled from 'styled-components';
 
 export interface ChatRoomCardProps {
   imgUrl: string;
-  roomId: number;
   roomName: string;
-  memberCnt: number;
+  // memberCnt: number;
   lastChatTime: string;
   lastContent: string;
   unreadCnt: number;
@@ -17,6 +17,7 @@ const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
   lastContent,
   unreadCnt,
   onClick,
+  lastChatTime,
 }) => {
   return (
     <CardContainer onClick={onClick}>
@@ -24,7 +25,7 @@ const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
       <InfoContainer>
         <InfoWrapper>
           <RoomName>{roomName}</RoomName>
-          <TimeStamp>now</TimeStamp>
+          <TimeStamp>{formatDateTime(lastChatTime)}</TimeStamp>
         </InfoWrapper>
         <InfoWrapper>
           <LastContent>{lastContent}</LastContent>
