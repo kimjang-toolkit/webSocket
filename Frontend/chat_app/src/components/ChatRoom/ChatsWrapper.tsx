@@ -3,6 +3,7 @@ import ChatBubble from './ChatBubble';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { formatDateTime } from '@/utils/formatDateTime';
 
 interface chatRoomProps {
   chatDatas: chatFormat[];
@@ -25,20 +26,20 @@ function ChatWrapper({ chatDatas, loadMoreRef, data }: chatRoomProps) {
             <ChatBubble
               key={index}
               isOthers={chat.sender.id !== user.id}
-              data={{ content: chat.content, published: `${hour}${minute}` }}
+              data={{ content: chat.content, createDate: `${hour}${minute}` }}
             />
           );
         }),
       )}
       {/* 실시간 채팅 */}
       {chatDatas.map((chat, index) => {
-        const hour = String(chat.createDate?.hour).padStart(2, '0');
-        const minute = String(chat.createDate.min).padStart(2, '0');
+        const createDate = formatDateTime(chat.createDate);
+
         return (
           <ChatBubble
             key={index + data.pages.length}
             isOthers={chat.sender.id !== user.id}
-            data={{ content: chat.content, published: `${hour}${minute}` }}
+            data={{ content: chat.content, createDate: createDate }}
           />
         );
       })}

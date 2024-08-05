@@ -5,7 +5,6 @@ import { useChatHistory } from '@/hooks/useChatHistory';
 import { AppDispatch, RootState } from '@/redux/store';
 import { Main } from '@/styles/Common';
 import { chatFormat } from '@/types/types';
-import { ParsedDateTime } from '@/utils/parseDateTime';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';

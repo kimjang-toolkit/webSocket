@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 type dataType = {
   content: string;
-  published: string;
+  createDate: string;
 };
 
 interface ChatBubbleProps {
@@ -10,15 +10,11 @@ interface ChatBubbleProps {
 }
 
 function ChatBubble({ data, isOthers }: ChatBubbleProps) {
-  const hours = data.published.slice(0, 2);
-  const minutes = data.published.slice(2, 4);
   return (
     <>
       <Bubble $isOthers={isOthers}>
         <Content>{data.content}</Content>
-        <Caption $isOthers={isOthers}>
-          {hours}:{minutes} Read
-        </Caption>
+        <Caption $isOthers={isOthers}>{data.createDate} Read</Caption>
       </Bubble>
     </>
   );

@@ -1,12 +1,3 @@
-export interface ParsedDateTimeProps {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  min: number;
-  sec: number;
-}
-
 export interface User {
   id: number;
   name: string;
@@ -23,5 +14,5 @@ export interface chatFormat {
   roomId: number;
   content: string;
   sender: User;
-  createDate: ParsedDateTimeProps;
+  createDate: string;
 }
