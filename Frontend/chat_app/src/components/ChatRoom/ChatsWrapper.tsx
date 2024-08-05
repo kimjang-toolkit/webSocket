@@ -13,20 +13,18 @@ interface chatRoomProps {
 
 function ChatWrapper({ chatDatas, loadMoreRef, data }: chatRoomProps) {
   const user = useSelector((state: RootState) => state.user);
-  console.log('chatDatas', chatDatas);
   return (
     <Wrapper>
       <div ref={loadMoreRef} />
       {/* 이전 채팅 */}
       {data.pages.map((page: { pastChats: any[] }) =>
         page.pastChats.map((chat, index) => {
-          const hour = String(chat.createDate?.hour).padStart(2, '0');
-          const minute = String(chat.createDate.min).padStart(2, '0');
+          const createDate = formatDateTime(chat.createDate);
           return (
             <ChatBubble
               key={index}
               isOthers={chat.sender.id !== user.id}
-              data={{ content: chat.content, createDate: `${hour}${minute}` }}
+              data={{ content: chat.content, createDate: createDate }}
             />
           );
         }),

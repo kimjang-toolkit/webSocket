@@ -26,13 +26,11 @@ export const initializeWebSocket = createAsyncThunk(
 
     client.onConnect = () => {
       client.subscribe(`/notification/room/${userId}`, (message) => {
-        console.log('Chat room created:', message.body);
       });
       dispatch(setConnected(true));
     };
 
     client.activate();
-    console.log('client in inital', client);
     return client;
   },
 );

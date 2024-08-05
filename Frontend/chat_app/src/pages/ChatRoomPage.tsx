@@ -17,11 +17,10 @@ function ChatRoomPage() {
   const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
   const params = useParams();
   const user = useSelector((state: RootState) => state.user);
-  const dispatch = useDispatch<AppDispatch>();
   const { data, error, isLoading, fetchNextPage, hasNextPage } = useChatHistory({
     roomId: params.roomId ?? '',
     userId: user.id ?? 0,
-    timeLine: 'past',
+    timeLine: 'recent',
   });
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -40,7 +39,6 @@ function ChatRoomPage() {
     }
   }, [fetchNextPage, hasNextPage]);
   useEffect(() => {
-    console.log('useEffect in chatRoomPage');
     if (client && isConnected && params.roomId) {
       const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
         const newChat = JSON.parse(message.body);
@@ -48,7 +46,6 @@ function ChatRoomPage() {
       });
 
       return () => {
-        console.log('unsubscript in chatroom page');
         subscription.unsubscribe();
       };
     }
@@ -56,7 +53,6 @@ function ChatRoomPage() {
 
   const handleSendMessage = (message: string) => {
     if (client) {
-      console.log('client 이쩌여', client);
       const messageFormat: MessageFormat = {
         roomId: Number(params.roomId),
         content: message,

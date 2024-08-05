@@ -63,7 +63,7 @@ const ChatRoomListPage = () => {
             imgUrl="src/assets/images/맹구.jpg"
             roomName={chat.roomName}
             lastContent={chat.lastContent}
-            lastChatTime="2024-08-05T12:12:43.830Z"
+            lastChatTime={chat.createDate}
             unreadCnt={chat.unreadCnt}
             onClick={() => handleChatRoomClick(chat.roomId)}
           />

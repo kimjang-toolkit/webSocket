@@ -22,7 +22,6 @@ export const putProfileImg = async (url: string, file: File) => {
         'Content-Type': file.type,
       },
     });
-    console.log(response);
     return true;
   } catch (error: any) {
     const status = error.response.status;

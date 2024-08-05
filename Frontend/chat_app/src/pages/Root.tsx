@@ -16,6 +16,7 @@ function RootLayout() {
   useEffect(() => {
     if (token === 'EXPIRED') {
       submit(null, { action: '/logout', method: 'post' });
+      console.log('Expired');
     }
 
     if (user.id && user.accessToken) {
