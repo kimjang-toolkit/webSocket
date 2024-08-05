@@ -20,7 +20,7 @@ function RootLayout() {
     }
 
     if (user.id && user.accessToken) {
-      dispatch(initializeWebSocket({ userId: user.id }));
+      dispatch(initializeWebSocket({ userId: user.id, accessToken:user.accessToken }));
     }
   }, [token, submit]);
 

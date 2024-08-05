@@ -27,17 +27,21 @@ function ChatRoomPage() {
   useEffect(() => {
     if (loadMoreRef.current) {
       const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting && hasNextPage) {
-            fetchNextPage();
-          }
+        (entries) => {
+          console.log('entries', entries);
         },
-        { threshold: 1.0 },
+        // ([entry]) => {
+        //   if (entry.isIntersecting && hasNextPage) {
+        //     fetchNextPage();
+        //   }
+        // },
+        // { threshold: 1.0 },
       );
       observer.observe(loadMoreRef.current);
       return () => observer.disconnect();
     }
   }, [fetchNextPage, hasNextPage]);
+  //채팅방 구독
   useEffect(() => {
     if (client && isConnected && params.roomId) {
       const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {

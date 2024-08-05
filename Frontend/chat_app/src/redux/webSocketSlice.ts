@@ -12,10 +12,10 @@ const initialState: webSocketState = {
 
 export const initializeWebSocket = createAsyncThunk(
   'webSocket/initializeWebSocket',
-  async ({ userId }: { userId: number }, { dispatch }) => {
+  async ({ userId, accessToken }: { userId: number; accessToken: string }, { dispatch }) => {
     const client = new Client({
       brokerURL: `${import.meta.env.VITE_BROKER_URL}/gs`,
-      // connectHeaders: { Authorization: accessToken },
+      connectHeaders: { Authorization: accessToken },
       debug: (str) => {
         // console.log('bug', str);
       },
@@ -25,8 +25,7 @@ export const initializeWebSocket = createAsyncThunk(
     });
 
     client.onConnect = () => {
-      client.subscribe(`/notification/room/${userId}`, (message) => {
-      });
+      client.subscribe(`/notification/room/${userId}`, (message) => {});
       dispatch(setConnected(true));
     };
 
