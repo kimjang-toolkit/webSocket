@@ -2,7 +2,7 @@ name : Deploy Jar to AWS S3
 on :
   push:
     branches:
-      - back-secon
+      - develop
 env:
   S3_BUCKET_NAME: jar-deploy-sol-kimjang
   AWS_REGION: ap-northeast-2
