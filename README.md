@@ -25,7 +25,6 @@
             - 토픽은 사용자에게 온 메세지를 전달
 
 ### ChatRoom List에 들어갔을 때 HTTP API
-
 ```json
 {
   "chatRooms": [

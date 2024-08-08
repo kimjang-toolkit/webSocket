@@ -7,15 +7,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: use node.js 
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20.9
-
-      # 노드 모듈 캐싱. package-lock.json 파일 변경 시 캐시를 무효화하고 다시 생성 
+      # 노드 모듈 캐싱. package-lock.json 파일 변경 시 캐시를 무효화하고 다시 생성
       - name: Cache node modules
         uses: actions/cache@v3
         with:
@@ -29,7 +28,17 @@ jobs:
         working-directory: ./Frontend/chat_app
         run: npm ci
 
-      - name: build project
+      #타입스크립트 에러 무시
+      - name: Run TypeScript
+        working-directory: ./Frontend/chat_app
+        run: tsc --noEmit || true
+      
+      # eslint 에러 무시
+      - name: Run ESLint
+        working-directory: ./Frontend/chat_app
+        run: npm run lint -- --quiet || true
+
+      - name: Build project
         working-directory: ./Frontend/chat_app
         run: npm run build
 
@@ -43,15 +52,14 @@ jobs:
 
       - name: s3 deploy
         env:
-        BUCKET_NAME: ${{ secrets.AWS_FRONT_BUCKET}}
-        working-directory: ./Frontend/chat_app
+          BUCKET_NAME: ${{ secrets.AWS_FRONT_BUCKET}}
         run: |
-            aws s3 sync ./build s3://$BUCKET_NAME 
+          aws s3 sync ./Frontend/chat_app/dist s3://$BUCKET_NAME
 
       # 모든 경로 무효화
       - name: CloudFront Invalidation
-      env:
-        CLOUD_FRONT_ID: ${{ secrets.AWS_CDN_ID}}
-      run: |
-        aws cloudfront create-invalidation \
-          --distribution-id $CLOUD_FRONT_ID --paths "/*"
+        env:
+          CLOUD_FRONT_ID: ${{ secrets.AWS_CDN_ID}}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $CLOUD_FRONT_ID --paths "/*"

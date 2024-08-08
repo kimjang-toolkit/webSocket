@@ -1,7 +1,7 @@
 package kimjang.toolkit.solsol.room.entity;
 
 import jakarta.persistence.*;
-import kimjang.toolkit.solsol.user.User;
+import kimjang.toolkit.solsol.user.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class ChatRoomCustomerRelationship {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; // 고객 - 방 연관관계 번호
 
     private String roomName;

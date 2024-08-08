@@ -16,7 +16,7 @@ function Navbar() {
       </NavItem>
       <NavItem>
         <AlarmIcon />
-        <NavItemText>알람</NavItemText>
+        <NavItemText>알람!</NavItemText>
       </NavItem>
     </NavbarContainer>
   );

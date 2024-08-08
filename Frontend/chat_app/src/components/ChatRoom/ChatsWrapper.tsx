@@ -15,7 +15,7 @@ function ChatWrapper({ chatDatas, loadMoreRef, data }: chatRoomProps) {
   return (
     <Wrapper>
       <div ref={loadMoreRef} />
-      {data.pages.map((page) =>
+      {data.pages.map((page: { pastChats: any[] }) =>
         page.pastChats.map((chat, index) => {
           const hour = String(chat.createDate?.hour).padStart(2, '0');
           const minute = String(chat.createDate.min).padStart(2, '0');

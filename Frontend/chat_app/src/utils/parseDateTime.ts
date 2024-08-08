@@ -1,6 +1,6 @@
-import { ParsedDateTime } from '@/types/types';
+import { ParsedDateTimeProps } from '@/types/types';
 
-export function ParsedDateTime(dateTime: string): ParsedDateTime {
+export function ParsedDateTime(dateTime: string): ParsedDateTimeProps {
   const date = new Date(dateTime);
   date.setHours(date.getHours() + 9);
   return {

@@ -9,6 +9,10 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
 import static kimjang.toolkit.solsol.room.service.CreateRoomName.withParticipationsName;
 
 @Slf4j
@@ -19,19 +23,21 @@ public class ChatRoomStompService {
     private final SimpMessagingTemplate messagingTemplate;
 
     public void inviteParticipates(InviteChatRoomDto inviteChatRoomDto) {
-        String creatorEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        inviteChatRoomDto.getParticipants()
-                .parallelStream()
-                .forEach(customerDto -> {
-                    // 각 참여자에게 채팅방 초대 메세지 전달
+        log.info(inviteChatRoomDto.toString());
+        List<CompletableFuture<Void>> futures = inviteChatRoomDto.getParticipants()
+                .stream()
+                .map(customerDto -> CompletableFuture.runAsync(() -> {
                     CreateRoomReqDto createRoomReqDto = CreateRoomReqDto.builder()
                             .roomId(inviteChatRoomDto.getRoomId())
                             .roomName(inviteChatRoomDto.getRoomName())
                             .user(customerDto)
-                            .creator(creatorEmail)
+                            .creator(inviteChatRoomDto.getCreator())
                             .build();
-                    messagingTemplate.convertAndSend("/notification/room/" + customerDto.getId(), // 각 고객에게 채팅방 생성을 알림
-                            createRoomReqDto);
-                });
+                    messagingTemplate.convertAndSend("/notification/room/" + customerDto.getId(), createRoomReqDto);
+                }))
+                .toList();
+
+        // 모든 병렬 작업이 완료될 때까지 기다림
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
     }
 }

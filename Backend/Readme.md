@@ -41,7 +41,7 @@ WebSocket은 단순히 양방향 통신인데 왜 메세지 브로커를 사용�
 ```
 CONNECT
 accept-version:1.0,1.1,2.0
-host:localhost:8080/gs-guide-websocket
+host:localhost:8080/gs
 
 ^@
 ```

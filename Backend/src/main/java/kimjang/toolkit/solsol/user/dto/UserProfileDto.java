@@ -2,7 +2,6 @@ package kimjang.toolkit.solsol.user.dto;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import kimjang.toolkit.solsol.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

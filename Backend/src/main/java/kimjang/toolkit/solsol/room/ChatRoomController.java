@@ -43,10 +43,10 @@ public class ChatRoomController {
     * @return
     */
    @PostMapping("/chat-room")
-   @SendTo("/notification/room/{user-id}") // /notification/room/chat 을 구독하면 SendMessageDto를 받음
    public ResponseEntity<InviteChatRoomDto> createChatRoom(@RequestBody CreateChatRoomDto dto){
       try{
          InviteChatRoomDto inviteChatRoomDto = chatRoomService.createChatRoom(dto);
+         // /notification/room/{userid}를 구독하면 SendMessageDto를 받음
          chatRoomStompService.inviteParticipates(inviteChatRoomDto);
          return ResponseEntity.ok(inviteChatRoomDto);
       }
