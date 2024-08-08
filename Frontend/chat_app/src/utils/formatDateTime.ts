@@ -14,6 +14,6 @@ export function formatDateTime(dateTimeStr: string) {
     const year = inputDate.getFullYear();
     const month = inputDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더함
     const day = inputDate.getDate();
-    return `${isThisYear ?? year}년 ${month}월 ${day}일`;
+    return `${isThisYear ? `${year}년` : year} ${month}월 ${day}일`;
   }
 }
