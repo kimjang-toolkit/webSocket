@@ -36,14 +36,14 @@ public class StompHandler implements ChannelInterceptor {
         String token = accessor.getFirstNativeHeader(SecurityConstants.JWT_HEADER);
         String destination = accessor.getDestination();
         String sessionId = accessor.getSessionId();
-
+        log.info("Command : {}",accessor.getCommand());
         log.info("목적지 : " + destination+" 세션 id : "+sessionId);
         log.info("토큰 " + token);
         // STOMP 메서드가 CONNECT인 경우
         if (StompCommand.CONNECT.equals(accessor.getCommand()) && token != null) {
             log.info("토큰 유효성 검사 시작!");
 //            jwtTokenValidator.sub(token);
-            String email = jwtTokenValidator.getEmail(sessionId);
+            String email = jwtTokenValidator.getEmail(token);
             sessionContainer.setEmail(sessionId, email);
         }
         if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) && destination != null) {
