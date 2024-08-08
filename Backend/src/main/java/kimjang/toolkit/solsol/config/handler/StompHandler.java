@@ -42,7 +42,6 @@ public class StompHandler implements ChannelInterceptor {
         // STOMP 메서드가 CONNECT인 경우
         if (StompCommand.CONNECT.equals(accessor.getCommand()) && token != null) {
             log.info("토큰 유효성 검사 시작!");
-//            jwtTokenValidator.sub(token);
             String email = jwtTokenValidator.getEmail(token);
             sessionContainer.setEmail(sessionId, email);
         }
@@ -52,7 +51,6 @@ public class StompHandler implements ChannelInterceptor {
                 if (matcher.matches()) {
                     Long roomId = Long.valueOf(matcher.group(1));
                     log.info("subscribe roomId : " + roomId);
-//                    jwtAuthenticationProvider.isValid(token);
                     sessionContainer.subscribe(sessionId, roomId); // 세션에 구독 채팅방 키 저장
                 } else {
                     log.info("Invalid destination format: " + destination);
@@ -65,18 +63,14 @@ public class StompHandler implements ChannelInterceptor {
 
         // 채팅방 구독 해제하는 경우
         if(StompCommand.UNSUBSCRIBE.equals(accessor.getCommand())){
-//            System.out.println("message:" + message);
-//            System.out.println("헤더 : " + message.getHeaders());
-//            System.out.println("요청 메서드 : " + accessor.getCommand());
             try{
-//                String email = jwtAuthenticationProvider.isValid(token);
                 Long roomId = sessionContainer.unsubscribe(sessionId);
                 String email = sessionContainer.unsetEmail(sessionId);
                 log.info("방 번호 : {}, 이메일 : {}", roomId, email);
                 subscribeService.updateUnsubscribeTime(email, roomId);
 
             } catch (IllegalStateException e){
-                System.out.println(e.getMessage());
+                log.error(e.getMessage(), e);
                 throw e;
             }
 
