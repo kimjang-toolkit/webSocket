@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Input, Main } from '@/styles/Common';
-import { authenticateUser } from '@/apis/authentication';
+import { sendLoginRequest } from '@/apis/authentication';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { setUser } from '@/redux/userSlice';
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
@@ -13,10 +14,11 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch<AppDispatch>();
   const handleLogin = async () => {
-    const response = await authenticateUser({ userEmail, password });
+    const response = await sendLoginRequest({ email: userEmail, password });
     if (response) {
-      const { userData, jwtToken } = response;
-      dispatch(setUser({ ...userData, accessToken: jwtToken }));
+      const { id, name, imgUrl, accessToken, refreshToken } = response;
+      Cookies.set('refreshToken', refreshToken, { expires: 14 });
+      dispatch(setUser({ id, name, accessToken, profileImg: imgUrl }));
       navigate('/', { replace: true });
       setUserEmail('');
       setPassword('');
@@ -68,8 +70,6 @@ const Form = styled.div`
   width: 300px;
   gap: 10px;
 `;
-
-
 
 const Button = styled.button<{ secondary?: boolean }>`
   padding: 10px;

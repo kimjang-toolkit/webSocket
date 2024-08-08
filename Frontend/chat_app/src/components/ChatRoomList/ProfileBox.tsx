@@ -1,3 +1,5 @@
+import { getPresignedURL, putProfileImg } from '@/apis/user';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 interface ProfileProps {
@@ -6,9 +8,38 @@ interface ProfileProps {
   userId: number | null;
 }
 function ProfileBox({ imgUrl, userName, userId }: ProfileProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fileUrl, setFileUrl] = useState<string>(imgUrl);
+  const handleUpdateImg = async () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e?.target.files?.[0];
+    if (file) {
+      const newFileUrl = URL.createObjectURL(file);
+      setFileUrl(newFileUrl);
+      const presignedURL = await getPresignedURL(userId!);
+      const res = await putProfileImg(presignedURL, file);
+      console.log(res);
+    }
+  };
   return (
     <Container>
-      <ProfileImg src={imgUrl} />
+      <ProfileImgContainer onClick={handleUpdateImg}>
+        <ProfileImg src={fileUrl} />
+        <Overlay>
+          <input
+            ref={fileInputRef}
+            type="file"
+            style={{ display: 'none' }}
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+          <OverlayText>사진선택</OverlayText>
+        </Overlay>
+      </ProfileImgContainer>
       <InfoContainer>
         <Name>{userName}</Name>
         <ID>{userId}</ID>
@@ -26,11 +57,43 @@ const Container = styled.div`
   gap: 12px;
   padding: 12px 18px;
 `;
-const ProfileImg = styled.img`
+const ProfileImgContainer = styled.div`
+  position: relative;
   width: 15%;
   border-radius: 50%;
-  padding: 2px 2px;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:hover div {
+    opacity: 1;
+  }
 `;
+
+const ProfileImg = styled.img`
+  width: 100%;
+  border-radius: 50%;
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+`;
+const OverlayText = styled.span`
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+`;
+
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;

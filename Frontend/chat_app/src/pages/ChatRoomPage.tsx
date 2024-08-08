@@ -2,12 +2,12 @@ import ChatInputBar from '@/components/ChatRoom/ChatInputBar';
 import ChatsWrapper from '@/components/ChatRoom/ChatsWrapper';
 import Header from '@/components/Header';
 import { useChatHistory } from '@/hooks/useChatHistory';
-import { RootState } from '@/redux/store';
+import { AppDispatch, RootState } from '@/redux/store';
 import { Main } from '@/styles/Common';
 import { chatFormat } from '@/types/types';
 import { ParsedDateTime } from '@/utils/parseDateTime';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MessageFormat } from '@/types/types';
 
@@ -18,6 +18,7 @@ function ChatRoomPage() {
   const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
   const params = useParams();
   const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch<AppDispatch>();
   const { data, error, isLoading, fetchNextPage, hasNextPage } = useChatHistory({
     roomId: params.roomId ?? '',
     userId: user.id ?? 0,
@@ -40,37 +41,23 @@ function ChatRoomPage() {
     }
   }, [fetchNextPage, hasNextPage]);
   useEffect(() => {
-    if (client && isConnected) {
-      try {
-        client.onConnect = () => {
-          console.log('onconnected');
-          const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
-            const newChat = JSON.parse(message.body);
-            setLiveChats((prev) => {
-              const chat = {
-                ...newChat,
-                createDate: {
-                  ...ParsedDateTime(newChat.createDate),
-                },
-              };
-              return [...prev, chat];
-            });
-          });
-          if (subscription) {
-            console.log('subscribed');
-            // subscription.unsubscribe();
-          }
-        };
-      } catch (error) {
-        console.error('Error subscribing to topic:', error);
-      }
-    } else {
-      console.warn('Client is not connected or client is null.');
+    console.log('useEffect in chatRoomPage');
+    if (client && isConnected && params.roomId) {
+      const subscription = client.subscribe(`/sub/chat/${params.roomId}`, (message) => {
+        const newChat = JSON.parse(message.body);
+        setLiveChats((prev) => [...prev, newChat]);
+      });
+
+      return () => {
+        console.log('unsubscript in chatroom page');
+        subscription.unsubscribe();
+      };
     }
-  }, [params.roomId]);
+  }, [client, isConnected, params.roomId]);
 
   const handleSendMessage = (message: string) => {
     if (client) {
+      console.log('client 이쩌여', client);
       const messageFormat: MessageFormat = {
         roomId: Number(params.roomId),
         content: message,
@@ -80,13 +67,12 @@ function ChatRoomPage() {
         },
       };
       const publishMessageBody = JSON.stringify(messageFormat);
-
       client.publish({
-        destination: '/pub/chat/303',
+        destination: `/pub/chat/${params.roomId}`,
         body: publishMessageBody,
         headers: {
           'content-type': 'application/json',
-          Authorization: user.accessToken ?? '',
+          // Authorization: user.accessToken ?? '',
         },
       });
     }
