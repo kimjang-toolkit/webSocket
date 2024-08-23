@@ -97,7 +97,6 @@ const ChatRoomContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100vw;
 `;
 const Footer = styled.div`
   padding: 8px 12px;

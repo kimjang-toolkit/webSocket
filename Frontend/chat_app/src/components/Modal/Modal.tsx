@@ -33,7 +33,7 @@ export default Modal;
 const Dialog = styled.dialog`
   border: 0;
   margin: 0 auto;
-  margin-top: 40%;
+  margin-top: 20%;
   padding: 1.2rem 1.5rem;
   border-radius: 10px;
 `;

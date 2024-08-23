@@ -41,7 +41,7 @@ time, mark, audio, video {
 body,html {
   max-width:400px;
   margin:0 auto;
-
+  background:#fdfdfd;
   font-family: "Helvetica", "Arial", sans-serif;
   line-height: 1.4;
   text-rendering: optimizeLegibility;

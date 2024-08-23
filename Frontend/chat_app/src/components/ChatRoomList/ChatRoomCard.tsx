@@ -19,6 +19,7 @@ const ChatRoomCard: React.FC<ChatRoomCardProps> = ({
   onClick,
   lastChatTime,
 }) => {
+  console.log('lastChatTime', lastChatTime);
   return (
     <CardContainer onClick={onClick}>
       <ProfileImg src={imgUrl} />
