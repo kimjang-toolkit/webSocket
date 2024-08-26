@@ -1,8 +1,9 @@
 import { fetchItems } from '@/apis/item';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useInView } from 'react-intersection-observer';
+
 function TestPage() {
   const { data, error, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['items'],
@@ -11,24 +12,35 @@ function TestPage() {
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const { ref, inView } = useInView({
     threshold: 0.5,
-    rootMargin: '300px',
+    rootMargin: '100px',
   });
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
+    if (isFirstRender && scrollContainerRef.current) {
+      setTimeout(() => {
+        scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+      }, 0); // DOM이 완전히 렌더링된 후 스크롤을 맨 아래로 이동
+
+      setIsFirstRender(false); // 첫 렌더링 이후 상태를 변경
+      return; // 첫 렌더링 시에는 fetchNextPage를 호출하지 않음
+    }
+
     if (inView) {
       fetchNextPage();
+      console.log('fetching');
     }
-  }, [inView, fetchNextPage]);
+  }, [inView, fetchNextPage, isFirstRender]);
 
   return status === 'pending' ? (
     <div>Loading...</div>
   ) : status === 'error' ? (
     <div>{error.message}</div>
   ) : (
-    <Container>
-      <div ref={ref}>{isFetchingNextPage && 'Loading'}</div>
+    <Container ref={scrollContainerRef}>
       {data?.pages.map((page) => {
         return (
           <PageWrapper key={page.currentPage}>
@@ -38,6 +50,7 @@ function TestPage() {
           </PageWrapper>
         );
       })}
+      <div ref={ref}>{isFetchingNextPage && 'Loading'}</div>
     </Container>
   );
 }
@@ -52,11 +65,13 @@ const Card = styled.div`
 const PageWrapper = styled.div`
   background: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 1rem;
 `;
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 1rem;
+  height: 100vh;
+  overflow-y: auto;
 `;
