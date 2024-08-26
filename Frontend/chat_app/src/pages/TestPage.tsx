@@ -17,19 +17,14 @@ function TestPage() {
     threshold: 0.5,
     rootMargin: '100px',
   });
-  const scrollContainerRef = useRef(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (isFirstRender && scrollContainerRef.current) {
-      setTimeout(() => {
-        scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
-      }, 0); // DOM이 완전히 렌더링된 후 스크롤을 맨 아래로 이동
-
+      scrollContainerRef.current.scrollTop = 0; //col-reverse임으로 0일때 맨 아래이다.
       setIsFirstRender(false); // 첫 렌더링 이후 상태를 변경
       return; // 첫 렌더링 시에는 fetchNextPage를 호출하지 않음
-    }
-
-    if (inView) {
+    } else if (inView) {
       fetchNextPage();
       console.log('fetching');
     }
