@@ -17,9 +17,7 @@ public class UnsubscribeTest {
     @Test
     @DisplayName(value = "채팅방 소켓 구독 종료 시간 작성 테스트")
     public void GET_Pase_Chat(){
-        /**
-         * 함수를 호출하면 exitTime이 현재 시간으로 업데이트 되어야한다.
-         *
-         */
+        // 함수를 호출하면 exitTime이 현재 시간으로 업데이트 되어야한다.
+        chatRoomSubscribeService.updateUnsubscribeTime("gang@naver.com",1L);
     }
 }
