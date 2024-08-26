@@ -17,6 +17,12 @@ public class GetPastChatsTest {
     @Autowired
     private ChatService chatService;
 
+    /**
+     * 1은 채팅방 나간 이후 아무 것도 없기 때문에 past로 7개, recent로 0개
+     * 2는 나간 이후 2개 입력됐기 때문에 past 5개 recent 2개
+     * 3은 past 0개 recent 7개
+     */
+
     @Test
     @DisplayName(value = "요청에 따라 채팅 메세지 불러오기")
     public void GET_Pase_Chat(){
