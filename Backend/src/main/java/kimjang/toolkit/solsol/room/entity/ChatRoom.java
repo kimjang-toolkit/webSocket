@@ -18,7 +18,7 @@ import java.time.ZoneId;
 public class ChatRoom {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id") // 컬럼의 이름을 바꿀 수 있다.
     private Long id; // 방 번호
     @Column(name = "create_date")

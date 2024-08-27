@@ -19,7 +19,7 @@ import java.time.ZoneId;
 @AllArgsConstructor
 public class ChatMessage {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id") // 컬럼의 이름을 바꿀 수 있다.
     private Long id;
     @JoinColumn(name = "chat_room")
