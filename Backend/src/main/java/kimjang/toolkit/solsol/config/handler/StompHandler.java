@@ -52,7 +52,7 @@ public class StompHandler implements ChannelInterceptor {
             log.info("");
             try {
                 if (destList.length >= 3 && destList[1].equals("sub") && destList[2].equals("chat")) {
-                    Long roomId = Long.valueOf(destList[2]);
+                    Long roomId = Long.valueOf(destList[3]);
                     log.info("subscribe roomId : " + roomId);
                     sessionContainer.subscribe(sessionId, roomId); // 세션에 구독 채팅방 키 저장
                 } else {
