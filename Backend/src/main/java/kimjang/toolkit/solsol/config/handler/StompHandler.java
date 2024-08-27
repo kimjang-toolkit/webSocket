@@ -68,7 +68,7 @@ public class StompHandler implements ChannelInterceptor {
         if(StompCommand.UNSUBSCRIBE.equals(accessor.getCommand())){
             try{
                 Long roomId = sessionContainer.unsubscribe(sessionId);
-                String email = sessionContainer.unsetEmail(sessionId);
+                String email = sessionContainer.getEmail(sessionId);
                 log.info("방 번호 : {}, 이메일 : {}", roomId, email);
                 subscribeService.updateUnsubscribeTime(email, roomId);
 
