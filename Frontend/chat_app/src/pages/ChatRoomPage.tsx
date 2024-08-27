@@ -1,25 +1,20 @@
 import ChatInputBar from '@/components/ChatRoom/ChatInputBar';
-import ChatsWrapper from '@/components/ChatRoom/ChatsWrapper';
 import Header from '@/components/Header';
 import { RootState } from '@/redux/store';
-import { Main } from '@/styles/Common';
 import { chatFormat } from '@/types/types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MessageFormat } from '@/types/types';
 
 import styled from 'styled-components';
-import ChatHistory from '@/components/ChatRoom/ChatHistory';
-import ChatLive from '@/components/ChatRoom/ChatLive';
+import ChatWrapper from '@/components/ChatRoom/ChatsWrapper';
 
 function ChatRoomPage() {
   const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
   const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
   const params = useParams();
   const user = useSelector((state: RootState) => state.user);
-
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   //채팅방 구독
   useEffect(() => {
@@ -60,10 +55,7 @@ function ChatRoomPage() {
   return (
     <ChatRoomContainer>
       <Header title="채팅방" isBackArrow />
-      <Main $marginTop="12px">
-        <ChatHistory roomId={params.roomId!} userId={user.id!} />
-        <ChatLive userId={user.id!} chatDatas={liveChats} />
-      </Main>
+      <ChatWrapper chatDatas={liveChats} roomId={params.roomId!} />
       <Footer>
         <ChatInputBar onKeyDown={handleSendMessage} />
       </Footer>
