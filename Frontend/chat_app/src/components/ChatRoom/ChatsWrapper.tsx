@@ -19,7 +19,7 @@ function ChatWrapper({ chatDatas, roomId }: ChatWrapperProps) {
   const { data, error, status, fetchNextPage, isFetchingNextPage } = useChatHistory({
     roomId: roomId ?? '',
     userId: user.id ?? 0,
-    timeLine: 'recent',
+    timeLine: 'past',
   });
   const [isFirstRender, setIsFirstRender] = useState(true);
 

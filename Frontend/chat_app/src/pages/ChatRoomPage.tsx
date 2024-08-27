@@ -25,6 +25,7 @@ function ChatRoomPage() {
       });
 
       return () => {
+        console.log('unsubscribe 실행');
         subscription.unsubscribe();
       };
     }

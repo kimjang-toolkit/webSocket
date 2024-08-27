@@ -20,8 +20,8 @@ export const initializeWebSocket = createAsyncThunk(
         // console.log('bug', str);
       },
       reconnectDelay: 0,
-      heartbeatIncoming: 1000,
-      heartbeatOutgoing: 1000,
+      heartbeatIncoming: 2000,
+      heartbeatOutgoing: 2000,
     });
 
     client.onConnect = () => {
