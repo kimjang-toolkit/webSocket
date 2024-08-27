@@ -49,6 +49,7 @@ public class StompHandler implements ChannelInterceptor {
         }
         if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) && destination != null) {
             String[] destList = destination.split("/");
+            log.info("");
             try {
                 if (destList.length >= 3 && destList[1].equals("sub") && destList[2].equals("chat")) {
                     Long roomId = Long.valueOf(destList[2]);

@@ -110,6 +110,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/login**","/refresh-token**").permitAll()
                         .requestMatchers( "/api-docs/**", "/swagger-ui/**","/register/**", "/**", "/gs").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/sub/chat/**", "/pub/chat/**").permitAll()
                 .anyRequest().authenticated()) // 나머지 요청 모두 인증된 회원만 접근 가능
                 .httpBasic(Customizer.withDefaults())
                 // 예외가 발생하면 예외를 담아 controller로 전달하기
