@@ -1,6 +1,7 @@
 package kimjang.toolkit.solsol.user.service;
 
 import kimjang.toolkit.solsol.exception.UnauthorizedException;
+import kimjang.toolkit.solsol.user.entities.Authority;
 import kimjang.toolkit.solsol.user.entities.User;
 import kimjang.toolkit.solsol.user.dto.*;
 import kimjang.toolkit.solsol.user.reposiotry.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.AuthenticationException;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -31,7 +33,9 @@ public class UserService {
             throw new RuntimeException("이미 존재하는 이메일입니다.");
         }
         User user = User.of(createUserDto, hashPwd);
+        user.addAuthorities(List.of(Authority.of(user)));
         User savedUser = userRepository.save(user);
+        userRepository.save(savedUser);
         return UserDto.toDto(savedUser);
     }
 

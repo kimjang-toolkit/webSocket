@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,7 +30,7 @@ public class User {
 
     private String pwd;
 
-    @OneToMany(mappedBy="user",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="user", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Authority> authorities;
 
     @JoinColumn(name = "mobile_number")
@@ -54,8 +55,11 @@ public class User {
                 .authorities(new HashSet<>())
                 .imgUrl(dto.getImgUrl())
                 .build();
-        user.authorities.add(Authority.of(user));
         return user;
+    }
+
+    public void addAuthorities(List<Authority> authorityList){
+        authorities.addAll(authorityList);
     }
 
 //    public void addFriend(List<Friend> friend) {

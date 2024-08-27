@@ -22,12 +22,14 @@ public class ChatMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id") // 컬럼의 이름을 바꿀 수 있다.
     private Long id;
+
     @JoinColumn(name = "chat_room")
     @ManyToOne
     private ChatRoom chatRoom; // 어디서 보냈는지
     private String content; // 뭘 보냈는지
     @Column(name = "create_date")
     private LocalDateTime createDate; // 언제 보냈는지
+
     @ManyToOne
     private User user; // 누가 보냈는지
 

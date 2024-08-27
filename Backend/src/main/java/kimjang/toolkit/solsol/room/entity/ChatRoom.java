@@ -21,6 +21,7 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id") // 컬럼의 이름을 바꿀 수 있다.
     private Long id; // 방 번호
+
     @Column(name = "create_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate; // 언제 만들어졌는지
