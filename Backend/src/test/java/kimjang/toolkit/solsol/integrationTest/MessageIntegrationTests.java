@@ -53,9 +53,9 @@ public class MessageIntegrationTests {
 
 		this.stompClient.setMessageConverter(converter);
 		// 인증 객체 저장
-		Authentication auth = new UsernamePasswordAuthenticationToken("solsol@naver.com", null,
-				List.of(new SimpleGrantedAuthority("USER")));
-		SecurityContextHolder.getContext().setAuthentication(auth);
+//		Authentication auth = new UsernamePasswordAuthenticationToken("solsol@naver.com", null,
+//				List.of(new SimpleGrantedAuthority("USER")));
+//		SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 
 	@Test

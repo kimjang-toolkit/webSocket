@@ -35,6 +35,7 @@ public class StompHandler implements ChannelInterceptor {
 
         String token = accessor.getFirstNativeHeader(SecurityConstants.JWT_HEADER);
         String destination = accessor.getDestination();
+
         String sessionId = accessor.getSessionId();
         log.info("Command : {}",accessor.getCommand());
         log.info("목적지 : " + destination+" 세션 id : "+sessionId);
@@ -43,17 +44,18 @@ public class StompHandler implements ChannelInterceptor {
         if (StompCommand.CONNECT.equals(accessor.getCommand()) && token != null) {
             log.info("토큰 유효성 검사 시작!");
             String email = jwtTokenValidator.getEmail(token);
+            log.info("connect email : {}",email);
             sessionContainer.setEmail(sessionId, email);
         }
         if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) && destination != null) {
+            String[] destList = destination.split("/");
             try {
-                Matcher matcher = CHAT_ROOM_PATTERN.matcher(destination);
-                if (matcher.matches()) {
-                    Long roomId = Long.valueOf(matcher.group(1));
+                if (destList.length >= 3 && destList[1].equals("sub") && destList[2].equals("chat")) {
+                    Long roomId = Long.valueOf(destList[2]);
                     log.info("subscribe roomId : " + roomId);
                     sessionContainer.subscribe(sessionId, roomId); // 세션에 구독 채팅방 키 저장
                 } else {
-                    log.info("Invalid destination format: " + destination);
+                    log.info("not subscribe chat destination : " + destination);
                 }
             } catch (IllegalStateException | BadCredentialsException e) {
                 log.error(e.getMessage(), e);
