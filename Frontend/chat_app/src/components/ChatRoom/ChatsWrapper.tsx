@@ -8,10 +8,9 @@ import { formatDateTime } from '@/utils/formatDateTime';
 interface chatRoomProps {
   chatDatas: chatFormat[];
   loadMoreRef: React.RefObject<HTMLDivElement>;
-  data: any;
 }
 
-function ChatWrapper({ chatDatas, loadMoreRef, data }: chatRoomProps) {
+function ChatWrapper({ chatDatas, loadMoreRef }: chatRoomProps) {
   const user = useSelector((state: RootState) => state.user);
   return (
     <Wrapper>

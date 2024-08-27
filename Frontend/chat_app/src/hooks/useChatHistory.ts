@@ -11,8 +11,8 @@ export const useChatHistory = ({ roomId, userId, timeLine }: ChatHistoryParams) 
   return useInfiniteQuery({
     queryKey: [roomId, userId, timeLine],
     queryFn: fetchChatHistory,
-    getNextPageParam: (lastPage, pages) => {
-      return lastPage.hasNext ? pages.length : undefined;
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasNext ? lastPage.page + 1 : undefined;
     },
     initialPageParam: 0,
   });

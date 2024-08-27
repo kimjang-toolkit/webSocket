@@ -1,46 +1,26 @@
 import ChatInputBar from '@/components/ChatRoom/ChatInputBar';
 import ChatsWrapper from '@/components/ChatRoom/ChatsWrapper';
 import Header from '@/components/Header';
-import { useChatHistory } from '@/hooks/useChatHistory';
-import { AppDispatch, RootState } from '@/redux/store';
+import { RootState } from '@/redux/store';
 import { Main } from '@/styles/Common';
 import { chatFormat } from '@/types/types';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MessageFormat } from '@/types/types';
 
 import styled from 'styled-components';
+import ChatHistory from '@/components/ChatRoom/ChatHistory';
+import ChatLive from '@/components/ChatRoom/ChatLive';
 
 function ChatRoomPage() {
   const { client, isConnected } = useSelector((state: RootState) => state.webSocket);
   const [liveChats, setLiveChats] = useState<chatFormat[]>([]);
   const params = useParams();
   const user = useSelector((state: RootState) => state.user);
-  const { data, error, isLoading, fetchNextPage, hasNextPage } = useChatHistory({
-    roomId: params.roomId ?? '',
-    userId: user.id ?? 0,
-    timeLine: 'recent',
-  });
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    if (loadMoreRef.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          console.log('entries', entries);
-        },
-        // ([entry]) => {
-        //   if (entry.isIntersecting && hasNextPage) {
-        //     fetchNextPage();
-        //   }
-        // },
-        // { threshold: 1.0 },
-      );
-      observer.observe(loadMoreRef.current);
-      return () => observer.disconnect();
-    }
-  }, [fetchNextPage, hasNextPage]);
+
   //채팅방 구독
   useEffect(() => {
     if (client && isConnected && params.roomId) {
@@ -77,13 +57,12 @@ function ChatRoomPage() {
     }
   };
 
-  if (isLoading) return <p>Loading,.,</p>;
-  if (error) return <p>Error loading chat history</p>;
   return (
     <ChatRoomContainer>
       <Header title="채팅방" isBackArrow />
       <Main $marginTop="12px">
-        <ChatsWrapper chatDatas={liveChats} loadMoreRef={loadMoreRef} data={data} />
+        <ChatHistory roomId={params.roomId!} userId={user.id!} />
+        <ChatLive userId={user.id!} chatDatas={liveChats} />
       </Main>
       <Footer>
         <ChatInputBar onKeyDown={handleSendMessage} />
