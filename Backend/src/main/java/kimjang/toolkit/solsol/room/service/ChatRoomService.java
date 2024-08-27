@@ -11,7 +11,7 @@ import kimjang.toolkit.solsol.room.dto.ChatRoomDto;
 import kimjang.toolkit.solsol.room.entity.ChatRoom;
 import kimjang.toolkit.solsol.room.entity.ChatRoomCustomerRelationship;
 import kimjang.toolkit.solsol.room.dto.CreateChatRoomDto;
-import kimjang.toolkit.solsol.room.repository.ChatRoomCustormerRelationshipRepository;
+import kimjang.toolkit.solsol.room.repository.ChatRoomCustomerRelationshipRepository;
 import kimjang.toolkit.solsol.room.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class ChatRoomService {
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
-    private final ChatRoomCustormerRelationshipRepository relationshipRepository;
+    private final ChatRoomCustomerRelationshipRepository relationshipRepository;
 
 
 

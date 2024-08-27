@@ -25,9 +25,7 @@ public class JWTTokenValidator {
                         .parseSignedClaims(jwt)
                         .getPayload();
                 // 토큰 속 payload를 추출
-                String email = String.valueOf(claims.get("email"));
-
-                return email;
+                return String.valueOf(claims.get("email"));
             } catch (Exception e) {
                 log.error(e.getMessage());
                 // 토큰의 문제가 생길 경우 예외처리
