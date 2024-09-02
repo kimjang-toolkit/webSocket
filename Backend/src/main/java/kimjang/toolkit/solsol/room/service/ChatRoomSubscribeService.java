@@ -16,7 +16,7 @@ public class ChatRoomSubscribeService {
     @Transactional
     public void updateUnsubscribeTime(String email, Long roomId){
         ChatRoomCustomerRelationship relationship = relationshipRepository.findByChatRoom_IdAndUser_Email(roomId, email)
-                .orElseThrow(() -> new IllegalStateException("구독하고 있지 않는 채팅방입니다."));
+                .orElseThrow(() -> new IllegalStateException(roomId+"는 "+email+"이 구독하고 있지 않는 채팅방입니다."));
         relationship.unsubscribeRoom();
         log.info("email : {} 가 roomId : {} 를 구독 취소",email,roomId);
     }
